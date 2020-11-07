@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ididit/ui/color_theme.dart';
 
 class ActivityBox extends StatelessWidget {
   final Color color;
@@ -15,6 +16,18 @@ class ActivityBox extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(50),
         child: child,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(50),
+        boxShadow: [
+          BoxShadow(
+            color: ThemeColors.darkBlue.withOpacity(0.25),
+            spreadRadius: 0,
+            blurRadius: 4,
+            offset: Offset(0, 4), // changes position of shadow
+          ),
+        ],
       ),
     );
   }
