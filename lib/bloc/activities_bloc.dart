@@ -7,8 +7,10 @@ import 'package:ididit/models/activity_states.dart';
 
 class ActivitiesBloc extends Bloc {
   final Db _db;
+  ActivitiesState _state = ActivitiesState.loading;
   final List<Activity> _activities = [];
   Activity _currentActivity;
+  final _stateController = StreamController<ActivitiesState>.broadcast();
   final _activityController = StreamController<List<Activity>>();
   final _currentController = StreamController<Activity>.broadcast();
 
@@ -16,6 +18,8 @@ class ActivitiesBloc extends Bloc {
     _init();
   }
 
+  ActivitiesState get state => _state;
+  Stream<ActivitiesState> get stateStream => _stateController.stream;
   Iterable<Activity> get activities => _activities;
   Stream<List<Activity>> get activityStream => _activityController.stream;
   Activity get currentActivity => _currentActivity;
@@ -27,8 +31,10 @@ class ActivitiesBloc extends Bloc {
 
     // Select first activity.
     if (_activities.isNotEmpty) {
-      _currentActivity = _activities.first;
-      _currentController.sink.add(_currentActivity);
+      _setCurrent(_activities.first);
+      _setState(ActivitiesState.ready);
+    } else {
+      _setState(ActivitiesState.no_activities);
     }
   }
 
@@ -38,34 +44,46 @@ class ActivitiesBloc extends Bloc {
     _activityController.sink.add(_activities);
 
     // Select as current.
-    _currentActivity = activity;
-    _currentController.sink.add(activity);
+    _setCurrent(activity);
+
+    if (_state == ActivitiesState.no_activities)
+      _setState(ActivitiesState.ready);
   }
 
   void deleteActivity(int id) async {
     await _db.deleteActivity(id);
+
+    // Update current activity if it was just deleted.
+    if (_currentActivity != null && _currentActivity.id == id) {
+      // If no other activity exists, unset current.
+      if (_activities.length == 1) {
+        _setCurrent(null);
+      }
+
+      // Otherwise, set next as current.
+      final index = _activities.indexOf(_currentActivity);
+      _setCurrent(index == _activities.length - 1
+          ? _activities.first
+          : _activities[index + 1]);
+    }
+
+    // Update state.
+    if (_activities.isEmpty) _setState(ActivitiesState.no_activities);
+
     _activities.removeWhere((a) => a.id == id);
     _activityController.sink.add(_activities);
-
-    // Unset current activity if it was just deleted.
-    if (_currentActivity != null && _currentActivity.id == id) {
-      _currentActivity = null;
-      _currentController.sink.add(null);
-    }
   }
 
   void select(Activity activity) {
     if (_currentActivity != activity) {
-      _currentActivity = activity;
-      _currentController.sink.add(activity);
+      _setCurrent(activity);
     }
   }
 
   void selectNext() {
     if (_activities.length > 1) {
       final index = _activities.indexOf(_currentActivity);
-      _currentActivity = _activities[(index + 1) % _activities.length];
-      _currentController.sink.add(_currentActivity);
+      _setCurrent(_activities[(index + 1) % _activities.length]);
     }
   }
 
@@ -73,9 +91,22 @@ class ActivitiesBloc extends Bloc {
     await _db.markActivity(activity, DateTime.now(), state.value);
   }
 
+  void _setCurrent(Activity activity) {
+    _currentActivity = activity;
+    _currentController.sink.add(activity);
+  }
+
+  void _setState(ActivitiesState state) {
+    _state = state;
+    _stateController.sink.add(state);
+  }
+
   @override
   void dispose() {
+    _stateController.close();
     _activityController.close();
     _currentController.close();
   }
 }
+
+enum ActivitiesState { loading, no_activities, ready }
