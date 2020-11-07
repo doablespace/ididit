@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:ididit/data/day_splitter.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/models/activity_log_entry.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Db {
@@ -45,5 +48,50 @@ class Db {
   Future<void> deleteActivity(int id) async {
     final Database db = await database;
     await db.delete('activities', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<ActivityLogEntry>> findActivityLog(
+      int id, DateTimeRange range) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('activity_log',
+        where: 'activity_id = ? and target_time >= ? and target_time < ?',
+        whereArgs: [
+          id,
+          range.start.microsecondsSinceEpoch,
+          range.end.microsecondsSinceEpoch
+        ]);
+    return List.generate(
+        maps.length, (index) => ActivityLogEntry.fromMap(maps[index]));
+  }
+
+  Future<int> findActivityStatus(int id, DateTime time) async {
+    final log = await findActivityLog(id, daySplitter.getRange(time));
+    if (log.isNotEmpty) return log[0].status;
+    return null;
+  }
+
+  Future<void> markActivity(int id, DateTime time, int status) async {
+    final Database db = await database;
+
+    final range = daySplitter.getRange(time);
+    final log = await findActivityLog(id, range);
+    if (log.isNotEmpty) {
+      await db.update('activity_log', log[0].toMap(),
+          where: 'activity_id = ? and target_time >= ? and target_time < ?',
+          whereArgs: [
+            id,
+            range.start.microsecondsSinceEpoch,
+            range.end.microsecondsSinceEpoch
+          ]);
+    } else {
+      await db.insert(
+          'activity_log',
+          ActivityLogEntry(
+            activityId: id,
+            status: status,
+            targetTime: time,
+            modified: time,
+          ).toMap());
+    }
   }
 }
