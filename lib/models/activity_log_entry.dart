@@ -2,8 +2,8 @@ class ActivityLogEntry {
   final int id;
   final int activityId;
   final ActivityStatus status;
-  final int targetTime;
-  final int modified;
+  final DateTime targetTime;
+  final DateTime modified;
 
   ActivityLogEntry(
       {this.id, this.activityId, this.status, this.targetTime, this.modified});
@@ -13,8 +13,8 @@ class ActivityLogEntry {
       'id': id,
       'activity_id': activityId,
       'status': status as int,
-      'target_time': targetTime,
-      'modified': modified,
+      'target_time': targetTime.microsecondsSinceEpoch,
+      'modified': modified.microsecondsSinceEpoch,
     };
   }
 }

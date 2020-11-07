@@ -43,7 +43,7 @@ class Db {
       final map = maps[index];
       return Activity(
         id: map['id'],
-        created: map['created'],
+        created: DateTime.fromMillisecondsSinceEpoch(map['created']),
         name: map['name'],
         icon: map['icon'],
         color: map['color'],

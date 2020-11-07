@@ -1,6 +1,6 @@
 class Activity {
   int id;
-  final int created;
+  final DateTime created;
   final String name;
   final int icon;
   final int color;
@@ -10,7 +10,7 @@ class Activity {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'created': created,
+      'created': created.millisecondsSinceEpoch,
       'name': name,
       'icon': icon,
       'color': color,
