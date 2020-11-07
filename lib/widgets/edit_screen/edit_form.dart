@@ -66,7 +66,13 @@ class EditFormState extends State<EditForm> {
                     borderRadius: new BorderRadius.all(Radius.circular(100)),
                   ),
                   child: TextButton(
-                      onPressed: null,
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SwipingScreen(),
+                            ));
+                      },
                       child: Text('CANCEL',
                           style: CustomTextStyle(ThemeColors.lightGrey))),
                 ),
