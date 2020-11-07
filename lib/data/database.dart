@@ -39,16 +39,7 @@ class Db {
   Future<List<Activity>> get activities async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query('activities');
-    return List.generate(maps.length, (index) {
-      final map = maps[index];
-      return Activity(
-        id: map['id'],
-        created: DateTime.fromMillisecondsSinceEpoch(map['created']),
-        name: map['name'],
-        icon: map['icon'],
-        color: map['color'],
-      );
-    });
+    return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
   }
 
   Future<void> deleteActivity(int id) async {
