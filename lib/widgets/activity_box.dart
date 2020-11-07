@@ -65,12 +65,39 @@ class ActivityBox extends StatelessWidget {
   }
 }
 
+/// [ActivityBox] + InkWell.
+class ClickableActivityBox extends StatelessWidget {
+  final Color color;
+  final Widget child;
+  final void Function() onTap;
+  final _Sizes _sizes;
+
+  ClickableActivityBox(
+      {Key key, this.color, this.child, this.onTap, double size})
+      : _sizes = _Sizes(size),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ActivityBox(
+      color: color,
+      size: _sizes.box,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(_sizes.radius),
+        onTap: onTap,
+        child: child,
+      ),
+    );
+  }
+}
+
 /// [ActivityBox] + Icon + State indicator.
 class StatefulActivityBox extends StatelessWidget {
   final Activity activity;
+  final void Function() onTap;
   final _Sizes _sizes;
 
-  StatefulActivityBox({Key key, this.activity, double size})
+  StatefulActivityBox({Key key, this.activity, this.onTap, double size})
       : _sizes = _Sizes(size),
         super(key: key);
 
@@ -80,57 +107,55 @@ class StatefulActivityBox extends StatelessWidget {
       value: activity.logEntry,
       builder: (context, logEntry, child) {
         final state = logEntry?.state;
-        return ActivityBox(
+        return ClickableActivityBox(
           color: activity.accent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(_sizes.radius),
-            onTap: () {},
-            child: Stack(
-              children: [
-                // Activity icon
-                Center(
-                  child: SvgPicture.asset(
-                    activity.iconAsset,
-                    color: ThemeColors.darkBlue,
-                    width: _sizes.icon,
-                    height: _sizes.icon,
-                  ),
+          size: _sizes.box,
+          onTap: onTap,
+          child: Stack(
+            children: [
+              // Activity icon
+              Center(
+                child: SvgPicture.asset(
+                  activity.iconAsset,
+                  color: ThemeColors.darkBlue,
+                  width: _sizes.icon,
+                  height: _sizes.icon,
                 ),
+              ),
 
-                // Status indicator
-                if (state != null)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: state.color,
-                        borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(_sizes.radius)),
-                      ),
-                      height: _sizes.radius,
-                      width: _sizes.box,
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.symmetric(horizontal: _sizes.radius),
-                      child: Row(
-                        children: [
-                          Icon(state.iconData, size: _sizes.stateIcon),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: _sizes.padding),
-                            child: Text(
-                              state.text,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: _sizes.stateFontSize,
-                              ),
+              // Status indicator
+              if (state != null)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: state.color,
+                      borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(_sizes.radius)),
+                    ),
+                    height: _sizes.radius,
+                    width: _sizes.box,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: _sizes.radius),
+                    child: Row(
+                      children: [
+                        Icon(state.iconData, size: _sizes.stateIcon),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: _sizes.padding),
+                          child: Text(
+                            state.text,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: _sizes.stateFontSize,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         );
       },
