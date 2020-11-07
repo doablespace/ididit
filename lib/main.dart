@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ididit/screens/swiping_screen.dart';
 
 void main() {
@@ -11,9 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'I Did It',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          // Apply Raleway font throughout app.
+          textTheme: GoogleFonts.ralewayTextTheme(
+            Theme.of(context).textTheme,
+          )),
       home: SwipingScreen(),
     );
   }
