@@ -1,33 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ididit/bloc/activities_bloc.dart';
+import 'package:ididit/models/activity.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:provider/provider.dart';
 
 class ActivitySwiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+
     return Center(
-      child: Container(
-        child: Dismissible(
-          key: UniqueKey(),
-          child: Dismissible(
+      child: StreamBuilder<Activity>(
+        stream: activitiesBloc.currentActivityStream,
+        initialData: null,
+        builder: (context, snapshot) {
+          final activity = snapshot.data;
+
+          return Dismissible(
             key: UniqueKey(),
-            child: _ActivityBackground(
-              color: ActivityColors.accentGreen,
-              child: InkWell(
-                onTap: () {},
-                child: Center(child: Text('body')),
+            child: Dismissible(
+              key: UniqueKey(),
+              child: _ActivityBackground(
+                color: ActivityColors.accentGreen,
+                child: activity == null
+                    ? Center(child: Icon(Icons.flaky_rounded, size: 180))
+                    : InkWell(
+                        onTap: () {},
+                        child: Center(
+                          child: SvgPicture.asset(
+                            activity.iconAsset,
+                            color: ThemeColors.darkBlue,
+                            width: 180,
+                            height: 180,
+                          ),
+                        ),
+                      ),
               ),
+              background: _ActivityBackground(color: ThemeColors.pastelYellow),
+              secondaryBackground:
+                  _ActivityBackground(color: ThemeColors.pastelGrey),
+              onDismissed: _dismissed,
             ),
-            background: _ActivityBackground(color: ThemeColors.pastelYellow),
+            direction: DismissDirection.vertical,
+            background: _ActivityBackground(color: ThemeColors.pastelRed),
             secondaryBackground:
-                _ActivityBackground(color: ThemeColors.pastelGrey),
+                _ActivityBackground(color: ThemeColors.pastelGreen),
             onDismissed: _dismissed,
-          ),
-          direction: DismissDirection.vertical,
-          background: _ActivityBackground(color: ThemeColors.pastelRed),
-          secondaryBackground:
-              _ActivityBackground(color: ThemeColors.pastelGreen),
-          onDismissed: _dismissed,
-        ),
+          );
+        },
       ),
     );
   }
