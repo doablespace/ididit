@@ -3,14 +3,14 @@ import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/icon_names.dart';
 import 'package:ididit/ui/color_theme.dart';
 
-class Activity {
+class Activity extends ChangeNotifier {
   int id;
   DateTime created;
   String name;
   int icon;
   int color;
 
-  ActivityLogEntry logEntry;
+  ActivityLogEntry _logEntry;
 
   Activity({this.id, this.created, this.name, this.icon, this.color});
 
@@ -44,4 +44,10 @@ class Activity {
       ActivityColors.colors[(color ?? 0) % ActivityColors.colors.length];
   Color get accent => colors['accent'];
   Color get ink => colors['ink'];
+
+  ActivityLogEntry get logEntry => _logEntry;
+  set logEntry(ActivityLogEntry value) {
+    _logEntry = value;
+    notifyListeners();
+  }
 }
