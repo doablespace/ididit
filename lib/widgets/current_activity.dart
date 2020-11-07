@@ -57,35 +57,38 @@ class _ActivitySwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: UniqueKey(),
-      child: Dismissible(
-        key: UniqueKey(),
-        child: ActivityBox(
-          color:
-              activity == null ? ActivityColors.accentGreen : activity.accent,
-          child: activity == null
-              ? Center(child: Icon(Icons.flaky_rounded, size: 180))
-              : InkWell(
-                  onTap: () {},
-                  child: Center(
-                    child: SvgPicture.asset(
-                      activity.iconAsset,
-                      color: ThemeColors.darkBlue,
-                      width: 180,
-                      height: 180,
-                    ),
-                  ),
+    final child = ActivityBox(
+      color: activity == null ? ActivityColors.accentGreen : activity.accent,
+      child: activity == null
+          ? Center(child: Icon(Icons.flaky_rounded, size: 180))
+          : InkWell(
+              onTap: () {},
+              child: Center(
+                child: SvgPicture.asset(
+                  activity.iconAsset,
+                  color: ThemeColors.darkBlue,
+                  width: 180,
+                  height: 180,
                 ),
-        ),
-        background: ActivityBox(color: ThemeColors.pastelYellow),
-        secondaryBackground: ActivityBox(color: ThemeColors.pastelGrey),
-        confirmDismiss: confirmDismiss,
-      ),
-      direction: DismissDirection.vertical,
-      background: ActivityBox(color: ThemeColors.pastelRed),
-      secondaryBackground: ActivityBox(color: ThemeColors.pastelGreen),
-      confirmDismiss: confirmDismiss,
+              ),
+            ),
     );
+
+    return activity == null
+        ? child // Ensure "no activity" is not dismissible.
+        : Dismissible(
+            key: UniqueKey(),
+            child: Dismissible(
+              key: UniqueKey(),
+              child: child,
+              background: ActivityBox(color: ThemeColors.pastelYellow),
+              secondaryBackground: ActivityBox(color: ThemeColors.pastelGrey),
+              confirmDismiss: confirmDismiss,
+            ),
+            direction: DismissDirection.vertical,
+            background: ActivityBox(color: ThemeColors.pastelRed),
+            secondaryBackground: ActivityBox(color: ThemeColors.pastelGreen),
+            confirmDismiss: confirmDismiss,
+          );
   }
 }
