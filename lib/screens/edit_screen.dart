@@ -15,10 +15,11 @@ class _EditScreenState extends State<EditScreen> {
           width: 400,
           decoration: BackgroundDecoration(4.0, 0.43),
           child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  child: EditForm()))),
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                child: EditForm()),
+          )),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/models/icon_names.dart';
 import 'package:ididit/screens/images_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/edit_screen/edit_form.dart';
@@ -37,8 +40,8 @@ class _ActivityImageState extends State<ActivityImage> {
       },
       child: ActivityBox(
         color: widget.activity.ink,
-        child: widget.activity.color == null
-            ? selectIllustrationPrompt
+        child: widget.activity.icon == null
+            ? selectIllustrationPrompt(widget.activity)
             : Center(
                 child: SvgPicture.asset(
                   widget.activity.iconAsset,
@@ -52,22 +55,26 @@ class _ActivityImageState extends State<ActivityImage> {
   }
 }
 
-var selectIllustrationPrompt = Stack(children: [
-  Align(
-    alignment: Alignment(0, 0.4),
-    child: SvgPicture.asset(
-      Activity.selectIcon,
-      color: ThemeColors.darkBlue,
-      width: 180,
-      height: 180,
+Stack selectIllustrationPrompt(Activity activity) {
+  activity.icon = Random().nextInt(iconNames.length);
+  return Stack(children: [
+    Align(
+      alignment: Alignment(0, 0.4),
+      child: SvgPicture.asset(
+        // Select prompt illustration by random.
+        activity.iconAsset,
+        color: ThemeColors.darkBlue,
+        width: 180,
+        height: 180,
+      ),
     ),
-  ),
-  Align(
-    alignment: Alignment(0, -0.8),
-    child: Text(
-      'Select illustration',
-      style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
-      textAlign: TextAlign.center,
+    Align(
+      alignment: Alignment(0, -0.8),
+      child: Text(
+        'Select illustration',
+        style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
+        textAlign: TextAlign.center,
+      ),
     ),
-  ),
-]);
+  ]);
+}
