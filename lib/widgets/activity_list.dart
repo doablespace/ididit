@@ -34,7 +34,9 @@ class _ActivityListImplState extends State<ActivityListImpl> {
     super.initState();
     if (widget.db != null)
       widget.db.activities.then((list) {
-        activities.addAll(list);
+        setState(() {
+          activities.addAll(list);
+        });
       });
   }
 
