@@ -32,7 +32,7 @@ class Db {
   /// Inserts or updates an [Activity].
   Future<void> saveActivity(Activity activity) async {
     final Database db = await database;
-    await db.insert('activities', activity.toMap(),
+    activity.id = await db.insert('activities', activity.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
