@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'color-theme.dart';
+import 'color_theme.dart';
 
 /// Applies the titled split background to a screen.
 /// Wrap in a `Container` widget and set as its decoration property.
