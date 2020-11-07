@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
@@ -54,12 +52,19 @@ class _ActivitySwiper extends StatelessWidget {
   const _ActivitySwiper({Key key, this.bloc, this.activity}) : super(key: key);
 
   Future<bool> confirmDismiss(DismissDirection direction) {
+    final hadState = activity.logEntry != null;
+
     // Mark the activity in the database unless user chose "skip".
     if (direction != DismissDirection.endToStart) {
       final targetState = ActivityState.fromDirection(direction);
       bloc.setState(activity, targetState);
     }
-    bloc.selectNext();
+
+    // Go to next activity only if in "normal flow" (i.e., not if user selected
+    // some already-marked activity). Or always if "skip" was chosen.
+    if (!hadState || direction == DismissDirection.endToStart)
+      bloc.selectNext();
+
     return Future.value(false);
   }
 
