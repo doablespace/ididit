@@ -19,49 +19,52 @@ class _ActivityTitleState extends State<ActivityTitle> {
   bool _isError = false;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: CustomTextStyle(ThemeColors.lightGrey),
-      cursorColor: ThemeColors.lightGrey,
-      decoration: InputDecoration(
-        labelText: 'New mystery activity',
-        labelStyle: CustomTextStyle(
-          _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+    return Padding(
+      padding: const EdgeInsets.only(top: 32.0, bottom: 16),
+      child: TextFormField(
+        style: CustomTextStyle(ThemeColors.lightGrey),
+        cursorColor: ThemeColors.lightGrey,
+        decoration: InputDecoration(
+          labelText: 'New mystery activity',
+          labelStyle: CustomTextStyle(
+            _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+          ),
+          hintText: 'Input text',
+          hintStyle: CustomTextStyle(
+            _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+          ),
+          errorStyle: CustomTextStyle(ThemeColors.pastelRed),
+          alignLabelWithHint: true,
+          contentPadding: EdgeInsets.all(20.0),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          counter: Text(
+            '$_charCount / 50',
+            style: CustomTextStyle(
+                _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
+          ),
+          enabledBorder: TitleInputBorder(ThemeColors.lightGrey),
+          focusedBorder: TitleInputBorder(ThemeColors.lightGrey),
+          errorBorder: TitleInputBorder(ThemeColors.pastelRed),
+          focusedErrorBorder: TitleInputBorder(ThemeColors.pastelRed),
         ),
-        hintText: 'Input text',
-        hintStyle: CustomTextStyle(
-          _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
-        ),
-        errorStyle: CustomTextStyle(ThemeColors.pastelRed),
-        alignLabelWithHint: true,
-        contentPadding: EdgeInsets.all(20.0),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        counter: Text(
-          '$_charCount / 50',
-          style: CustomTextStyle(
-              _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
-        ),
-        enabledBorder: TitleInputBorder(ThemeColors.lightGrey),
-        focusedBorder: TitleInputBorder(ThemeColors.lightGrey),
-        errorBorder: TitleInputBorder(ThemeColors.pastelRed),
-        focusedErrorBorder: TitleInputBorder(ThemeColors.pastelRed),
+        validator: (title) {
+          if (title.length > _maxCharCount) {
+            setState(() {
+              _isError = true;
+            });
+            return 'Sadly, you have to do with maximum 50 characters.';
+          }
+          if (title.length <= 0) {
+            setState(() {
+              _isError = true;
+            });
+            return "Don't forget to add title.";
+          }
+          return null;
+        },
+        onChanged: (title) => setState(() => _charCount = title.length),
+        onSaved: (title) => widget.activity.name = title,
       ),
-      validator: (title) {
-        if (title.length > _maxCharCount) {
-          setState(() {
-            _isError = true;
-          });
-          return 'Sadly, you have to do with maximum 50 characters.';
-        }
-        if (title.length <= 0) {
-          setState(() {
-            _isError = true;
-          });
-          return "Don't forget to add title.";
-        }
-        return null;
-      },
-      onChanged: (title) => setState(() => _charCount = title.length),
-      onSaved: (title) => widget.activity.name = title,
     );
   }
 }

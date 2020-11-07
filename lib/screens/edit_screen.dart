@@ -12,11 +12,11 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-          decoration: BackgroundDecoration(3.0, 0.43),
+          decoration: BackgroundDecoration(4.0, 0.43),
           child: Scaffold(
               backgroundColor: Colors.transparent,
               body: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                   child: EditForm()))),
     );
   }

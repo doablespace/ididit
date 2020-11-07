@@ -30,15 +30,23 @@ class EditFormState extends State<EditForm> {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          ActivityImage(activity),
-          ActivityTitle(activity),
-          ActivityColor(activity, updateColor),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+            padding: const EdgeInsets.only(top: 64.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ActivityImage(activity),
+                ActivityTitle(activity),
+                ActivityColor(activity, updateColor),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
