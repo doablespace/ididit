@@ -5,7 +5,7 @@ import 'package:ididit/models/activity.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:provider/provider.dart';
 
-class ActivitySwiper extends StatelessWidget {
+class CurrentActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
