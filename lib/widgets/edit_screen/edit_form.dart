@@ -35,6 +35,7 @@ class EditFormState extends State<EditForm> {
                 if (form.validate()) {
                   form.save();
                   print(activity.name);
+                  print(activity.color);
                 }
               },
               child: Text('Submit'),
