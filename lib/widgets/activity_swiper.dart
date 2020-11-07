@@ -13,7 +13,7 @@ class ActivitySwiper extends StatelessWidget {
     return Center(
       child: StreamBuilder<Activity>(
         stream: activitiesBloc.currentActivityStream,
-        initialData: null,
+        initialData: activitiesBloc.currentActivity,
         builder: (context, snapshot) {
           final activity = snapshot.data;
 

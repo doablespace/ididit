@@ -13,7 +13,7 @@ class ActivityList extends StatelessWidget {
       height: 50,
       child: StreamBuilder<List<Activity>>(
         stream: activitiesBloc.activityStream,
-        initialData: [],
+        initialData: activitiesBloc.activities,
         builder: (context, snapshot) {
           final activities = snapshot.data;
 
@@ -44,7 +44,7 @@ class _ActivityButton extends StatelessWidget {
 
     return StreamBuilder<Activity>(
       stream: activitiesBloc.currentActivityStream,
-      initialData: null,
+      initialData: activitiesBloc.currentActivity,
       builder: (context, snapshot) {
         final currentActivity = snapshot.data;
         final selected = currentActivity != null && activity == currentActivity;
