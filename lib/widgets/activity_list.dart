@@ -25,7 +25,8 @@ class ActivityList extends StatelessWidget {
               return ClickableActivityBox(
                   color: ThemeColors.lightGrey,
                   size: 90,
-                  child: Icon(Icons.add),
+                  child: Icon(Icons.add_rounded,
+                      size: 48, color: ThemeColors.lightBlue),
                   onTap: () {
                     activitiesBloc.addActivity(Activity(
                       icon: DateTime.now().second,
@@ -60,53 +61,6 @@ class ActivityList extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class _ActivityButton extends StatelessWidget {
-  final Activity activity;
-
-  const _ActivityButton(this.activity);
-
-  @override
-  Widget build(BuildContext context) {
-    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
-
-    return StreamBuilder<Activity>(
-      stream: activitiesBloc.currentActivityStream,
-      initialData: activitiesBloc.currentActivity,
-      builder: (context, snapshot) {
-        final currentActivity = snapshot.data;
-        final selected = currentActivity != null && activity == currentActivity;
-
-        return OutlinedButton.icon(
-          icon: activity == null
-              ? Icon(Icons.add)
-              : SvgPicture.asset(
-                  activity.iconAsset,
-                  color: Colors.black,
-                  width: 24,
-                  height: 24,
-                ),
-          label: activity == null ? Text('Add') : Text(activity.name),
-          onPressed: () async {
-            if (activity == null)
-              activitiesBloc.addActivity(Activity(
-                icon: DateTime.now().second,
-                color: DateTime.now().millisecond,
-                name: 'A',
-                created: DateTime.now(),
-              ));
-            else if (selected)
-              activitiesBloc.deleteActivity(activity.id);
-            else
-              activitiesBloc.select(activity);
-          },
-          style: OutlinedButton.styleFrom(
-              backgroundColor: selected ? Colors.blue : null),
-        );
-      },
     );
   }
 }
