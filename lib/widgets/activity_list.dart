@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/models/icon_names.dart';
 import 'package:provider/provider.dart';
 
 final activityListImpl = GlobalKey<_ActivityListImplState>();
@@ -77,12 +79,19 @@ class ActivityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      icon: activity == null ? Icon(Icons.add) : Text(activity.icon.toString()),
+      icon: activity == null
+          ? Icon(Icons.add)
+          : SvgPicture.asset(
+              'assets/${iconNames[activity.icon % iconNames.length]}.svg',
+              color: Colors.black,
+              width: 24,
+              height: 24,
+            ),
       label: activity == null ? Text('Add') : Text(activity.name),
       onPressed: () async {
         if (activity == null)
           activityListImpl.currentState.addActivity(Activity(
-            icon: DateTime.now().second,
+            icon: DateTime.now().second % iconNames.length,
             name: 'A',
             created: DateTime.now(),
           ));
