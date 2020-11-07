@@ -5,13 +5,15 @@ class DaySplitter {
 
   DaySplitter(this.threshold);
 
+  /// Gets threshold on the specified day.
+  DateTime _getCurrentThreshold(DateTime time) {
+    return DateTime(
+        time.year, time.month, time.day, threshold.hour, threshold.minute);
+  }
+
   DateTimeRange getRange(DateTime time) {
     time = time.toUtc();
-
-    // Get threshold on the specified `day`.
-    final currentThreshold = DateTime(
-        time.year, time.month, time.day, threshold.hour, threshold.minute);
-
+    final currentThreshold = _getCurrentThreshold(time);
     if (time.isAfter(currentThreshold)) {
       return DateTimeRange(
         start: currentThreshold.subtract(const Duration(days: 1)),
@@ -23,6 +25,13 @@ class DaySplitter {
         end: currentThreshold.add(const Duration(days: 1)),
       );
     }
+  }
+
+  bool inSameDay(DateTime x, DateTime y) {
+    final xThreshold = _getCurrentThreshold(x);
+    final yThreshold = _getCurrentThreshold(y);
+    return xThreshold == yThreshold &&
+        x.isAfter(xThreshold) == y.isAfter(yThreshold);
   }
 }
 

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/models/activity_states.dart';
 
 class ActivitiesBloc extends Bloc {
   final Db _db;
@@ -60,6 +61,10 @@ class ActivitiesBloc extends Bloc {
       _currentActivity = _activities[(index + 1) % _activities.length];
       _currentController.sink.add(_currentActivity);
     }
+  }
+
+  void setState(Activity activity, ActivityState state) async {
+    await _db.markActivity(activity, DateTime.now(), state.value);
   }
 
   @override

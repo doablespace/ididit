@@ -21,6 +21,8 @@ class Db {
         icon INTEGER,
         color INTEGER
       );
+      ''');
+    await db.execute('''
       CREATE TABLE activity_log(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         activity_id INTEGER,
@@ -78,28 +80,22 @@ class Db {
     return null;
   }
 
-  Future<void> markActivity(int id, DateTime time, int status) async {
+  Future<void> markActivity(
+      Activity activity, DateTime time, int status) async {
     final Database db = await _database;
-
-    final range = daySplitter.getRange(time);
-    final log = await findActivityLog(id, range);
-    if (log.isNotEmpty) {
-      await db.update('activity_log', log[0].toMap(),
-          where: 'activity_id = ? and target_time >= ? and target_time < ?',
-          whereArgs: [
-            id,
-            range.start.microsecondsSinceEpoch,
-            range.end.microsecondsSinceEpoch
-          ]);
+    if (activity.logEntry != null &&
+        daySplitter.inSameDay(activity.logEntry.targetTime, time)) {
+      activity.logEntry.status = status;
+      await db.update('activity_log', activity.logEntry.toMap());
     } else {
-      await db.insert(
-          'activity_log',
-          ActivityLogEntry(
-            activityId: id,
-            status: status,
-            targetTime: time,
-            modified: time,
-          ).toMap());
+      activity.logEntry = ActivityLogEntry(
+        activityId: activity.id,
+        status: status,
+        targetTime: time,
+        modified: time,
+      );
+      activity.logEntry.id =
+          await db.insert('activity_log', activity.logEntry.toMap());
     }
   }
 }
