@@ -75,6 +75,7 @@ class _ActivitySwiper extends StatelessWidget {
           child: activity == null
               ? Center(child: Icon(Icons.flaky_rounded, size: 180))
               : InkWell(
+                  borderRadius: BorderRadius.circular(50),
                   onTap: () {},
                   child: Stack(
                     children: [
