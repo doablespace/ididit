@@ -1,9 +1,9 @@
 class ActivityLogEntry {
-  final int id;
-  final int activityId;
-  final int status;
-  final DateTime targetTime;
-  final DateTime modified;
+  int id;
+  int activityId;
+  int status;
+  DateTime targetTime;
+  DateTime modified;
 
   ActivityLogEntry(
       {this.id, this.activityId, this.status, this.targetTime, this.modified});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/icon_names.dart';
 import 'package:ididit/ui/color_theme.dart';
 
@@ -8,6 +9,8 @@ class Activity {
   String name;
   int icon;
   int color;
+
+  ActivityLogEntry logEntry;
 
   Activity({this.id, this.created, this.name, this.icon, this.color});
 

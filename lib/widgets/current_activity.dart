@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +49,8 @@ class _ActivitySwiper extends StatelessWidget {
   const _ActivitySwiper({Key key, this.bloc, this.activity}) : super(key: key);
 
   Future<bool> confirmDismiss(DismissDirection direction) {
+    final targetState = ActivityState.fromDirection(direction);
+    bloc.setState(activity, targetState);
     bloc.selectNext();
     return Future.value(false);
   }
