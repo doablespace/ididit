@@ -11,7 +11,7 @@ class SwipingScreen extends StatelessWidget {
         decoration: BackgroundDecoration(3.0, 0.45),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: ActivitySwiper(),
+          body: Center(child: ActivitySwiper()),
           bottomNavigationBar: ActivityList(),
         ),
       ),

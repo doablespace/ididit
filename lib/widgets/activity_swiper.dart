@@ -15,48 +15,46 @@ class ActivitySwiper extends StatelessWidget {
       return Future.value(false);
     }
 
-    return Center(
-      child: StreamBuilder<Activity>(
-        stream: activitiesBloc.currentActivityStream,
-        initialData: activitiesBloc.currentActivity,
-        builder: (context, snapshot) {
-          final activity = snapshot.data;
+    return StreamBuilder<Activity>(
+      stream: activitiesBloc.currentActivityStream,
+      initialData: activitiesBloc.currentActivity,
+      builder: (context, snapshot) {
+        final activity = snapshot.data;
 
-          return Dismissible(
+        return Dismissible(
+          key: UniqueKey(),
+          child: Dismissible(
             key: UniqueKey(),
-            child: Dismissible(
-              key: UniqueKey(),
-              child: _ActivityBackground(
-                color: activity == null
-                    ? ActivityColors.accentGreen
-                    : activity.accent,
-                child: activity == null
-                    ? Center(child: Icon(Icons.flaky_rounded, size: 180))
-                    : InkWell(
-                        onTap: () {},
-                        child: Center(
-                          child: SvgPicture.asset(
-                            activity.iconAsset,
-                            color: ThemeColors.darkBlue,
-                            width: 180,
-                            height: 180,
-                          ),
+            child: _ActivityBackground(
+              color: activity == null
+                  ? ActivityColors.accentGreen
+                  : activity.accent,
+              child: activity == null
+                  ? Center(child: Icon(Icons.flaky_rounded, size: 180))
+                  : InkWell(
+                      onTap: () {},
+                      child: Center(
+                        child: SvgPicture.asset(
+                          activity.iconAsset,
+                          color: ThemeColors.darkBlue,
+                          width: 180,
+                          height: 180,
                         ),
                       ),
-              ),
-              background: _ActivityBackground(color: ThemeColors.pastelYellow),
-              secondaryBackground:
-                  _ActivityBackground(color: ThemeColors.pastelGrey),
-              confirmDismiss: confirmDismiss,
+                    ),
             ),
-            direction: DismissDirection.vertical,
-            background: _ActivityBackground(color: ThemeColors.pastelRed),
+            background: _ActivityBackground(color: ThemeColors.pastelYellow),
             secondaryBackground:
-                _ActivityBackground(color: ThemeColors.pastelGreen),
+                _ActivityBackground(color: ThemeColors.pastelGrey),
             confirmDismiss: confirmDismiss,
-          );
-        },
-      ),
+          ),
+          direction: DismissDirection.vertical,
+          background: _ActivityBackground(color: ThemeColors.pastelRed),
+          secondaryBackground:
+              _ActivityBackground(color: ThemeColors.pastelGreen),
+          confirmDismiss: confirmDismiss,
+        );
+      },
     );
   }
 }
