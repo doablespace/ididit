@@ -1,14 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:ididit/models/activity_states.dart';
 
-class ActivityLogEntry {
+class ActivityLogEntry extends ChangeNotifier {
   int id;
   int activityId;
-  int status;
+  int _status;
   DateTime targetTime;
   DateTime modified;
 
   ActivityLogEntry(
-      {this.id, this.activityId, this.status, this.targetTime, this.modified});
+      {this.id, this.activityId, int status, this.targetTime, this.modified})
+      : _status = status;
 
   factory ActivityLogEntry.fromMap(Map<String, dynamic> map) {
     return ActivityLogEntry(
@@ -30,6 +32,12 @@ class ActivityLogEntry {
       'target_time': targetTime.toUtc().microsecondsSinceEpoch,
       'modified': modified.toUtc().microsecondsSinceEpoch,
     };
+  }
+
+  int get status => _status;
+  set status(int value) {
+    _status = value;
+    notifyListeners();
   }
 
   ActivityState get state =>
