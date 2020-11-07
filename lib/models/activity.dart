@@ -11,6 +11,16 @@ class Activity {
 
   Activity({this.id, this.created, this.name, this.icon, this.color});
 
+  factory Activity.fromMap(Map<String, dynamic> map) {
+    return Activity(
+      id: map['id'],
+      created: DateTime.fromMillisecondsSinceEpoch(map['created']),
+      name: map['name'],
+      icon: map['icon'],
+      color: map['color'],
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
