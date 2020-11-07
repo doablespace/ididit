@@ -24,6 +24,12 @@ class ActivitiesBloc extends Bloc {
   void _init() async {
     _activities.addAll(await _db.findActivities(DateTime.now()));
     _activityController.sink.add(_activities);
+
+    // Select first activity.
+    if (_activities.isNotEmpty) {
+      _currentActivity = _activities.first;
+      _currentController.sink.add(_currentActivity);
+    }
   }
 
   void addActivity(Activity activity) async {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_icon.dart';
 
 class _Sizes {
   final double box;
@@ -103,60 +103,65 @@ class StatefulActivityBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ModelProvider<ActivityLogEntry>(
-      value: activity.logEntry,
-      builder: (context, logEntry, child) {
-        final state = logEntry?.state;
-        return ClickableActivityBox(
-          color: activity.accent,
-          size: _sizes.box,
-          onTap: onTap,
-          child: Stack(
-            children: [
-              // Activity icon
-              Center(
-                child: SvgPicture.asset(
-                  activity.iconAsset,
-                  color: ThemeColors.darkBlue,
-                  width: _sizes.icon,
-                  height: _sizes.icon,
-                ),
-              ),
-
-              // Status indicator
-              if (state != null)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: state.color,
-                      borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(_sizes.radius)),
-                    ),
-                    height: _sizes.radius,
-                    width: _sizes.box,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(horizontal: _sizes.radius),
-                    child: Row(
-                      children: [
-                        Icon(state.iconData, size: _sizes.stateIcon),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: _sizes.padding),
-                          child: Text(
-                            state.text,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: _sizes.stateFontSize,
-                            ),
-                          ),
-                        ),
-                      ],
+    return ModelProvider<Activity>(
+      value: activity,
+      builder: (context, _, child) {
+        return ModelProvider<ActivityLogEntry>(
+          value: activity.logEntry,
+          builder: (context, logEntry, child) {
+            final state = logEntry?.state;
+            return ClickableActivityBox(
+              color: activity.accent,
+              size: _sizes.box,
+              onTap: onTap,
+              child: Stack(
+                children: [
+                  // Activity icon
+                  Center(
+                    child: ActivityIcon(
+                      asset: activity.iconAsset,
+                      color: ThemeColors.darkBlue,
+                      size: _sizes.icon,
                     ),
                   ),
-                ),
-            ],
-          ),
+
+                  // Status indicator
+                  if (state != null)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: state.color,
+                          borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(_sizes.radius)),
+                        ),
+                        height: _sizes.radius,
+                        width: _sizes.box,
+                        alignment: Alignment.centerLeft,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: _sizes.radius),
+                        child: Row(
+                          children: [
+                            Icon(state.iconData, size: _sizes.stateIcon),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: _sizes.padding),
+                              child: Text(
+                                state.text,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: _sizes.stateFontSize,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
         );
       },
     );

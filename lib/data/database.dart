@@ -49,10 +49,10 @@ class Db {
     for (var i = 0; i < result.length; i++) {
       final activity = Activity.fromMap(maps[i]);
       final logs = await findActivityLog(activity.id, range);
-      activity.logEntry = logs.isNotEmpty ? logs[0] : null;
+      activity.logEntry = logs.isNotEmpty ? logs.last : null;
       result[i] = activity;
     }
-    return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
+    return result;
   }
 
   Future<void> deleteActivity(int id) async {
@@ -74,20 +74,14 @@ class Db {
         maps.length, (index) => ActivityLogEntry.fromMap(maps[index]));
   }
 
-  Future<int> findActivityStatus(int id, DateTime time) async {
-    final log = await findActivityLog(id, daySplitter.getRange(time));
-    if (log.isNotEmpty) return log[0].status;
-    return null;
-  }
-
   Future<void> markActivity(
       Activity activity, DateTime time, int status) async {
     final Database db = await _database;
     if (activity.logEntry != null &&
         daySplitter.inSameDay(activity.logEntry.targetTime, time)) {
+      activity.logEntry.status = status;
       await db.update('activity_log', activity.logEntry.toMap(),
           where: 'id = ?', whereArgs: [activity.logEntry.id]);
-      activity.logEntry.status = status;
     } else {
       activity.logEntry = ActivityLogEntry(
         activityId: activity.id,
