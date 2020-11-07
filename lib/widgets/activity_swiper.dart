@@ -10,10 +10,10 @@ class ActivitySwiper extends StatelessWidget {
           key: UniqueKey(),
           child: Dismissible(
             key: UniqueKey(),
-            child: InkWell(
-              onTap: () {},
-              child: _ActivityBackground(
-                color: ActivityColors.accentGreen,
+            child: _ActivityBackground(
+              color: ActivityColors.accentGreen,
+              child: InkWell(
+                onTap: () {},
                 child: Center(child: Text('body')),
               ),
             ),
@@ -47,13 +47,13 @@ class _ActivityBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(50),
-      ),
       width: 280,
       height: 280,
-      child: child,
+      child: Material(
+        color: color,
+        borderRadius: BorderRadius.circular(50),
+        child: child,
+      ),
     );
   }
 }
