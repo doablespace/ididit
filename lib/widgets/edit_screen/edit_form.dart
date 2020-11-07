@@ -1,8 +1,8 @@
 // Create a Form widget.
 import 'package:flutter/material.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/widgets/edit_screen/activity-color.dart';
-import 'package:ididit/widgets/edit_screen/activity-title.dart';
+import 'package:ididit/widgets/edit_screen/activity_color.dart';
+import 'package:ididit/widgets/edit_screen/activity_title.dart';
 
 class EditForm extends StatefulWidget {
   @override
