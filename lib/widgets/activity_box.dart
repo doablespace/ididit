@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_icon.dart';
 
 class _Sizes {
   final double box;
@@ -118,11 +118,10 @@ class StatefulActivityBox extends StatelessWidget {
                 children: [
                   // Activity icon
                   Center(
-                    child: SvgPicture.asset(
-                      activity.iconAsset,
+                    child: ActivityIcon(
+                      asset: activity.iconAsset,
                       color: ThemeColors.darkBlue,
-                      width: _sizes.icon,
-                      height: _sizes.icon,
+                      size: _sizes.icon,
                     ),
                   ),
 
