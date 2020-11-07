@@ -4,9 +4,9 @@ import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_box.dart';
+import 'package:ididit/widgets/options_activity_box.dart';
 import 'package:provider/provider.dart';
-
-import 'activity_box.dart';
 
 final activityTextStyle = TextStyle(
   fontSize: 36,
@@ -72,7 +72,7 @@ class CurrentActivity extends StatelessWidget {
                 initialData: activitiesBloc.currentActivity,
                 builder: (context, snapshot) {
                   final activity = snapshot.data;
-                  return StatefulActivityBox(activity: activity);
+                  return OptionsActivityBox(activity: activity);
                 },
               ),
               background: ActivityBox(color: ThemeColors.pastelYellow),
