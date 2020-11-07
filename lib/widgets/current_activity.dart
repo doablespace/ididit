@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
+import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -82,6 +83,19 @@ class CurrentActivity extends StatelessWidget {
             background: ActivityBox(color: ThemeColors.pastelRed),
             secondaryBackground: ActivityBox(color: ThemeColors.pastelGreen),
             confirmDismiss: confirmDismiss,
+          ),
+          text: StreamBuilder<Activity>(
+            stream: activitiesBloc.currentActivityStream,
+            initialData: activitiesBloc.currentActivity,
+            builder: (context, snapshot) {
+              final activity = snapshot.data;
+              return ModelProvider<Activity>(
+                value: activity,
+                builder: (context, _, child) {
+                  return Text(activity.name, style: activityTextStyle);
+                },
+              );
+            },
           ),
         );
       },
