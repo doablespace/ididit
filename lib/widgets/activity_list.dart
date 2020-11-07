@@ -47,7 +47,7 @@ class _ActivityButton extends StatelessWidget {
       initialData: null,
       builder: (context, snapshot) {
         final currentActivity = snapshot.data;
-        final selected = activity == currentActivity;
+        final selected = currentActivity != null && activity == currentActivity;
 
         return OutlinedButton.icon(
           icon: activity == null
