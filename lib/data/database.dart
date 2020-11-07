@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 class Db {
   final Future<Database> database;
 
-  Db() : database = openDatabase('ididit.db', onCreate: _onCreate);
+  Db() : database = openDatabase('ididit.db', onCreate: _onCreate, version: 1);
 
   /// Runs initial database migrations.
   static FutureOr<void> _onCreate(Database db, int version) async {
@@ -16,7 +16,7 @@ class Db {
         created INT,
         name TEXT,
         icon INT,
-        color INT,
+        color INT
       );
       CREATE TABLE activity_log(
         id INT PRIMARY KEY,
@@ -24,7 +24,7 @@ class Db {
         status INT,
         target_time INT,
         modified INT,
-        FOREIGN KEY(activity_id) REFERENCES activities(id),
+        FOREIGN KEY(activity_id) REFERENCES activities(id)
       );
       ''');
   }
