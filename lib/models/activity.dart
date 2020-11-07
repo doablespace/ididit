@@ -1,5 +1,5 @@
 class Activity {
-  final int id;
+  int id;
   final int created;
   final String name;
   final int icon;
