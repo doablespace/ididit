@@ -52,7 +52,7 @@ class EditFormState extends State<EditForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 32.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
