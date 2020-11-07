@@ -86,7 +86,8 @@ class Db {
     if (activity.logEntry != null &&
         daySplitter.inSameDay(activity.logEntry.targetTime, time)) {
       activity.logEntry.status = status;
-      await db.update('activity_log', activity.logEntry.toMap());
+      await db.update('activity_log', activity.logEntry.toMap(),
+          where: 'id = ?', whereArgs: [activity.logEntry.id]);
     } else {
       activity.logEntry = ActivityLogEntry(
         activityId: activity.id,
