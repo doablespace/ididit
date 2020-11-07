@@ -22,7 +22,9 @@ class ActivitySwiper extends StatelessWidget {
             child: Dismissible(
               key: UniqueKey(),
               child: _ActivityBackground(
-                color: ActivityColors.accentGreen,
+                color: activity == null
+                    ? ActivityColors.accentGreen
+                    : activity.accent,
                 child: activity == null
                     ? Center(child: Icon(Icons.flaky_rounded, size: 180))
                     : InkWell(
