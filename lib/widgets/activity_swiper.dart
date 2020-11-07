@@ -10,6 +10,11 @@ class ActivitySwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
+    Future<bool> confirmDismiss(DismissDirection direction) {
+      activitiesBloc.selectNext();
+      return Future.value(false);
+    }
+
     return Center(
       child: StreamBuilder<Activity>(
         stream: activitiesBloc.currentActivityStream,
@@ -42,21 +47,17 @@ class ActivitySwiper extends StatelessWidget {
               background: _ActivityBackground(color: ThemeColors.pastelYellow),
               secondaryBackground:
                   _ActivityBackground(color: ThemeColors.pastelGrey),
-              onDismissed: _dismissed,
+              confirmDismiss: confirmDismiss,
             ),
             direction: DismissDirection.vertical,
             background: _ActivityBackground(color: ThemeColors.pastelRed),
             secondaryBackground:
                 _ActivityBackground(color: ThemeColors.pastelGreen),
-            onDismissed: _dismissed,
+            confirmDismiss: confirmDismiss,
           );
         },
       ),
     );
-  }
-
-  void _dismissed(DismissDirection direction) {
-    print('dismissed in direction $direction');
   }
 }
 

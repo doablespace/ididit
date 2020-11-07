@@ -54,6 +54,14 @@ class ActivitiesBloc extends Bloc {
     }
   }
 
+  void selectNext() {
+    if (_activities.length > 1) {
+      final index = _activities.indexOf(_currentActivity);
+      _currentActivity = _activities[(index + 1) % _activities.length];
+      _currentController.sink.add(_currentActivity);
+    }
+  }
+
   @override
   void dispose() {
     _activityController.close();
