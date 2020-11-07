@@ -14,7 +14,7 @@ class DaySplitter {
   DateTimeRange getRange(DateTime time) {
     time = time.toUtc();
     final currentThreshold = _getCurrentThreshold(time);
-    if (time.isAfter(currentThreshold)) {
+    if (time.isBefore(currentThreshold)) {
       return DateTimeRange(
         start: currentThreshold.subtract(const Duration(days: 1)),
         end: currentThreshold,

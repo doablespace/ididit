@@ -74,12 +74,6 @@ class Db {
         maps.length, (index) => ActivityLogEntry.fromMap(maps[index]));
   }
 
-  Future<int> findActivityStatus(int id, DateTime time) async {
-    final log = await findActivityLog(id, daySplitter.getRange(time));
-    if (log.isNotEmpty) return log[0].status;
-    return null;
-  }
-
   Future<void> markActivity(
       Activity activity, DateTime time, int status) async {
     final Database db = await _database;
