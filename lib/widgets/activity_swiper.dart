@@ -20,14 +20,20 @@ class ActivitySwiper extends StatelessWidget {
             background: _ActivityBackground(color: ThemeColors.pastelYellow),
             secondaryBackground:
                 _ActivityBackground(color: ThemeColors.pastelGrey),
+            onDismissed: _dismissed,
           ),
           direction: DismissDirection.vertical,
           background: _ActivityBackground(color: ThemeColors.pastelRed),
           secondaryBackground:
               _ActivityBackground(color: ThemeColors.pastelGreen),
+          onDismissed: _dismissed,
         ),
       ),
     );
+  }
+
+  void _dismissed(DismissDirection direction) {
+    print('dismissed in direction $direction');
   }
 }
 
