@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ididit/models/activity.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Db {
@@ -26,5 +27,12 @@ class Db {
         FOREIGN KEY(activity_id) REFERENCES activities(id),
       );
       ''');
+  }
+
+  /// Inserts or updates an [Activity].
+  Future<void> saveActivity(Activity activity) async {
+    final Database db = await database;
+    await db.insert('activities', activity.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
