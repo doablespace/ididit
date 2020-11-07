@@ -27,10 +27,7 @@ class CurrentActivity extends StatelessWidget {
         // Show "loading" placeholder.
         if (state == ActivitiesState.loading)
           return _ActivityColumn(
-            box: ActivityBox(
-              color: ActivityColors.accentGreen,
-              child: CircularProgressIndicator(),
-            ),
+            box: ActivityBox(color: ActivityColors.accentGreen),
             text: Text('Loading...', style: activityTextStyle),
           );
 

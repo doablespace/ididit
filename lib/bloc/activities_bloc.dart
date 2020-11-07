@@ -53,7 +53,7 @@ class ActivitiesBloc extends Bloc {
   void deleteActivity(int id) async {
     await _db.deleteActivity(id);
 
-    // Update current activity if it was just deleted.
+    // Update current activity if it is the one being deleted.
     if (_currentActivity != null && _currentActivity.id == id) {
       // If no other activity exists, unset current.
       if (_activities.length == 1) {
@@ -68,7 +68,7 @@ class ActivitiesBloc extends Bloc {
     }
 
     // Update state.
-    if (_activities.isEmpty) _setState(ActivitiesState.no_activities);
+    if (_activities.length == 1) _setState(ActivitiesState.no_activities);
 
     _activities.removeWhere((a) => a.id == id);
     _activityController.sink.add(_activities);
