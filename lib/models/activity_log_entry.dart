@@ -1,3 +1,5 @@
+import 'package:ididit/models/activity_states.dart';
+
 class ActivityLogEntry {
   int id;
   int activityId;
@@ -29,4 +31,7 @@ class ActivityLogEntry {
       'modified': modified.toUtc().microsecondsSinceEpoch,
     };
   }
+
+  ActivityState get state =>
+      status != null ? activityStates[status % activityStates.length] : null;
 }

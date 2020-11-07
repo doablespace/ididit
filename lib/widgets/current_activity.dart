@@ -57,19 +57,59 @@ class _ActivitySwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = activity?.logEntry?.state;
+
     final child = ActivityBox(
       color: activity == null ? ActivityColors.accentGreen : activity.accent,
       child: activity == null
           ? Center(child: Icon(Icons.flaky_rounded, size: 180))
           : InkWell(
               onTap: () {},
-              child: Center(
-                child: SvgPicture.asset(
-                  activity.iconAsset,
-                  color: ThemeColors.darkBlue,
-                  width: 180,
-                  height: 180,
-                ),
+              child: Stack(
+                children: [
+                  // Activity icon
+                  Center(
+                    child: SvgPicture.asset(
+                      activity.iconAsset,
+                      color: ThemeColors.darkBlue,
+                      width: 180,
+                      height: 180,
+                    ),
+                  ),
+
+                  // Status indicator
+                  if (state != null)
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: state.color,
+                          borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(50)),
+                        ),
+                        height: 50,
+                        width: 280,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.symmetric(horizontal: 50),
+                        child: Row(
+                          children: [
+                            Icon(state.iconData, size: 42),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                state.text,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
     );

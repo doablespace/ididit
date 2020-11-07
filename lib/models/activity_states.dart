@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ididit/ui/color_theme.dart';
 
 class ActivityState {
   final int value;
   final IconData iconData;
   final String text;
+  final Color color;
 
   const ActivityState({
     @required this.value,
     @required this.iconData,
     @required this.text,
+    @required this.color,
   });
 
   factory ActivityState.fromDirection(DismissDirection direction) {
@@ -29,10 +32,28 @@ class ActivityState {
 }
 
 final activityStates = [
-  const ActivityState(value: 0, iconData: Icons.check_rounded, text: 'yes'),
-  const ActivityState(value: 1, iconData: Icons.close_rounded, text: 'no'),
-  const ActivityState(
-      value: 2, iconData: Icons.show_chart_rounded, text: 'almost'),
-  const ActivityState(
-      value: 3, iconData: Icons.chevron_left_rounded, text: 'skip'),
+  ActivityState(
+    value: 0,
+    iconData: Icons.check_rounded,
+    text: 'yes',
+    color: ThemeColors.pastelGreen,
+  ),
+  ActivityState(
+    value: 1,
+    iconData: Icons.close_rounded,
+    text: 'no',
+    color: ThemeColors.pastelRed,
+  ),
+  ActivityState(
+    value: 2,
+    iconData: Icons.show_chart_rounded,
+    text: 'almost',
+    color: ThemeColors.pastelYellow,
+  ),
+  ActivityState(
+    value: 3,
+    iconData: Icons.chevron_left_rounded,
+    text: 'skip',
+    color: ThemeColors.pastelGrey,
+  ),
 ];
