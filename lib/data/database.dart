@@ -50,4 +50,9 @@ class Db {
       );
     });
   }
+
+  Future<void> deleteActivity(int id) async {
+    final Database db = await database;
+    await db.delete('activities', where: 'id = ?', whereArgs: [id]);
+  }
 }

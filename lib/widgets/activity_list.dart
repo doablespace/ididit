@@ -58,6 +58,13 @@ class _ActivityListImplState extends State<ActivityListImpl> {
       activities.add(activity);
     });
   }
+
+  void deleteActivity(int id) async {
+    await widget.db.deleteActivity(id);
+    setState(() {
+      activities.removeWhere((a) => a.id == id);
+    });
+  }
 }
 
 class ActivityButton extends StatelessWidget {
@@ -73,10 +80,12 @@ class ActivityButton extends StatelessWidget {
       onPressed: () async {
         if (activity == null)
           activityListImpl.currentState.addActivity(Activity(
-            icon: 1,
+            icon: DateTime.now().second,
             name: 'A',
             created: DateTime.now().millisecondsSinceEpoch,
           ));
+        else
+          activityListImpl.currentState.deleteActivity(activity.id);
       },
     );
   }
