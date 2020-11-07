@@ -2,10 +2,10 @@ import 'package:ididit/models/icon_names.dart';
 
 class Activity {
   int id;
-  final DateTime created;
-  final String name;
-  final int icon;
-  final int color;
+  DateTime created;
+  String name;
+  int icon;
+  int color;
 
   Activity({this.id, this.created, this.name, this.icon, this.color});
 
