@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class ActivityListImpl extends StatefulWidget {
 
 class _ActivityListImplState extends State<ActivityListImpl> {
   List<Activity> activities = [];
+  int currentIndex;
 
   @override
   void initState() {
@@ -45,10 +47,11 @@ class _ActivityListImplState extends State<ActivityListImpl> {
     return ListView.builder(
       itemCount: 1 + activities.length,
       itemBuilder: (context, index) {
-        if (index == 0) return ActivityButton();
+        if (index == 0) return ActivityButton(selected: false);
 
         final activity = activities[index - 1];
-        return ActivityButton(activity: activity);
+        return ActivityButton(
+            activity: activity, selected: currentIndex == index - 1);
       },
       scrollDirection: Axis.horizontal,
     );
@@ -67,17 +70,32 @@ class _ActivityListImplState extends State<ActivityListImpl> {
       activities.removeWhere((a) => a.id == id);
     });
   }
+
+  void select(Activity activity) {
+    setState(() {
+      currentIndex = activities.indexOf(activity);
+    });
+  }
 }
 
 class ActivityButton extends StatelessWidget {
   final Activity activity;
+  final bool selected;
 
-  const ActivityButton({Key key, this.activity}) : super(key: key);
+  const ActivityButton({Key key, this.activity, @required this.selected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      icon: activity == null ? Icon(Icons.add) : Text(activity.icon.toString()),
+      icon: activity == null
+          ? Icon(Icons.add)
+          : SvgPicture.asset(
+              activity.iconAsset,
+              color: Colors.black,
+              width: 24,
+              height: 24,
+            ),
       label: activity == null ? Text('Add') : Text(activity.name),
       onPressed: () async {
         if (activity == null)
@@ -86,9 +104,13 @@ class ActivityButton extends StatelessWidget {
             name: 'A',
             created: DateTime.now(),
           ));
-        else
+        else if (selected)
           activityListImpl.currentState.deleteActivity(activity.id);
+        else
+          activityListImpl.currentState.select(activity);
       },
+      style: OutlinedButton.styleFrom(
+          backgroundColor: selected ? Colors.blue : null),
     );
   }
 }

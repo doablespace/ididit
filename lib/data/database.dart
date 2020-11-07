@@ -12,18 +12,18 @@ class Db {
   static FutureOr<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE activities(
-        id INT PRIMARY KEY,
-        created INT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        created INTEGER,
         name TEXT,
-        icon INT,
-        color INT
+        icon INTEGER,
+        color INTEGER
       );
       CREATE TABLE activity_log(
-        id INT PRIMARY KEY,
-        activity_id INT,
-        status INT,
-        target_time INT,
-        modified INT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        activity_id INTEGER,
+        status INTEGER,
+        target_time INTEGER,
+        modified INTEGER,
         FOREIGN KEY(activity_id) REFERENCES activities(id)
       );
       ''');
