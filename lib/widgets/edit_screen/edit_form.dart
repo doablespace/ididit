@@ -1,8 +1,9 @@
-// Create a Form widget.
 import 'package:flutter/material.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/widgets/edit_screen/activity-color.dart';
-import 'package:ididit/widgets/edit_screen/activity-title.dart';
+import 'package:ididit/widgets/edit_screen/activity_color.dart';
+import 'package:ididit/widgets/edit_screen/activity_title.dart';
+
+import 'activity_image.dart';
 
 class EditForm extends StatefulWidget {
   @override
@@ -14,7 +15,11 @@ class EditForm extends StatefulWidget {
 class EditFormState extends State<EditForm> {
   // Form identifier.
   final _formKey = GlobalKey<FormState>();
-  Activity activity = Activity();
+  Activity activity = Activity(color: 0);
+
+  updateColor() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +29,9 @@ class EditFormState extends State<EditForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          ActivityImage(activity),
           ActivityTitle(activity),
-          ActivityColor(activity),
+          ActivityColor(activity, updateColor),
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),

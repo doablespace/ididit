@@ -4,21 +4,27 @@ import 'package:ididit/ui/color_theme.dart';
 
 class ActivityColor extends StatefulWidget {
   final Activity activity;
-  ActivityColor(this.activity);
+  // To pass back to form information on color change.
+  final Function() notifyForm;
+
+  ActivityColor(this.activity, this.notifyForm);
 
   @override
-  _ActivityColorState createState() => _ActivityColorState();
+  _ActivityColorState createState() => _ActivityColorState(activity.color);
 }
 
 class _ActivityColorState extends State<ActivityColor> {
+  _ActivityColorState(this.colorId);
+
   void changeColor(id) {
     setState(() {
       colorId = id;
       widget.activity.color = id;
+      widget.notifyForm();
     });
   }
 
-  int colorId = 0;
+  int colorId;
   @override
   Widget build(BuildContext context) {
     return Theme(
