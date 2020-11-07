@@ -14,7 +14,7 @@ class Activity {
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
       id: map['id'],
-      created: DateTime.fromMillisecondsSinceEpoch(map['created']),
+      created: DateTime.fromMillisecondsSinceEpoch(map['created'], isUtc: true),
       name: map['name'],
       icon: map['icon'],
       color: map['color'],
@@ -24,7 +24,7 @@ class Activity {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'created': created.millisecondsSinceEpoch,
+      'created': created.toUtc().microsecondsSinceEpoch,
       'name': name,
       'icon': icon,
       'color': color,
