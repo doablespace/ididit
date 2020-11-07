@@ -20,4 +20,5 @@ class Activity {
   }
 
   String get iconAsset => 'assets/${iconNames[icon % iconNames.length]}.svg';
+  static String get selectIcon => 'assets/choose-icon.svg';
 }
