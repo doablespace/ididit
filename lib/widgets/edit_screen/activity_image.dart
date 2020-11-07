@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/screens/images_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/edit_screen/edit_form.dart';
 
 import '../activity_box.dart';
 
@@ -36,16 +37,27 @@ class _ActivityImageState extends State<ActivityImage> {
       },
       child: ActivityBox(
         color: widget.activity.ink,
-        child: Center(
-          child: SvgPicture.asset(
-            widget.activity.icon == null
-                ? Activity.selectIcon
-                : widget.activity.iconAsset,
-            color: ThemeColors.darkBlue,
-            width: 180,
-            height: 180,
+        child: Stack(children: [
+          Align(
+            alignment: Alignment(0, 0.4),
+            child: SvgPicture.asset(
+              widget.activity.icon == null
+                  ? Activity.selectIcon
+                  : widget.activity.iconAsset,
+              color: ThemeColors.darkBlue,
+              width: 180,
+              height: 180,
+            ),
           ),
-        ),
+          Align(
+            alignment: Alignment(0, -0.8),
+            child: Text(
+              'Select illustration',
+              style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ]),
       ),
     );
   }
