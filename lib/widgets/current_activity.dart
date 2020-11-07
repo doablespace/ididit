@@ -49,8 +49,11 @@ class _ActivitySwiper extends StatelessWidget {
   const _ActivitySwiper({Key key, this.bloc, this.activity}) : super(key: key);
 
   Future<bool> confirmDismiss(DismissDirection direction) {
-    final targetState = ActivityState.fromDirection(direction);
-    bloc.setState(activity, targetState);
+    // Mark the activity in the database unless user chose "skip".
+    if (direction != DismissDirection.endToStart) {
+      final targetState = ActivityState.fromDirection(direction);
+      bloc.setState(activity, targetState);
+    }
     bloc.selectNext();
     return Future.value(false);
   }
