@@ -35,4 +35,19 @@ class Db {
     await db.insert('activities', activity.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  Future<List<Activity>> get activities async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('activities');
+    return List.generate(maps.length, (index) {
+      final map = maps[index];
+      return Activity(
+        id: map['id'],
+        created: map['created'],
+        name: map['name'],
+        icon: map['icon'],
+        color: map['color'],
+      );
+    });
+  }
 }
