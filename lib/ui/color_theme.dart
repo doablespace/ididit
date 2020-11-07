@@ -4,7 +4,7 @@ class ThemeColors {
   // General app theme.
   static var darkBlue = Color(0xff27363F);
   static var lightBlue = Color(0xff4A6572);
-  static var lightGrey = Color(0xffE5E5E5);
+  static var lightGrey = Color(0xffC4C4C4);
 
   // Swiping colors.
   static var pastelGreen = Color(0xff87EFB1);
