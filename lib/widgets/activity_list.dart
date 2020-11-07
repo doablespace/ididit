@@ -43,9 +43,10 @@ class _ActivityListImplState extends State<ActivityListImpl> {
     return ListView.builder(
       itemCount: 1 + activities.length,
       itemBuilder: (context, index) {
-        if (index == 0) return ActivityButton(icon: Icon(Icons.add_rounded));
+        if (index == 0) return ActivityButton();
 
-        return ActivityButton(icon: Icon(Icons.accessibility_new_rounded));
+        final activity = activities[index - 1];
+        return ActivityButton(activity: activity);
       },
       scrollDirection: Axis.horizontal,
     );
@@ -60,17 +61,22 @@ class _ActivityListImplState extends State<ActivityListImpl> {
 }
 
 class ActivityButton extends StatelessWidget {
-  final Widget icon;
+  final Activity activity;
 
-  const ActivityButton({Key key, this.icon}) : super(key: key);
+  const ActivityButton({Key key, this.activity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      icon: icon,
-      label: Text('Test'),
+      icon: activity == null ? Icon(Icons.add) : Text(activity.icon.toString()),
+      label: activity == null ? Text('Add') : Text(activity.name),
       onPressed: () async {
-        activityListImpl.currentState.addActivity(Activity(name: 'A'));
+        if (activity == null)
+          activityListImpl.currentState.addActivity(Activity(
+            icon: 1,
+            name: 'A',
+            created: DateTime.now().millisecondsSinceEpoch,
+          ));
       },
     );
   }
