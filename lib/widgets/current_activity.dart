@@ -19,26 +19,28 @@ class CurrentActivity extends StatelessWidget {
       builder: (context, snapshot) {
         final activity = snapshot.data;
 
-        return ModelProvider<Activity>(
-          value: activity,
-          builder: (context, _, child) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _ActivitySwiper(activity: activity, bloc: activitiesBloc),
-              Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 18,
-                ),
-                child: Text(
-                  activity == null ? 'No activities' : activity.name,
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _ActivitySwiper(activity: activity, bloc: activitiesBloc),
+            Container(
+              margin: EdgeInsets.symmetric(
+                vertical: 18,
               ),
-            ],
-          ),
+              child: ModelProvider<Activity>(
+                value: activity,
+                builder: (context, _, child) {
+                  return Text(
+                    activity == null ? 'No activities' : activity.name,
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );
