@@ -12,6 +12,7 @@ class _EditScreenState extends State<EditScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+          width: 400,
           decoration: BackgroundDecoration(4.0, 0.43),
           child: Scaffold(
               backgroundColor: Colors.transparent,
