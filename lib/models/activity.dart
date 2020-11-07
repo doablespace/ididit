@@ -34,6 +34,8 @@ class Activity {
   String get iconAsset =>
       'assets/${iconNames[(icon ?? 0) % iconNames.length]}.svg';
   static String get selectIcon => 'assets/choose-icon.svg';
+  static String indexIcon(id) =>
+      'assets/${iconNames[(id ?? 0) % iconNames.length]}.svg';
 
   Map<String, Color> get colors =>
       ActivityColors.colors[(color ?? 0) % ActivityColors.colors.length];
