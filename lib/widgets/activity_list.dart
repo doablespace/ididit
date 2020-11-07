@@ -12,42 +12,51 @@ class ActivityList extends StatelessWidget {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
     return Container(
-      height: 50,
+      height: 90,
+      margin: EdgeInsets.all(6),
       child: StreamBuilder<List<Activity>>(
         stream: activitiesBloc.activityStream,
         initialData: activitiesBloc.activities,
         builder: (context, snapshot) {
           final activities = snapshot.data;
 
+          Widget buildItem(int index) {
+            if (index == 0)
+              return ClickableActivityBox(
+                  color: ThemeColors.lightGrey,
+                  size: 90,
+                  child: Icon(Icons.add),
+                  onTap: () {
+                    activitiesBloc.addActivity(Activity(
+                      icon: DateTime.now().second,
+                      color: DateTime.now().millisecond,
+                      name: 'A',
+                      created: DateTime.now(),
+                    ));
+                  });
+
+            final activity = activities[index - 1];
+            return StatefulActivityBox(
+                activity: activity,
+                size: 90,
+                onTap: () {
+                  if (activitiesBloc.currentActivity == activity)
+                    activitiesBloc.deleteActivity(activity.id);
+                  else
+                    activitiesBloc.select(activity);
+                });
+          }
+
           return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemExtent: 96, // 90 (size) + 6 (margin)
             itemCount: 1 + activities.length,
             itemBuilder: (context, index) {
-              if (index == 0)
-                return ClickableActivityBox(
-                    color: ThemeColors.lightGrey,
-                    size: 90,
-                    child: Icon(Icons.add),
-                    onTap: () {
-                      activitiesBloc.addActivity(Activity(
-                        icon: DateTime.now().second,
-                        color: DateTime.now().millisecond,
-                        name: 'A',
-                        created: DateTime.now(),
-                      ));
-                    });
-
-              final activity = activities[index - 1];
-              return StatefulActivityBox(
-                  activity: activity,
-                  size: 90,
-                  onTap: () {
-                    if (activitiesBloc.currentActivity == activity)
-                      activitiesBloc.deleteActivity(activity.id);
-                    else
-                      activitiesBloc.select(activity);
-                  });
+              return Container(
+                margin: EdgeInsets.all(6),
+                child: buildItem(index),
+              );
             },
-            scrollDirection: Axis.horizontal,
           );
         },
       ),
