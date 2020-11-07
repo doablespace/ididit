@@ -5,6 +5,8 @@ import 'package:ididit/models/activity.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:provider/provider.dart';
 
+import 'activity_box.dart';
+
 class CurrentActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class _ActivitySwiper extends StatelessWidget {
       key: UniqueKey(),
       child: Dismissible(
         key: UniqueKey(),
-        child: _ActivityBackground(
+        child: ActivityBox(
           color:
               activity == null ? ActivityColors.accentGreen : activity.accent,
           child: activity == null
@@ -73,35 +75,14 @@ class _ActivitySwiper extends StatelessWidget {
                   ),
                 ),
         ),
-        background: _ActivityBackground(color: ThemeColors.pastelYellow),
-        secondaryBackground: _ActivityBackground(color: ThemeColors.pastelGrey),
+        background: ActivityBox(color: ThemeColors.pastelYellow),
+        secondaryBackground: ActivityBox(color: ThemeColors.pastelGrey),
         confirmDismiss: confirmDismiss,
       ),
       direction: DismissDirection.vertical,
-      background: _ActivityBackground(color: ThemeColors.pastelRed),
-      secondaryBackground: _ActivityBackground(color: ThemeColors.pastelGreen),
+      background: ActivityBox(color: ThemeColors.pastelRed),
+      secondaryBackground: ActivityBox(color: ThemeColors.pastelGreen),
       confirmDismiss: confirmDismiss,
-    );
-  }
-}
-
-class _ActivityBackground extends StatelessWidget {
-  final Color color;
-  final Widget child;
-
-  const _ActivityBackground({Key key, this.color, this.child})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 280,
-      height: 280,
-      child: Material(
-        color: color,
-        borderRadius: BorderRadius.circular(50),
-        child: child,
-      ),
     );
   }
 }
