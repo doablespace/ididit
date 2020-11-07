@@ -7,9 +7,9 @@ import 'package:ididit/models/activity_log_entry.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Db {
-  final Future<Database> database;
+  final Future<Database> _database;
 
-  Db() : database = openDatabase('ididit.db', onCreate: _onCreate, version: 1);
+  Db() : _database = openDatabase('ididit.db', onCreate: _onCreate, version: 1);
 
   /// Runs initial database migrations.
   static FutureOr<void> _onCreate(Database db, int version) async {
@@ -34,13 +34,13 @@ class Db {
 
   /// Inserts or updates an [Activity].
   Future<void> saveActivity(Activity activity) async {
-    final Database db = await database;
+    final Database db = await _database;
     activity.id = await db.insert('activities', activity.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Activity>> findActivities(DateTime time) async {
-    final Database db = await database;
+    final Database db = await _database;
     final range = daySplitter.getRange(time);
     final List<Map<String, dynamic>> maps = await db.query('activities');
     final result = List<Activity>(maps.length);
@@ -54,13 +54,13 @@ class Db {
   }
 
   Future<void> deleteActivity(int id) async {
-    final Database db = await database;
+    final Database db = await _database;
     await db.delete('activities', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<List<ActivityLogEntry>> findActivityLog(
       int id, DateTimeRange range) async {
-    final Database db = await database;
+    final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activity_log',
         where: 'activity_id = ? and target_time >= ? and target_time < ?',
         whereArgs: [
@@ -79,7 +79,7 @@ class Db {
   }
 
   Future<void> markActivity(int id, DateTime time, int status) async {
-    final Database db = await database;
+    final Database db = await _database;
 
     final range = daySplitter.getRange(time);
     final log = await findActivityLog(id, range);
