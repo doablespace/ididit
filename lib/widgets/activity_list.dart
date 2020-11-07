@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/models/icon_names.dart';
 import 'package:provider/provider.dart';
 
 final activityListImpl = GlobalKey<_ActivityListImplState>();
@@ -82,7 +81,7 @@ class ActivityButton extends StatelessWidget {
       icon: activity == null
           ? Icon(Icons.add)
           : SvgPicture.asset(
-              'assets/${iconNames[activity.icon % iconNames.length]}.svg',
+              activity.iconAsset,
               color: Colors.black,
               width: 24,
               height: 24,
@@ -91,7 +90,7 @@ class ActivityButton extends StatelessWidget {
       onPressed: () async {
         if (activity == null)
           activityListImpl.currentState.addActivity(Activity(
-            icon: DateTime.now().second % iconNames.length,
+            icon: DateTime.now().second,
             name: 'A',
             created: DateTime.now(),
           ));

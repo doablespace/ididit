@@ -1,3 +1,5 @@
+import 'package:ididit/models/icon_names.dart';
+
 class Activity {
   int id;
   final DateTime created;
@@ -16,4 +18,6 @@ class Activity {
       'color': color,
     };
   }
+
+  String get iconAsset => 'assets/${iconNames[icon % iconNames.length]}.svg';
 }
