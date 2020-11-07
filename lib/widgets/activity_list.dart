@@ -82,7 +82,7 @@ class ActivityButton extends StatelessWidget {
           activityListImpl.currentState.addActivity(Activity(
             icon: DateTime.now().second,
             name: 'A',
-            created: DateTime.now().millisecondsSinceEpoch,
+            created: DateTime.now(),
           ));
         else
           activityListImpl.currentState.deleteActivity(activity.id);
