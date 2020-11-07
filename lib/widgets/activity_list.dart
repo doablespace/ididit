@@ -63,6 +63,7 @@ class _ActivityButton extends StatelessWidget {
             if (activity == null)
               activitiesBloc.addActivity(Activity(
                 icon: DateTime.now().second,
+                color: DateTime.now().millisecond,
                 name: 'A',
                 created: DateTime.now(),
               ));
