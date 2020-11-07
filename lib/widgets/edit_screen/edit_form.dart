@@ -96,6 +96,7 @@ class EditFormState extends State<EditForm> {
 }
 
 class CustomTextStyle extends TextStyle {
-  CustomTextStyle(Color color, {FontWeight fontWeight: FontWeight.w600})
-      : super(color: color, fontWeight: FontWeight.w600);
+  CustomTextStyle(Color color,
+      {FontWeight fontWeight: FontWeight.w600, double fontSize: 14})
+      : super(color: color, fontWeight: FontWeight.w600, fontSize: fontSize);
 }
