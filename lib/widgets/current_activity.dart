@@ -10,51 +10,77 @@ class CurrentActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
-    Future<bool> confirmDismiss(DismissDirection direction) {
-      activitiesBloc.selectNext();
-      return Future.value(false);
-    }
-
     return StreamBuilder<Activity>(
       stream: activitiesBloc.currentActivityStream,
       initialData: activitiesBloc.currentActivity,
       builder: (context, snapshot) {
         final activity = snapshot.data;
 
-        return Dismissible(
-          key: UniqueKey(),
-          child: Dismissible(
-            key: UniqueKey(),
-            child: _ActivityBackground(
-              color: activity == null
-                  ? ActivityColors.accentGreen
-                  : activity.accent,
-              child: activity == null
-                  ? Center(child: Icon(Icons.flaky_rounded, size: 180))
-                  : InkWell(
-                      onTap: () {},
-                      child: Center(
-                        child: SvgPicture.asset(
-                          activity.iconAsset,
-                          color: ThemeColors.darkBlue,
-                          width: 180,
-                          height: 180,
-                        ),
-                      ),
-                    ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _ActivitySwiper(activity: activity, bloc: activitiesBloc),
+            Container(
+              margin: EdgeInsets.symmetric(
+                vertical: 18,
+              ),
+              child: Text(
+                activity == null ? 'No activities' : activity.name,
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-            background: _ActivityBackground(color: ThemeColors.pastelYellow),
-            secondaryBackground:
-                _ActivityBackground(color: ThemeColors.pastelGrey),
-            confirmDismiss: confirmDismiss,
-          ),
-          direction: DismissDirection.vertical,
-          background: _ActivityBackground(color: ThemeColors.pastelRed),
-          secondaryBackground:
-              _ActivityBackground(color: ThemeColors.pastelGreen),
-          confirmDismiss: confirmDismiss,
+          ],
         );
       },
+    );
+  }
+}
+
+class _ActivitySwiper extends StatelessWidget {
+  final ActivitiesBloc bloc;
+  final Activity activity;
+
+  const _ActivitySwiper({Key key, this.bloc, this.activity}) : super(key: key);
+
+  Future<bool> confirmDismiss(DismissDirection direction) {
+    bloc.selectNext();
+    return Future.value(false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: UniqueKey(),
+      child: Dismissible(
+        key: UniqueKey(),
+        child: _ActivityBackground(
+          color:
+              activity == null ? ActivityColors.accentGreen : activity.accent,
+          child: activity == null
+              ? Center(child: Icon(Icons.flaky_rounded, size: 180))
+              : InkWell(
+                  onTap: () {},
+                  child: Center(
+                    child: SvgPicture.asset(
+                      activity.iconAsset,
+                      color: ThemeColors.darkBlue,
+                      width: 180,
+                      height: 180,
+                    ),
+                  ),
+                ),
+        ),
+        background: _ActivityBackground(color: ThemeColors.pastelYellow),
+        secondaryBackground: _ActivityBackground(color: ThemeColors.pastelGrey),
+        confirmDismiss: confirmDismiss,
+      ),
+      direction: DismissDirection.vertical,
+      background: _ActivityBackground(color: ThemeColors.pastelRed),
+      secondaryBackground: _ActivityBackground(color: ThemeColors.pastelGreen),
+      confirmDismiss: confirmDismiss,
     );
   }
 }
