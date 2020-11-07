@@ -16,10 +16,15 @@ class ImagesScreen extends StatelessWidget {
             // Put images into two columns.
             crossAxisCount: 2,
             children: List.generate(iconNames.length, (i) {
-              return Center(
-                child: SvgPicture.asset(
-                  Activity.indexIcon(i),
-                  color: ThemeColors.darkBlue,
+              return TextButton(
+                onPressed: () {
+                  Navigator.pop(context, i);
+                },
+                child: Center(
+                  child: SvgPicture.asset(
+                    Activity.indexIcon(i),
+                    color: ThemeColors.darkBlue,
+                  ),
                 ),
               );
             }),
