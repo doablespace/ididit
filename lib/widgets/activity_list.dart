@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_box.dart';
 import 'package:provider/provider.dart';
 
 class ActivityList extends StatelessWidget {
@@ -20,10 +22,30 @@ class ActivityList extends StatelessWidget {
           return ListView.builder(
             itemCount: 1 + activities.length,
             itemBuilder: (context, index) {
-              if (index == 0) return _ActivityButton(null);
+              if (index == 0)
+                return ClickableActivityBox(
+                    color: ThemeColors.lightGrey,
+                    size: 90,
+                    child: Icon(Icons.add),
+                    onTap: () {
+                      activitiesBloc.addActivity(Activity(
+                        icon: DateTime.now().second,
+                        color: DateTime.now().millisecond,
+                        name: 'A',
+                        created: DateTime.now(),
+                      ));
+                    });
 
               final activity = activities[index - 1];
-              return _ActivityButton(activity);
+              return StatefulActivityBox(
+                  activity: activity,
+                  size: 90,
+                  onTap: () {
+                    if (activitiesBloc.currentActivity == activity)
+                      activitiesBloc.deleteActivity(activity.id);
+                    else
+                      activitiesBloc.select(activity);
+                  });
             },
             scrollDirection: Axis.horizontal,
           );
