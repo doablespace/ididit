@@ -39,9 +39,17 @@ class Db {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Activity>> get activities async {
+  Future<List<Activity>> findActivities(DateTime time) async {
     final Database db = await database;
+    final range = daySplitter.getRange(time);
     final List<Map<String, dynamic>> maps = await db.query('activities');
+    final result = List<Activity>(maps.length);
+    for (var i = 0; i < result.length; i++) {
+      final activity = Activity.fromMap(maps[i]);
+      final logs = await findActivityLog(activity.id, range);
+      activity.logEntry = logs.isNotEmpty ? logs[0] : null;
+      result[i] = activity;
+    }
     return List.generate(maps.length, (index) => Activity.fromMap(maps[index]));
   }
 

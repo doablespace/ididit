@@ -21,7 +21,7 @@ class ActivitiesBloc extends Bloc {
   Stream<Activity> get currentActivityStream => _currentController.stream;
 
   void _init() async {
-    _activities.addAll(await _db.activities);
+    _activities.addAll(await _db.findActivities(DateTime.now()));
     _activityController.sink.add(_activities);
   }
 
