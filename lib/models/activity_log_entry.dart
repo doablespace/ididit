@@ -1,7 +1,7 @@
 class ActivityLogEntry {
   final int id;
   final int activityId;
-  final ActivityStatus status;
+  final int status;
   final DateTime targetTime;
   final DateTime modified;
 
@@ -12,11 +12,9 @@ class ActivityLogEntry {
     return {
       'id': id,
       'activity_id': activityId,
-      'status': status as int,
+      'status': status,
       'target_time': targetTime.microsecondsSinceEpoch,
       'modified': modified.microsecondsSinceEpoch,
     };
   }
 }
-
-enum ActivityStatus { Skipped, Yes, No, Almost }
