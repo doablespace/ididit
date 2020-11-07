@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'color-theme.dart';
 
 /// Applies the titled split background to a screen.
 /// Wrap in a `Container` widget and set as its decoration property.
 /// The `Container`'s child should be a `Scaffold` with transparent `backgroundColor`.
 ///
+/// Params:
+/// - direction: {-1 (left lower) / 1 (right lower)}
 /// Experimentally set parameters:
 /// - Swiping screen: 3.0, 0.45
 class BackgroundDecoration extends BoxDecoration {
-  BackgroundDecoration(double verticalProlongation, double midPoint)
+  BackgroundDecoration(double verticalProlongation, double midPoint,
+      {int direction: 1})
       : super(
             gradient: LinearGradient(
                 colors: [
@@ -18,8 +20,8 @@ class BackgroundDecoration extends BoxDecoration {
                   ThemeColors.lightBlue,
                   ThemeColors.lightBlue,
                 ],
-                begin: Alignment(-1, -verticalProlongation),
-                end: Alignment(1, verticalProlongation),
+                begin: Alignment(direction * 1.0, -verticalProlongation),
+                end: Alignment(direction * -1.0, verticalProlongation),
                 tileMode: TileMode.clamp,
                 stops: [0, midPoint, midPoint, 1]));
 }
