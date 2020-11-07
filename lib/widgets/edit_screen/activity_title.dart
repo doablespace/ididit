@@ -20,23 +20,26 @@ class _ActivityTitleState extends State<ActivityTitle> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      style: lightGreyTextStyle,
+      style: CustomTextStyle(ThemeColors.lightGrey),
       cursorColor: ThemeColors.lightGrey,
       decoration: InputDecoration(
         labelText: 'New mystery activity',
-        labelStyle: TextStyle(
-            color: _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
+        labelStyle: CustomTextStyle(
+          _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+        ),
         hintText: 'Input text',
-        hintStyle: TextStyle(
-            color: _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
-        errorStyle: TextStyle(color: ThemeColors.pastelRed),
+        hintStyle: CustomTextStyle(
+          _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+        ),
+        errorStyle: CustomTextStyle(ThemeColors.pastelRed),
         alignLabelWithHint: true,
         contentPadding: EdgeInsets.all(20.0),
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        counter: Text('$_charCount / 50',
-            style: TextStyle(
-                color:
-                    _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey)),
+        counter: Text(
+          '$_charCount / 50',
+          style: CustomTextStyle(
+              _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
+        ),
         enabledBorder: TitleInputBorder(ThemeColors.lightGrey),
         focusedBorder: TitleInputBorder(ThemeColors.lightGrey),
         errorBorder: TitleInputBorder(ThemeColors.pastelRed),
