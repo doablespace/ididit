@@ -7,9 +7,9 @@ import 'color-theme.dart';
 /// The `Container`'s child should be a `Scaffold` with transparent `backgroundColor`.
 ///
 /// Experimentally set parameters:
-/// - Activity screen: 3, 0.45
+/// - Swiping screen: 3.0, 0.45
 class BackgroundDecoration extends BoxDecoration {
-  BackgroundDecoration(verticalProlongation, midPoint)
+  BackgroundDecoration(double verticalProlongation, double midPoint)
       : super(
             gradient: LinearGradient(
                 colors: [
