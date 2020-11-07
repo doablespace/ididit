@@ -23,12 +23,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'I Did It',
         theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-            // Apply Raleway font throughout app.
-            textTheme: GoogleFonts.ralewayTextTheme(
-              Theme.of(context).textTheme,
-            )),
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          // Apply Raleway font throughout app.
+          textTheme: GoogleFonts.ralewayTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
         home: SwipingScreen(),
       ),
     );
