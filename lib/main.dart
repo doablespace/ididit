@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/screens/swiping_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        home: SwipingScreen(),
+        home: EditScreen(),
       ),
     );
   }

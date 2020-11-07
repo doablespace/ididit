@@ -9,6 +9,7 @@ import 'color_theme.dart';
 /// - direction: {-1 (left lower) / 1 (right lower)}
 /// Experimentally set parameters:
 /// - Swiping screen: 3.0, 0.45
+/// - Edit screen: 4.0, 0.43
 class BackgroundDecoration extends BoxDecoration {
   BackgroundDecoration(double verticalProlongation, double midPoint,
       {int direction: 1})
