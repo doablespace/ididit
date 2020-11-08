@@ -93,6 +93,14 @@ class ActivitiesBloc extends Bloc {
     }
   }
 
+  void unmark(Activity activity) {
+    var log = activity.logEntry;
+    if (log != null) {
+      _db.deleteActivityLog(log.id);
+      activity.logEntry = null;
+    }
+  }
+
   void swipe(Activity activity, ActivityState targetState) {
     final previousState = activity.state;
 

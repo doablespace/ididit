@@ -60,6 +60,11 @@ class Db {
     await db.delete('activities', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<void> deleteActivityLog(int id) async {
+    final Database db = await _database;
+    await db.delete('activity_log', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<List<ActivityLogEntry>> findActivityLog(
       int id, DateTimeRange range) async {
     final Database db = await _database;
