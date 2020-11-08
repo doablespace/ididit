@@ -10,7 +10,7 @@ import 'package:ididit/widgets/options_activity_box.dart';
 import 'package:provider/provider.dart';
 
 final activityTextStyle = TextStyle(
-  fontSize: 36,
+  fontSize: 32,
   fontWeight: FontWeight.w600,
   color: ThemeColors.lightGrey,
 );
@@ -86,7 +86,12 @@ class CurrentActivity extends StatelessWidget {
               return ModelProvider<Activity>(
                 value: activity,
                 builder: (context, _, child) {
-                  return Text(activity.name, style: activityTextStyle);
+                  return Text(
+                    activity.name,
+                    style: activityTextStyle,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  );
                 },
               );
             },
@@ -112,6 +117,7 @@ class _ActivityColumn extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(
             vertical: 18,
+            horizontal: 12,
           ),
           child: text,
         ),
