@@ -11,9 +11,11 @@ class ActivitiesBloc extends Bloc {
   ActivitiesState _state = ActivitiesState.loading;
   final List<Activity> _activities = [];
   Activity _currentActivity;
+  bool _youDidIt;
   final _stateController = StreamController<ActivitiesState>.broadcast();
   final _activityController = StreamController<List<Activity>>();
   final _currentController = StreamController<Activity>.broadcast();
+  final _youDidItController = StreamController<bool>();
   final progress = DayProgress();
 
   ActivitiesBloc(this._db) {
@@ -26,20 +28,28 @@ class ActivitiesBloc extends Bloc {
   Stream<List<Activity>> get activityStream => _activityController.stream;
   Activity get currentActivity => _currentActivity;
   Stream<Activity> get currentActivityStream => _currentController.stream;
+  bool get youDidIt => _youDidIt;
+  Stream<bool> get youDidItStream => _youDidItController.stream;
 
   void _init() async {
     _activities.addAll(await _db.findActivities(DateTime.now()));
     _activityController.sink.add(_activities);
 
-    // Select first activity.
+    // Update state.
     if (_activities.isNotEmpty) {
-      _setCurrent(_activities.first);
       _setState(ActivitiesState.ready);
     } else {
       _setState(ActivitiesState.no_activities);
     }
 
+    // Update progress.
     for (final activity in _activities) progress.add(activity.state);
+
+    // All done?
+    _updateYouDidIt();
+    if (_activities.isNotEmpty && !_youDidIt) {
+      _setCurrent(_activities.first);
+    }
   }
 
   void editActivity(Activity activity) async {
@@ -55,8 +65,11 @@ class ActivitiesBloc extends Bloc {
     // Select as current.
     _setCurrent(activity);
 
+    // Update state.
     if (_state == ActivitiesState.no_activities)
       _setState(ActivitiesState.ready);
+
+    _updateYouDidIt();
 
     progress.add();
   }
@@ -83,6 +96,8 @@ class ActivitiesBloc extends Bloc {
 
     _activities.remove(activity);
     _activityController.sink.add(_activities);
+
+    _updateYouDidIt();
 
     progress.remove(activity.state);
   }
@@ -117,11 +132,14 @@ class ActivitiesBloc extends Bloc {
 
   void _setActivityState(Activity activity, ActivityState state) async {
     await _db.markActivity(activity, DateTime.now(), state.value);
+
+    _updateYouDidIt();
   }
 
   void _setCurrent(Activity activity) {
     _currentActivity = activity;
     _currentController.sink.add(activity);
+    _updateYouDidIt();
   }
 
   void _setState(ActivitiesState state) {
@@ -129,11 +147,22 @@ class ActivitiesBloc extends Bloc {
     _stateController.sink.add(state);
   }
 
+  void _updateYouDidIt() {
+    final value = _currentActivity == null &&
+        _activities.isNotEmpty &&
+        _activities.every((activity) => activity.state != ActivityState.skip);
+    if (_youDidIt != value) {
+      _youDidIt = value;
+      _youDidItController.sink.add(value);
+    }
+  }
+
   @override
   void dispose() {
     _stateController.close();
     _activityController.close();
     _currentController.close();
+    _youDidItController.close();
   }
 }
 
