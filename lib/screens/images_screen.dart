@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/models/icon_names.dart';
+import 'package:ididit/ui/activity_icons.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_icon.dart';
 
 class ImagesScreen extends StatelessWidget {
   @override
@@ -15,13 +15,13 @@ class ImagesScreen extends StatelessWidget {
           body: GridView.count(
             // Put images into two columns.
             crossAxisCount: 2,
-            children: List.generate(iconNames.length, (i) {
+            children: List.generate(ActivityIcons.values.length, (i) {
               return TextButton(
                 onPressed: () {
                   Navigator.pop(context, i);
                 },
                 child: Center(
-                  child: SvgPicture.asset(
+                  child: ActivityIcon(
                     Activity.indexIcon(i),
                     color: ThemeColors.inkColor,
                   ),

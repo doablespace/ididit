@@ -22,7 +22,7 @@ class _Sizes {
     final radius = box / 5.6; // 50
     final shadow = box / 70; // 4
     final padding = box / 35; // 8
-    final icon = box - 2 * radius; // 180
+    final icon = box - radius; // 180
     final stateIcon = radius - padding; // 42
     final stateFontSize = stateIcon / 2; // 24
     return _Sizes._(
@@ -119,7 +119,7 @@ class StatefulActivityBox extends StatelessWidget {
                   // Activity icon
                   Center(
                     child: ActivityIcon(
-                      asset: activity.iconAsset,
+                      activity.iconAsset,
                       color: ThemeColors.inkColor,
                       size: _sizes.icon,
                     ),

@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/models/icon_names.dart';
 import 'package:ididit/screens/images_screen.dart';
+import 'package:ididit/ui/activity_icons.dart';
 import 'package:ididit/ui/color_theme.dart';
+import 'package:ididit/widgets/activity_icon.dart';
 import 'package:ididit/widgets/edit_screen/edit_form.dart';
 
 import '../activity_box.dart';
@@ -28,7 +28,7 @@ class _ActivityImageState extends State<ActivityImage> {
 
   @override
   Widget build(BuildContext context) {
-    double _imageSize = 200;
+    double _imageSize = 250;
     return TextButton(
       onPressed: () async {
         int imageId = await _selectImage(context);
@@ -44,11 +44,10 @@ class _ActivityImageState extends State<ActivityImage> {
         child: widget.activity.icon == null
             ? selectIllustrationPrompt(widget.activity, _imageSize)
             : Center(
-                child: SvgPicture.asset(
+                child: ActivityIcon(
                   widget.activity.iconAsset,
                   color: ThemeColors.inkColor,
-                  width: _imageSize,
-                  height: _imageSize,
+                  size: _imageSize,
                 ),
               ),
       ),
@@ -57,16 +56,15 @@ class _ActivityImageState extends State<ActivityImage> {
 }
 
 Stack selectIllustrationPrompt(Activity activity, double imageSize) {
-  activity.icon = Random().nextInt(iconNames.length);
+  activity.icon = Random().nextInt(ActivityIcons.values.length);
   return Stack(children: [
     Align(
       alignment: Alignment(0, 0.4),
-      child: SvgPicture.asset(
+      child: ActivityIcon(
         // Select prompt illustration by random.
         activity.iconAsset,
         color: ThemeColors.inkColor,
-        width: imageSize,
-        height: imageSize,
+        size: imageSize,
       ),
     ),
     Align(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/activity_states.dart';
-import 'package:ididit/models/icon_names.dart';
+import 'package:ididit/ui/activity_icons.dart';
 import 'package:ididit/ui/color_theme.dart';
 
 class Activity extends ChangeNotifier {
@@ -35,11 +35,10 @@ class Activity extends ChangeNotifier {
     };
   }
 
-  String get iconAsset =>
-      'assets/${iconNames[(icon ?? 0) % iconNames.length]}.svg';
+  IconData get iconAsset => indexIcon(icon);
   static String get selectIcon => 'assets/choose-icon.svg';
-  static String indexIcon(id) =>
-      'assets/${iconNames[(id ?? 0) % iconNames.length]}.svg';
+  static IconData indexIcon(id) =>
+      ActivityIcons.values[(id ?? 0) % ActivityIcons.values.length];
 
   Map<String, Color> get colors =>
       ActivityColors.colors[(color ?? 0) % ActivityColors.colors.length];
