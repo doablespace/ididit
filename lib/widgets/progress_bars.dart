@@ -13,11 +13,22 @@ class ProgressBars extends StatelessWidget {
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
-    return Column(
-      children: [
-        for (final state in ActivityState.values)
-          _progressBar(activitiesBloc.progress, state),
-      ],
+    return StreamBuilder<ActivitiesState>(
+      stream: activitiesBloc.stateStream,
+      initialData: activitiesBloc.state,
+      builder: (context, snapshot) {
+        final state = snapshot.data;
+
+        // Hide when loading/empty.
+        if (state != ActivitiesState.ready) return Container();
+
+        return Column(
+          children: [
+            for (final state in ActivityState.values)
+              _progressBar(activitiesBloc.progress, state),
+          ],
+        );
+      },
     );
   }
 
