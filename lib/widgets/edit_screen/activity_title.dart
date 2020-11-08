@@ -19,11 +19,17 @@ class _ActivityTitleState extends State<ActivityTitle> {
   bool _isError = false;
   @override
   Widget build(BuildContext context) {
+    final double _inputFontSize = 18;
+
     return Padding(
-      padding: const EdgeInsets.only(top: 32.0, bottom: 16),
+      padding:
+          const EdgeInsets.only(top: 32.0, bottom: 16, left: 24, right: 24),
       child: TextFormField(
         initialValue: widget.activity.name,
-        style: CustomTextStyle(ThemeColors.lightGrey),
+        style: CustomTextStyle(
+          ThemeColors.lightGrey,
+          fontSize: _inputFontSize,
+        ),
         cursorColor: ThemeColors.lightGrey,
         decoration: InputDecoration(
           labelText: 'New mystery activity',
@@ -32,12 +38,14 @@ class _ActivityTitleState extends State<ActivityTitle> {
           ),
           hintText: 'Input text',
           hintStyle: CustomTextStyle(
-            _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
-          ),
+              _isError
+                  ? ThemeColors.pastelRed.withOpacity(0.6)
+                  : ThemeColors.lightGrey.withOpacity(0.6),
+              fontSize: _inputFontSize,
+              fontWeight: FontWeight.w400),
           errorStyle: CustomTextStyle(ThemeColors.pastelRed),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.all(20.0),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
           counter: Text(
             '$_charCount / 50',
             style: CustomTextStyle(

@@ -28,8 +28,10 @@ class _ActivityImageState extends State<ActivityImage> {
 
   @override
   Widget build(BuildContext context) {
+    double _imageSize = 200;
     return TextButton(
-      onPressed: () async {
+      onPressed: null,
+      onLongPress: () async {
         int imageId = await _selectImage(context);
         // Update the referenced activity.
         widget.activity.icon = imageId;
@@ -41,13 +43,13 @@ class _ActivityImageState extends State<ActivityImage> {
       child: ActivityBox(
         color: widget.activity.ink,
         child: widget.activity.icon == null
-            ? selectIllustrationPrompt(widget.activity)
+            ? selectIllustrationPrompt(widget.activity, _imageSize)
             : Center(
                 child: SvgPicture.asset(
                   widget.activity.iconAsset,
                   color: ThemeColors.darkBlue,
-                  width: 180,
-                  height: 180,
+                  width: _imageSize,
+                  height: _imageSize,
                 ),
               ),
       ),
@@ -55,7 +57,7 @@ class _ActivityImageState extends State<ActivityImage> {
   }
 }
 
-Stack selectIllustrationPrompt(Activity activity) {
+Stack selectIllustrationPrompt(Activity activity, double imageSize) {
   activity.icon = Random().nextInt(iconNames.length);
   return Stack(children: [
     Align(
@@ -64,14 +66,14 @@ Stack selectIllustrationPrompt(Activity activity) {
         // Select prompt illustration by random.
         activity.iconAsset,
         color: ThemeColors.darkBlue,
-        width: 180,
-        height: 180,
+        width: imageSize,
+        height: imageSize,
       ),
     ),
     Align(
       alignment: Alignment(0, -0.8),
       child: Text(
-        'Select illustration',
+        'Hold to select illustration',
         style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
         textAlign: TextAlign.center,
       ),

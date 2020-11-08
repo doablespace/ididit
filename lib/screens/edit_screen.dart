@@ -23,7 +23,7 @@ class _EditScreenState extends State<EditScreen> {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                padding: EdgeInsets.symmetric(vertical: 16),
                 child: EditForm(widget.activityChange)),
           )),
     );
