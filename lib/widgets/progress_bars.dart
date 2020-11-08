@@ -27,29 +27,23 @@ class ProgressBars extends StatelessWidget {
       builder: (context, _, child) {
         final maxProgress = progress.values.reduce(max);
         final value = progress.getProgress(state);
-        return Row(
-          children: [
-            Text(
+        return LinearPercentIndicator(
+          percent: maxProgress == 0 ? 0 : value.toDouble() / maxProgress,
+          animation: true,
+          lineHeight: 10,
+          linearStrokeCap: LinearStrokeCap.roundAll,
+          progressColor: state.color,
+          backgroundColor: state.color.withOpacity(0.2),
+          leading: SizedBox(
+            width: 20,
+            child: Text(
               '$value',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: LinearPercentIndicator(
-                  percent:
-                      maxProgress == 0 ? 0 : value.toDouble() / maxProgress,
-                  animation: true,
-                  lineHeight: 10,
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  progressColor: state.color,
-                ),
-              ),
-            ),
-          ],
+          ),
         );
       },
     );
