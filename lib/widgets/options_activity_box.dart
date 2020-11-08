@@ -60,7 +60,7 @@ class OptionsActivityBox extends StatelessWidget {
                   ),
                   actions: [
                     TextButton(
-                      child: Text('Delete',
+                      child: Text('Delete'.toUpperCase(),
                           style: TextStyle(color: ThemeColors.pastelRed)),
                       onPressed: () {
                         activitiesBloc.deleteActivity(activity.id);
@@ -68,7 +68,7 @@ class OptionsActivityBox extends StatelessWidget {
                       },
                     ),
                     TextButton(
-                      child: Text('Cancel'),
+                      child: Text('Cancel'.toUpperCase()),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
