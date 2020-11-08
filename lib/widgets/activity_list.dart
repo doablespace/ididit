@@ -6,6 +6,7 @@ import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/edit_screen/edit_form.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ActivityList extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class ActivityList extends StatelessWidget {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
     return Container(
-      height: 90,
+      height: 102, // 90 (item height) + 12 (item padding)
       margin: EdgeInsets.all(6),
       child: StreamBuilder<List<Activity>>(
         stream: activitiesBloc.activityStream,
@@ -67,15 +68,32 @@ class ActivityList extends StatelessWidget {
             );
           }
 
-          return ListView.builder(
+          final controller = ItemScrollController();
+          final child = ScrollablePositionedList.builder(
             scrollDirection: Axis.horizontal,
-            itemExtent: 96, // 90 (size) + 6 (margin)
+            itemScrollController: controller,
             itemCount: 1 + activities.length,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(6),
                 child: buildItem(index),
               );
+            },
+          );
+
+          return StreamBuilder<Activity>(
+            stream: activitiesBloc.currentActivityStream,
+            initialData: activitiesBloc.currentActivity,
+            builder: (context, snapshot) {
+              final activity = snapshot.data;
+              if (activity != null && controller.isAttached) {
+                controller.scrollTo(
+                  index: activities.indexOf(activity),
+                  duration: Duration(milliseconds: 200),
+                );
+              }
+
+              return child;
             },
           );
         },

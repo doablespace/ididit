@@ -44,7 +44,7 @@ class ActivitiesBloc extends Bloc {
 
   void editActivity(Activity activity) async {
     await _db.saveActivity(activity);
-    activity.notifyListeners();
+    activity.saved();
   }
 
   void addActivity(Activity activity) async {

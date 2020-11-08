@@ -53,4 +53,6 @@ class Activity extends ChangeNotifier {
   }
 
   ActivityState get state => logEntry?.state ?? ActivityState.skip;
+
+  void saved() => notifyListeners();
 }
