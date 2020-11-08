@@ -28,6 +28,14 @@ class ProgressBars extends StatelessWidget {
 
         return Column(
           children: [
+            if (youDidIt)
+              Text(
+                'You Did It',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 48,
+                ),
+              ),
             for (final state in ActivityState.values)
               _progressBar(activitiesBloc.progress, state),
           ],
