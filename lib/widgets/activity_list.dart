@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:provider/provider.dart';
@@ -27,12 +28,8 @@ class ActivityList extends StatelessWidget {
                   child: Icon(Icons.add_rounded,
                       size: 48, color: ThemeColors.lightBlue),
                   onTap: () {
-                    activitiesBloc.addActivity(Activity(
-                      icon: DateTime.now().second,
-                      color: DateTime.now().millisecond,
-                      name: 'A',
-                      created: DateTime.now(),
-                    ));
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => EditScreen()));
                   });
 
             final activity = activities[index - 1];
