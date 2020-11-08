@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/screens/edit_screen.dart';
@@ -10,10 +11,12 @@ import 'package:ididit/widgets/edit_screen/activity_image.dart';
 import 'package:ididit/widgets/edit_screen/activity_title.dart';
 import 'package:ididit/widgets/rounded_button.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class EditForm extends StatefulWidget {
   final ActivityChange _activityChange;
-  EditForm(this._activityChange);
+  final Activity _input;
+  EditForm(this._activityChange, this._input);
   @override
   EditFormState createState() {
     return EditFormState();
@@ -35,11 +38,15 @@ class EditFormState extends State<EditForm> {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
     // Call only on first access.
     if (activity == null) {
-      // Pick color at random. Here, to have effect on `ActivityImage`.
-      var colorId = Random().nextInt(ActivityColors.colors.length);
-      activity = widget._activityChange == ActivityChange.edit
-          ? activitiesBloc.currentActivity
-          : Activity(color: colorId);
+      if (widget._activityChange == ActivityChange.challenge) {
+        activity = widget._input;
+      } else {
+        // Pick color at random. Here, to have effect on `ActivityImage`.
+        var colorId = Random().nextInt(ActivityColors.colors.length);
+        activity = widget._activityChange == ActivityChange.edit
+            ? activitiesBloc.currentActivity
+            : Activity(color: colorId);
+      }
     }
 
     return Form(
@@ -65,6 +72,35 @@ class EditFormState extends State<EditForm> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                IconButton(
+                  color: ThemeColors.upperBackground,
+                  icon: Icon(Icons.share_rounded),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+                  tooltip: 'Challenge someone',
+                  onPressed: () {
+                    // Save old activity.
+                    final prev = activity;
+                    // Get form values into a clone.
+                    activity = Activity();
+                    _formKey.currentState.save();
+                    final values = activity.toMap();
+                    // Restore original activity.
+                    activity = prev;
+
+                    // Create deep link.
+                    final link = Uri(
+                        scheme: 'ididit',
+                        host: 'challenge',
+                        queryParameters: values);
+                    try {
+                      Share.share(link.toString());
+                    } on PlatformException {
+                      return;
+                    }
+
+                    Navigator.pop(context);
+                  },
+                ),
                 RoundedButton(
                   label: 'Cancel',
                   borderColor: ThemeColors.upperBackground,
@@ -76,9 +112,9 @@ class EditFormState extends State<EditForm> {
                 Padding(
                   padding: EdgeInsets.only(left: 12, right: 24),
                   child: RoundedButton(
-                    label: widget._activityChange == ActivityChange.add
-                        ? 'Add'
-                        : 'Edit',
+                    label: widget._activityChange == ActivityChange.edit
+                        ? 'Edit'
+                        : 'Add',
                     borderColor: ThemeColors.upperBackground,
                     backgroundColor: ThemeColors.upperBackground,
                     textColor: ThemeColors.lowerBackground,
@@ -88,11 +124,12 @@ class EditFormState extends State<EditForm> {
                       if (form.validate()) {
                         // Saves text from text input fields.
                         form.save();
-                        if (widget._activityChange == ActivityChange.add) {
+                        if (widget._activityChange == ActivityChange.edit) {
+                          activitiesBloc.editActivity(activity);
+                        } else {
                           activity.created = DateTime.now();
                           activitiesBloc.addActivity(activity);
-                        } else
-                          activitiesBloc.editActivity(activity);
+                        }
 
                         Navigator.pop(context);
                       }
