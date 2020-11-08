@@ -88,19 +88,22 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
           ],
-          onDoneButtonPressed: () async {
-            await Hive.initFlutter('ididit');
-            final box = await Hive.openBox('first_run');
-            box.add(1);
-            Navigator.pop(context);
-          },
+          onDoneButtonPressed: () => _done(context),
           doneButtonTextStyle: TextStyle(
             color: ThemeColors.lowerBackground,
             fontWeight: FontWeight.w800,
             fontSize: 20,
           ),
+          onSkipButtonPressed: () => _done(context),
         ),
       ),
     );
+  }
+
+  void _done(BuildContext context) async {
+    await Hive.initFlutter('ididit');
+    final box = await Hive.openBox('first_run');
+    box.add(1);
+    Navigator.pop(context);
   }
 }
