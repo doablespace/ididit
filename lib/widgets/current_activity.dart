@@ -9,6 +9,8 @@ import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/options_activity_box.dart';
 import 'package:provider/provider.dart';
 
+import 'edit_screen/edit_form.dart';
+
 final activityTextStyle = TextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w600,
@@ -70,13 +72,53 @@ class CurrentActivity extends StatelessWidget {
                   return OptionsActivityBox(activity: activity);
                 },
               ),
-              background: ActivityBox(color: ThemeColors.almostColor),
-              secondaryBackground: ActivityBox(color: ThemeColors.skipColor),
+              background: ActivityBox(
+                color: ThemeColors.almostColor,
+                child: DirectionHelp(
+                  ThemeColors.lowerBackground,
+                  'almost',
+                  Icons.arrow_forward_ios_rounded,
+                  MainAxisAlignment.end,
+                  CrossAxisAlignment.start,
+                  Axis.vertical,
+                ),
+              ),
+              secondaryBackground: ActivityBox(
+                color: ThemeColors.skipColor,
+                child: DirectionHelp(
+                  ThemeColors.lowerBackground,
+                  'skip',
+                  Icons.arrow_back_ios_rounded,
+                  MainAxisAlignment.end,
+                  CrossAxisAlignment.end,
+                  Axis.vertical,
+                ),
+              ),
               confirmDismiss: confirmDismiss,
             ),
             direction: DismissDirection.vertical,
-            background: ActivityBox(color: ThemeColors.noColor),
-            secondaryBackground: ActivityBox(color: ThemeColors.yesColor),
+            background: ActivityBox(
+              color: ThemeColors.noColor,
+              child: DirectionHelp(
+                ThemeColors.upperBackground,
+                'no',
+                Icons.close_rounded,
+                MainAxisAlignment.center,
+                CrossAxisAlignment.start,
+                Axis.horizontal,
+              ),
+            ),
+            secondaryBackground: ActivityBox(
+              color: ThemeColors.yesColor,
+              child: DirectionHelp(
+                ThemeColors.lowerBackground,
+                'yes',
+                Icons.check_rounded,
+                MainAxisAlignment.center,
+                CrossAxisAlignment.end,
+                Axis.horizontal,
+              ),
+            ),
             confirmDismiss: confirmDismiss,
           ),
           text: StreamBuilder<Activity>(
@@ -124,6 +166,51 @@ class _ActivityColumn extends StatelessWidget {
           child: text,
         ),
       ],
+    );
+  }
+}
+
+class DirectionHelp extends StatelessWidget {
+  final Color _color;
+  final String _text;
+  final IconData _iconData;
+  final MainAxisAlignment _colAlign;
+  final CrossAxisAlignment _rowAlign;
+  final Axis _axis;
+
+  const DirectionHelp(this._color, this._text, this._iconData, this._colAlign,
+      this._rowAlign, this._axis,
+      {Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          vertical: _axis == Axis.vertical ? 32 : 16, horizontal: 16),
+      child: Flex(
+        direction: _axis,
+        mainAxisAlignment: _colAlign,
+        crossAxisAlignment: _rowAlign,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              _text,
+              style: CustomTextStyle(
+                _color,
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Icon(
+            _iconData,
+            size: 40,
+            color: _color,
+          )
+        ],
+      ),
     );
   }
 }
