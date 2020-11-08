@@ -13,7 +13,7 @@ class ActivityList extends StatelessWidget {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
     return Container(
-      height: 90,
+      height: 102, // 90 (item height) + 12 (item padding)
       margin: EdgeInsets.all(6),
       child: StreamBuilder<List<Activity>>(
         stream: activitiesBloc.activityStream,
