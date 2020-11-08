@@ -4,7 +4,6 @@ import 'package:ididit/ui/background_decoration.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
 import 'package:ididit/widgets/current_activity.dart';
-import 'package:ididit/widgets/edit_screen/edit_form.dart';
 import 'package:ididit/widgets/help_overlay.dart';
 import 'package:ididit/widgets/progress_bars.dart';
 import 'package:provider/provider.dart';
