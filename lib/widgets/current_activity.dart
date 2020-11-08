@@ -3,13 +3,14 @@ import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/model_provider.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/options_activity_box.dart';
 import 'package:provider/provider.dart';
 
 final activityTextStyle = TextStyle(
-  fontSize: 36,
+  fontSize: 32,
   fontWeight: FontWeight.w600,
   color: ThemeColors.lightGrey,
 );
@@ -35,9 +36,13 @@ class CurrentActivity extends StatelessWidget {
         // Show "no activities" placeholder.
         if (state == ActivitiesState.no_activities)
           return _ActivityColumn(
-            box: ActivityBox(
+            box: ClickableActivityBox(
               color: ActivityColors.accentGreen,
               child: Center(child: Icon(Icons.flaky_rounded, size: 180)),
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => EditScreen()));
+              },
             ),
             text: Text('No activities', style: activityTextStyle),
           );
@@ -81,7 +86,12 @@ class CurrentActivity extends StatelessWidget {
               return ModelProvider<Activity>(
                 value: activity,
                 builder: (context, _, child) {
-                  return Text(activity.name, style: activityTextStyle);
+                  return Text(
+                    activity.name,
+                    style: activityTextStyle,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  );
                 },
               );
             },
@@ -107,6 +117,7 @@ class _ActivityColumn extends StatelessWidget {
         Container(
           margin: EdgeInsets.symmetric(
             vertical: 18,
+            horizontal: 12,
           ),
           child: text,
         ),
