@@ -146,10 +146,10 @@ class ActivitiesBloc extends Bloc {
           return;
         }
       }
-
-      // If there is no such activity, we are done.
-      _setCurrent(null);
     }
+
+    // If there is no such activity, we are done.
+    _setCurrent(null);
   }
 
   void _setActivityState(Activity activity, ActivityState state) async {
