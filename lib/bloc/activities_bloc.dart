@@ -99,15 +99,13 @@ class ActivitiesBloc extends Bloc {
     // Mark the activity in the database unless user chose "skip".
     if (targetState != ActivityState.skip) {
       _setActivityState(activity, targetState);
+      progress.update(previousState, targetState);
     }
 
     // Go to next activity only if in "normal flow" (i.e., not if user selected
     // some already-marked activity). Or always if "skip" was chosen.
     if (previousState == ActivityState.skip ||
         targetState == ActivityState.skip) _selectNext();
-
-    // Update progress.
-    progress.update(previousState, targetState);
   }
 
   void _selectNext() {
