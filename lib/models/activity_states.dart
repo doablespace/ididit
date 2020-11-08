@@ -34,25 +34,25 @@ class ActivityState {
     value: 0,
     iconData: Icons.check_rounded,
     text: 'yes',
-    color: ThemeColors.pastelGreen,
+    color: ThemeColors.yesColor,
   );
   static final no = ActivityState(
     value: 1,
     iconData: Icons.close_rounded,
     text: 'no',
-    color: ThemeColors.pastelRed,
+    color: ThemeColors.noColor,
   );
   static final almost = ActivityState(
     value: 2,
     iconData: Icons.show_chart_rounded,
     text: 'almost',
-    color: ThemeColors.pastelYellow,
+    color: ThemeColors.almostColor,
   );
   static final skip = ActivityState(
     value: 3,
     iconData: Icons.chevron_left_rounded,
     text: 'skip',
-    color: ThemeColors.pastelGrey,
+    color: ThemeColors.skipColor,
   );
   static final values = [yes, no, almost, skip];
 }

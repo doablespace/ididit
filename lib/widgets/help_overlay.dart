@@ -13,7 +13,7 @@ class NavigationHelp extends PopupRoute {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         width: 400,
-        color: ThemeColors.darkBlue.withOpacity(0.7),
+        color: ThemeColors.inkColor.withOpacity(0.7),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -24,7 +24,7 @@ class NavigationHelp extends PopupRoute {
               IconButton(
                   icon: Icon(
                     Icons.close_rounded,
-                    color: ThemeColors.lightGrey,
+                    color: ThemeColors.upperBackground,
                   ),
                   tooltip: 'Close help',
                   onPressed: () {
@@ -43,11 +43,11 @@ class NavigationHelp extends PopupRoute {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       DirectionIcon(
-                        ThemeColors.pastelGreen,
+                        ThemeColors.yesColor,
                         Icons.arrow_upward_rounded,
                       ),
                       DirectionText(
-                        ThemeColors.pastelGreen,
+                        ThemeColors.yesColor,
                         'up to mark',
                         'yes',
                       )
@@ -62,12 +62,12 @@ class NavigationHelp extends PopupRoute {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       DirectionText(
-                        ThemeColors.pastelGrey,
+                        ThemeColors.skipColor,
                         'left to',
                         'skip',
                       ),
                       DirectionIcon(
-                        ThemeColors.pastelGrey,
+                        ThemeColors.skipColor,
                         Icons.arrow_back_ios_rounded,
                       ),
                     ],
@@ -76,13 +76,13 @@ class NavigationHelp extends PopupRoute {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       DirectionText(
-                        ThemeColors.pastelYellow,
+                        ThemeColors.almostColor,
                         'right to mark',
                         'almost',
                         alignRight: true,
                       ),
                       DirectionIcon(
-                        ThemeColors.pastelYellow,
+                        ThemeColors.almostColor,
                         Icons.arrow_forward_ios_rounded,
                       ),
                     ],
@@ -93,13 +93,13 @@ class NavigationHelp extends PopupRoute {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DirectionIcon(
-                    ThemeColors.lightGrey,
+                    ThemeColors.upperBackground,
                     Icons.touch_app_rounded,
                   ),
                   Text(
                     'touch for ',
                     style: CustomTextStyle(
-                      ThemeColors.lightGrey,
+                      ThemeColors.upperBackground,
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
@@ -107,7 +107,7 @@ class NavigationHelp extends PopupRoute {
                   Text(
                     'menu',
                     style: CustomTextStyle(
-                      ThemeColors.lightGrey,
+                      ThemeColors.upperBackground,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                     ),
@@ -120,11 +120,11 @@ class NavigationHelp extends PopupRoute {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     DirectionIcon(
-                      ThemeColors.pastelRed,
+                      ThemeColors.noColor,
                       Icons.arrow_downward_rounded,
                     ),
                     DirectionText(
-                      ThemeColors.pastelRed,
+                      ThemeColors.noColor,
                       'down to mark',
                       'no',
                     )
@@ -141,14 +141,14 @@ class NavigationHelp extends PopupRoute {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DirectionIcon(
-                  ThemeColors.lightGrey,
+                  ThemeColors.upperBackground,
                   Icons.first_page_rounded,
                 ),
                 Container(
                   height: 56,
                   padding: EdgeInsets.only(top: 8),
                   child: DirectionText(
-                    ThemeColors.lightGrey,
+                    ThemeColors.upperBackground,
                     'scroll left to',
                     'add new',
                   ),
@@ -162,7 +162,7 @@ class NavigationHelp extends PopupRoute {
   }
 
   @override
-  Color get barrierColor => ThemeColors.darkBlue.withOpacity(0.8);
+  Color get barrierColor => ThemeColors.inkColor.withOpacity(0.8);
 
   @override
   bool get barrierDismissible => true;

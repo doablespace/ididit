@@ -41,8 +41,8 @@ class OptionsActivityBox extends StatelessWidget {
         ),
         // Unmark button.
         RoundedButton(
-          borderColor: ThemeColors.lightGrey,
-          textColor: ThemeColors.lightGrey,
+          borderColor: ThemeColors.upperBackground,
+          textColor: ThemeColors.upperBackground,
           label: 'Unmark',
           iconLabel: Icons.autorenew_rounded,
           buttonWidth: 240,
@@ -53,8 +53,8 @@ class OptionsActivityBox extends StatelessWidget {
         ),
         // Delete button.
         RoundedButton(
-          borderColor: ThemeColors.lightGrey,
-          textColor: ThemeColors.lightGrey,
+          borderColor: ThemeColors.upperBackground,
+          textColor: ThemeColors.upperBackground,
           label: 'Delete',
           iconLabel: Icons.delete_forever_rounded,
           buttonWidth: 240,
@@ -76,7 +76,7 @@ class OptionsActivityBox extends StatelessWidget {
                   actions: [
                     TextButton(
                       child: Text('Delete'.toUpperCase(),
-                          style: TextStyle(color: ThemeColors.pastelRed)),
+                          style: TextStyle(color: ThemeColors.noColor)),
                       onPressed: () {
                         activitiesBloc.deleteActivity(activity);
                         Navigator.of(context)..pop()..pop();
@@ -96,9 +96,9 @@ class OptionsActivityBox extends StatelessWidget {
         ),
         // Edit button.
         RoundedButton(
-          borderColor: ThemeColors.lightGrey,
-          backgroundColor: ThemeColors.lightGrey,
-          textColor: ThemeColors.lightBlue,
+          borderColor: ThemeColors.upperBackground,
+          backgroundColor: ThemeColors.upperBackground,
+          textColor: ThemeColors.lowerBackground,
           label: 'Edit',
           iconLabel: Icons.create_rounded,
           buttonWidth: 240,
@@ -154,7 +154,7 @@ class _Options extends PopupRoute {
           link: layerLink,
           child: Container(
             decoration: BoxDecoration(
-              color: ThemeColors.darkBlue.withOpacity(0.8),
+              color: ThemeColors.inkColor.withOpacity(0.8),
               borderRadius: BorderRadius.circular(50),
             ),
             width: 280,

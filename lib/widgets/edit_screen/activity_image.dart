@@ -46,7 +46,7 @@ class _ActivityImageState extends State<ActivityImage> {
             : Center(
                 child: SvgPicture.asset(
                   widget.activity.iconAsset,
-                  color: ThemeColors.darkBlue,
+                  color: ThemeColors.inkColor,
                   width: _imageSize,
                   height: _imageSize,
                 ),
@@ -64,7 +64,7 @@ Stack selectIllustrationPrompt(Activity activity, double imageSize) {
       child: SvgPicture.asset(
         // Select prompt illustration by random.
         activity.iconAsset,
-        color: ThemeColors.darkBlue,
+        color: ThemeColors.inkColor,
         width: imageSize,
         height: imageSize,
       ),
@@ -73,7 +73,7 @@ Stack selectIllustrationPrompt(Activity activity, double imageSize) {
       alignment: Alignment(0, -0.8),
       child: Text(
         'Tap to select illustration',
-        style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
+        style: CustomTextStyle(ThemeColors.inkColor, fontSize: 20),
         textAlign: TextAlign.center,
       ),
     ),

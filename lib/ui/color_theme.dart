@@ -2,15 +2,15 @@ import 'dart:ui';
 
 class ThemeColors {
   // General app theme.
-  static var darkBlue = Color(0xff27363F);
-  static var lightBlue = Color(0xff4A6572);
-  static var lightGrey = Color(0xffC4C4C4);
+  static var inkColor = Color(0xff27363F);
+  static var lowerBackground = Color(0xff27363F);
+  static var upperBackground = Color(0xffffffff);
 
   // Swiping colors.
-  static var pastelGreen = Color(0xff87EFB1);
-  static var pastelRed = Color(0xffEF8787);
-  static var pastelYellow = Color(0xffE2F08C);
-  static var pastelGrey = Color(0xffE5E5E5);
+  static var yesColor = Color(0xff87EFB1);
+  static var noColor = Color(0xffEF8787);
+  static var almostColor = Color(0xffE2F08C);
+  static var skipColor = Color(0xffE5E5E5);
 }
 
 class ActivityColors {

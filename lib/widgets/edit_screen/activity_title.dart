@@ -27,34 +27,34 @@ class _ActivityTitleState extends State<ActivityTitle> {
       child: TextFormField(
         initialValue: widget.activity.name,
         style: CustomTextStyle(
-          ThemeColors.lightGrey,
+          ThemeColors.upperBackground,
           fontSize: _inputFontSize,
         ),
-        cursorColor: ThemeColors.lightGrey,
+        cursorColor: ThemeColors.upperBackground,
         decoration: InputDecoration(
           labelText: 'Activity name',
           labelStyle: CustomTextStyle(
-            _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
+            _isError ? ThemeColors.noColor : ThemeColors.upperBackground,
           ),
           hintText: 'New mystery activity',
           hintStyle: CustomTextStyle(
               _isError
-                  ? ThemeColors.pastelRed.withOpacity(0.6)
-                  : ThemeColors.lightGrey.withOpacity(0.6),
+                  ? ThemeColors.noColor.withOpacity(0.6)
+                  : ThemeColors.upperBackground.withOpacity(0.6),
               fontSize: _inputFontSize,
               fontWeight: FontWeight.w400),
-          errorStyle: CustomTextStyle(ThemeColors.pastelRed),
+          errorStyle: CustomTextStyle(ThemeColors.noColor),
           alignLabelWithHint: true,
           contentPadding: EdgeInsets.all(20.0),
           counter: Text(
             '$_charCount / 50',
             style: CustomTextStyle(
-                _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey),
+                _isError ? ThemeColors.noColor : ThemeColors.upperBackground),
           ),
-          enabledBorder: TitleInputBorder(ThemeColors.lightGrey),
-          focusedBorder: TitleInputBorder(ThemeColors.lightGrey),
-          errorBorder: TitleInputBorder(ThemeColors.pastelRed),
-          focusedErrorBorder: TitleInputBorder(ThemeColors.pastelRed),
+          enabledBorder: TitleInputBorder(ThemeColors.upperBackground),
+          focusedBorder: TitleInputBorder(ThemeColors.upperBackground),
+          errorBorder: TitleInputBorder(ThemeColors.noColor),
+          focusedErrorBorder: TitleInputBorder(ThemeColors.noColor),
         ),
         validator: (title) {
           if (title.length > _maxCharCount) {

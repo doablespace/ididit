@@ -16,10 +16,10 @@ class BackgroundDecoration extends BoxDecoration {
       : super(
             gradient: LinearGradient(
                 colors: [
-                  ThemeColors.lightGrey,
-                  ThemeColors.lightGrey,
-                  ThemeColors.lightBlue,
-                  ThemeColors.lightBlue,
+                  ThemeColors.upperBackground,
+                  ThemeColors.upperBackground,
+                  ThemeColors.lowerBackground,
+                  ThemeColors.lowerBackground,
                 ],
                 begin: Alignment(direction * 1.0, -verticalProlongation),
                 end: Alignment(direction * -1.0, verticalProlongation),

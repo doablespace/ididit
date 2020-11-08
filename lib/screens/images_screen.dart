@@ -23,7 +23,7 @@ class ImagesScreen extends StatelessWidget {
                 child: Center(
                   child: SvgPicture.asset(
                     Activity.indexIcon(i),
-                    color: ThemeColors.darkBlue,
+                    color: ThemeColors.inkColor,
                   ),
                 ),
               );

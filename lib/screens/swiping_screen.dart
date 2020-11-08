@@ -49,7 +49,7 @@ class SwipingScreen extends StatelessWidget {
                               vertical: 24, horizontal: 24),
                           icon: Icon(
                             Icons.help_center_rounded,
-                            color: ThemeColors.lightBlue,
+                            color: ThemeColors.lowerBackground,
                           ),
                           tooltip: 'Show help',
                           onPressed: () {
