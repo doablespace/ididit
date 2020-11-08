@@ -45,73 +45,104 @@ class OptionsActivityBox extends StatelessWidget {
           textColor: ThemeColors.upperBackground,
           label: 'Unmark',
           iconLabel: Icons.autorenew_rounded,
-          buttonWidth: 240,
+          buttonWidth: 230,
           onPressed: () {
             activitiesBloc.unmark(activity);
             Navigator.pop(context);
           },
         ),
-        // Delete button.
-        RoundedButton(
-          borderColor: ThemeColors.upperBackground,
-          textColor: ThemeColors.upperBackground,
-          label: 'Delete',
-          iconLabel: Icons.delete_forever_rounded,
-          buttonWidth: 240,
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('Are you sure?'),
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: [
-                        Text(
-                            'Activity ${activity.name} will be permanently deleted.'),
-                        Text('Do you want to continue?'),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text('Delete'.toUpperCase(),
-                          style: TextStyle(color: ThemeColors.noColor)),
-                      onPressed: () {
-                        activitiesBloc.deleteActivity(activity);
-                        Navigator.of(context)..pop()..pop();
-                      },
-                    ),
-                    TextButton(
-                      child: Text('Cancel'.toUpperCase()),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-        // Edit button.
+        // Stats button.
         RoundedButton(
           borderColor: ThemeColors.upperBackground,
           backgroundColor: ThemeColors.upperBackground,
           textColor: ThemeColors.lowerBackground,
-          label: 'Edit',
-          iconLabel: Icons.create_rounded,
-          buttonWidth: 240,
+          label: 'Stats',
+          iconLabel: Icons.assessment_rounded,
+          buttonWidth: 230,
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditScreen(
-                  activityChange: ActivityChange.edit,
-                ),
+            showDialog(
+              context: context,
+              child: AlertDialog(
+                title: Text('Coming soon'),
+                content: Text('And it will be AWESOME.'),
+                actions: [
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
               ),
             );
           },
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Delete button.
+            RoundedButton(
+              borderColor: ThemeColors.upperBackground,
+              textColor: ThemeColors.upperBackground,
+              label: 'Delete',
+              iconLabel: Icons.delete_forever_rounded,
+              buttonWidth: 110,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Are you sure?'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: [
+                            Text(
+                                'Activity ${activity.name} will be permanently deleted.'),
+                            Text('Do you want to continue?'),
+                          ],
+                        ),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text('Delete'.toUpperCase(),
+                              style: TextStyle(color: ThemeColors.noColor)),
+                          onPressed: () {
+                            activitiesBloc.deleteActivity(activity);
+                            Navigator.of(context)..pop()..pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text('Cancel'.toUpperCase()),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+            SizedBox(width: 10),
+            // Edit button.
+            RoundedButton(
+              borderColor: ThemeColors.upperBackground,
+              textColor: ThemeColors.upperBackground,
+              label: 'Edit',
+              iconLabel: Icons.create_rounded,
+              buttonWidth: 110,
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditScreen(
+                      activityChange: ActivityChange.edit,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ],
     );

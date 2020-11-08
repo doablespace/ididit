@@ -81,16 +81,20 @@ class EditFormState extends State<EditForm> {
                     // Save old activity.
                     final prev = activity;
                     // Get form values into a clone.
-                    activity = Activity();
+                    activity = Activity.fromMap(prev.toMap());
                     _formKey.currentState.save();
-                    final values = activity.toMap();
+                    final values = activity
+                        .toMap()
+                        .map((key, value) => MapEntry(key, value?.toString()));
                     // Restore original activity.
                     activity = prev;
 
                     // Create deep link.
+                    values.remove('created');
                     final link = Uri(
-                        scheme: 'ididit',
-                        host: 'challenge',
+                        scheme: 'https',
+                        host: 'i-did-it.netlify.app',
+                        path: '/',
                         queryParameters: values);
                     try {
                       Share.share(link.toString());
