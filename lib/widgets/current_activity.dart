@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 final activityTextStyle = TextStyle(
   fontSize: 32,
   fontWeight: FontWeight.w600,
-  color: ThemeColors.lightGrey,
+  color: ThemeColors.upperBackground,
 );
 
 class CurrentActivity extends StatelessWidget {
@@ -69,13 +69,13 @@ class CurrentActivity extends StatelessWidget {
                   return OptionsActivityBox(activity: activity);
                 },
               ),
-              background: ActivityBox(color: ThemeColors.pastelYellow),
-              secondaryBackground: ActivityBox(color: ThemeColors.pastelGrey),
+              background: ActivityBox(color: ThemeColors.almostColor),
+              secondaryBackground: ActivityBox(color: ThemeColors.skipColor),
               confirmDismiss: confirmDismiss,
             ),
             direction: DismissDirection.vertical,
-            background: ActivityBox(color: ThemeColors.pastelRed),
-            secondaryBackground: ActivityBox(color: ThemeColors.pastelGreen),
+            background: ActivityBox(color: ThemeColors.noColor),
+            secondaryBackground: ActivityBox(color: ThemeColors.yesColor),
             confirmDismiss: confirmDismiss,
           ),
           text: StreamBuilder<Activity>(

@@ -51,14 +51,14 @@ class ActivityList extends StatelessWidget {
                       Text(
                         'press the plus button to',
                         style: CustomTextStyle(
-                          ThemeColors.lightGrey,
+                          ThemeColors.upperBackground,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       Text(
                         'add new activity',
                         style: CustomTextStyle(
-                          ThemeColors.lightGrey,
+                          ThemeColors.upperBackground,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -116,12 +116,12 @@ class ActivityList extends StatelessWidget {
 
 Widget _addButtonItem(BuildContext context) {
   return ClickableActivityBox(
-    color: ThemeColors.lightGrey,
+    color: ThemeColors.upperBackground,
     size: 90,
     child: Icon(
       Icons.add_rounded,
       size: 48,
-      color: ThemeColors.lightBlue,
+      color: ThemeColors.lowerBackground,
     ),
     onTap: () {
       Navigator.of(context)

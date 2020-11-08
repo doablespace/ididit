@@ -48,8 +48,8 @@ class SwipingScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               vertical: 24, horizontal: 24),
                           icon: Icon(
-                            Icons.more_vert_rounded,
-                            color: ThemeColors.lightBlue,
+                            Icons.help_center_rounded,
+                            color: ThemeColors.lowerBackground,
                           ),
                           tooltip: 'Show help',
                           onPressed: () {

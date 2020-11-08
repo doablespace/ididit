@@ -54,7 +54,7 @@ class ActivityBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(_sizes.radius),
         boxShadow: [
           BoxShadow(
-            color: ThemeColors.darkBlue.withOpacity(0.25),
+            color: ThemeColors.inkColor.withOpacity(0.25),
             spreadRadius: 0,
             blurRadius: _sizes.shadow,
             offset: Offset(0, _sizes.shadow), // changes position of shadow
@@ -120,7 +120,7 @@ class StatefulActivityBox extends StatelessWidget {
                   Center(
                     child: ActivityIcon(
                       asset: activity.iconAsset,
-                      color: ThemeColors.darkBlue,
+                      color: ThemeColors.inkColor,
                       size: _sizes.icon,
                     ),
                   ),

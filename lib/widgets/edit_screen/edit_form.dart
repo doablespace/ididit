@@ -67,8 +67,8 @@ class EditFormState extends State<EditForm> {
               children: [
                 RoundedButton(
                   label: 'Cancel',
-                  borderColor: ThemeColors.lightGrey,
-                  textColor: ThemeColors.lightGrey,
+                  borderColor: ThemeColors.upperBackground,
+                  textColor: ThemeColors.upperBackground,
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -79,9 +79,9 @@ class EditFormState extends State<EditForm> {
                     label: widget._activityChange == ActivityChange.add
                         ? 'Add'
                         : 'Edit',
-                    borderColor: ThemeColors.lightGrey,
-                    backgroundColor: ThemeColors.lightGrey,
-                    textColor: ThemeColors.lightBlue,
+                    borderColor: ThemeColors.upperBackground,
+                    backgroundColor: ThemeColors.upperBackground,
+                    textColor: ThemeColors.lowerBackground,
                     onPressed: () {
                       var form = _formKey.currentState;
                       // Check for
