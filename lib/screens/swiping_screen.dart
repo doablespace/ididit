@@ -65,10 +65,13 @@ class SwipingScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               body: youDidIt
                   ? null
-                  : CompositedTransformTarget(
-                      link: _helpLink,
+                  : Container(
+                      alignment: Alignment.center,
                       child: SingleChildScrollView(
-                        child: Center(child: CurrentActivity()),
+                        child: CompositedTransformTarget(
+                          link: _helpLink,
+                          child: CurrentActivity(),
+                        ),
                       ),
                     ),
               bottomNavigationBar: ActivityList(),
