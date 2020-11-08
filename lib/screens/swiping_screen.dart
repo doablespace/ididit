@@ -3,9 +3,12 @@ import 'package:ididit/ui/background_decoration.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
 import 'package:ididit/widgets/current_activity.dart';
-import 'package:ididit/widgets/help-overlay.dart';
+import 'package:ididit/widgets/help_overlay.dart';
 
 class SwipingScreen extends StatelessWidget {
+  // Link between main activity position and overlayed help.
+  final LayerLink _helpLink = LayerLink();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -14,29 +17,30 @@ class SwipingScreen extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            actionsIconTheme: IconThemeData(color: ThemeColors.lightBlue),
+            elevation: 0, // For actual transparency.
             actions: [
               IconButton(
-                  icon: Icon(Icons.more_vert_rounded),
+                  padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                  icon: Icon(
+                    Icons.more_vert_rounded,
+                    color: ThemeColors.lightBlue,
+                  ),
                   tooltip: 'Show help',
                   onPressed: () {
-                    _overlayHelp(context);
+                    Navigator.of(context).push(NavigationHelp(_helpLink));
                   }),
             ],
           ),
           backgroundColor: Colors.transparent,
-          body: Center(child: CurrentActivity()),
+          body: CompositedTransformTarget(
+            link: _helpLink,
+            child: Center(
+              child: CurrentActivity(),
+            ),
+          ),
           bottomNavigationBar: ActivityList(),
         ),
       ),
     );
-  }
-
-  _overlayHelp(BuildContext context) async {
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry navigationHelp = OverlayEntry(
-      builder: (context) => NavigationHelp(),
-    );
-    overlayState.insert(navigationHelp);
   }
 }
