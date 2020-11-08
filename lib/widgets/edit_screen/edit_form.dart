@@ -92,8 +92,9 @@ class EditFormState extends State<EditForm> {
                     // Create deep link.
                     values.remove('created');
                     final link = Uri(
-                        scheme: 'ididit',
-                        host: 'challenge',
+                        scheme: 'https',
+                        host: 'i-did-it.netlify.app',
+                        path: '/',
                         queryParameters: values);
                     try {
                       Share.share(link.toString());
