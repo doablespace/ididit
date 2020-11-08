@@ -49,28 +49,30 @@ class SwipingScreen extends StatelessWidget {
                 ],
               ),
               backgroundColor: Colors.transparent,
-              body: youDidIt
-                  ? null
-                  : Container(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(32, 16, 72, 16),
-                            // Needed for normal text style in child.
-                            child: Material(
-                              type: MaterialType.transparency,
-                              child: ProgressBars(youDidIt: youDidIt),
-                            ),
-                          ),
-                          Expanded(
+              body: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.fromLTRB(32, 16, youDidIt ? 32 : 72, 16),
+                      // Needed for normal text style in child.
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: ProgressBars(youDidIt: youDidIt),
+                      ),
+                    ),
+                    youDidIt
+                        ? Text('') // TODO: Improve. Cannot have empty widget.
+                        : Expanded(
                             child: CompositedTransformTarget(
                               link: _helpLink,
                               child: CurrentActivity(),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
+                  ],
+                ),
+              ),
               bottomNavigationBar: ActivityList(),
             ),
           );
