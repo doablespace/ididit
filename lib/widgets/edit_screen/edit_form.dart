@@ -60,11 +60,7 @@ class EditFormState extends State<EditForm> {
                     borderColor: ThemeColors.lightGrey,
                     textColor: ThemeColors.lightGrey,
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SwipingScreen(),
-                          ));
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -81,11 +77,7 @@ class EditFormState extends State<EditForm> {
                       form.save();
                       activity.created = DateTime.now();
                       activitiesBloc.addActivity(activity);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SwipingScreen(),
-                          ));
+                      Navigator.pop(context);
                     }
                   },
                 ),
