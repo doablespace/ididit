@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
+import 'package:ididit/extensions.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
@@ -46,9 +47,11 @@ class ActivityList extends StatelessWidget {
           }
 
           final controller = ItemScrollController();
+          final listener = ItemPositionsListener.create();
           final child = ScrollablePositionedList.builder(
             scrollDirection: Axis.horizontal,
             itemScrollController: controller,
+            itemPositionsListener: listener,
             itemCount: 1 + activities.length,
             itemBuilder: (context, index) {
               return Container(
@@ -63,11 +66,20 @@ class ActivityList extends StatelessWidget {
             initialData: activitiesBloc.currentActivity,
             builder: (context, snapshot) {
               final activity = snapshot.data;
-              if (activity != null && controller.isAttached) {
-                controller.scrollTo(
-                  index: activities.indexOf(activity),
-                  duration: Duration(milliseconds: 200),
-                );
+              if (activity != null) {
+                if (controller.isAttached) {
+                  controller.scrollTo(
+                    index: 1 + activities.indexOf(activity),
+                    duration: Duration(milliseconds: 200),
+                  );
+                } else {
+                  listener.itemPositions.once(() {
+                    controller.scrollTo(
+                      index: 1 + activities.indexOf(activity),
+                      duration: Duration(milliseconds: 200),
+                    );
+                  });
+                }
               }
 
               return child;
