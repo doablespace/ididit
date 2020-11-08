@@ -31,20 +31,17 @@ class CurrentActivity extends StatelessWidget {
         // Show "loading" placeholder.
         if (state == ActivitiesState.loading)
           return _ActivityColumn(
-            box: ActivityBox(color: ActivityColors.accentGreen),
+            box: SizedBox(width: 280, height: 280),
             text: Text('Loading...', style: activityTextStyle),
           );
 
         // Show "no activities" placeholder.
         if (state == ActivitiesState.no_activities)
           return _ActivityColumn(
-            box: ClickableActivityBox(
-              color: ActivityColors.accentGreen,
-              child: Center(child: Icon(Icons.flaky_rounded, size: 180)),
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => EditScreen()));
-              },
+            box: SizedBox(
+              width: 280,
+              height: 280,
+              child: Image.asset('assets/logo.png'),
             ),
             text: Text('No activities', style: activityTextStyle),
           );
