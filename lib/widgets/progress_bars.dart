@@ -5,6 +5,7 @@ import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/day_progress.dart';
 import 'package:ididit/models/model_provider.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ProgressBars extends StatelessWidget {
@@ -38,11 +39,13 @@ class ProgressBars extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: LinearProgressIndicator(
-                  value: maxProgress == 0 ? 0 : value / maxProgress,
-                  valueColor: AlwaysStoppedAnimation(state.color),
-                  backgroundColor: Colors.transparent,
-                  minHeight: 10,
+                child: LinearPercentIndicator(
+                  percent:
+                      maxProgress == 0 ? 0 : value.toDouble() / maxProgress,
+                  animation: true,
+                  lineHeight: 10,
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  progressColor: state.color,
                 ),
               ),
             ),
