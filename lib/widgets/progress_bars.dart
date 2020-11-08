@@ -28,7 +28,8 @@ class ProgressBars extends StatelessWidget {
         final maxProgress = progress.values.reduce(max);
         final value = progress.getProgress(state);
         return LinearPercentIndicator(
-          percent: maxProgress == 0 ? 0 : value.toDouble() / maxProgress,
+          percent:
+              value == 0 ? double.minPositive : value.toDouble() / maxProgress,
           animation: true,
           lineHeight: 10,
           linearStrokeCap: LinearStrokeCap.roundAll,
