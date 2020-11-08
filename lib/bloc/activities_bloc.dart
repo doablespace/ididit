@@ -113,6 +113,8 @@ class ActivitiesBloc extends Bloc {
     if (log != null) {
       _db.deleteActivityLog(log.id);
       activity.logEntry = null;
+      progress.remove(log.state);
+      progress.add(ActivityState.skip);
     }
   }
 
