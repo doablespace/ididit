@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ididit/models/activity.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:uni_links/uni_links.dart';
 
 class DeepLinkListener extends StatefulWidget {
@@ -49,8 +51,12 @@ class _DeepLinkListenerState extends State<DeepLinkListener> {
     // Verify URI.
     if (uri.scheme != 'ididit' || uri.host != 'challenge') return;
 
-    showDialog(
-        context: context,
-        child: AlertDialog(content: Text('link received: ${uri.query}')));
+    // Try parse the values.
+    final activity = Activity.tryParse(uri.queryParameters);
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => EditScreen(
+              activityChange: ActivityChange.challenge,
+              input: activity,
+            )));
   }
 }

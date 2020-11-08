@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ididit/models/activity.dart';
 import 'package:ididit/ui/background_decoration.dart';
 import 'package:ididit/widgets/edit_screen/edit_form.dart';
 
-enum ActivityChange { add, edit }
+enum ActivityChange { add, edit, challenge }
 
 class EditScreen extends StatefulWidget {
   final ActivityChange activityChange;
-  EditScreen({ActivityChange activityChange: ActivityChange.add})
+  final Activity input;
+  EditScreen({ActivityChange activityChange: ActivityChange.add, this.input})
       : this.activityChange = activityChange;
 
   @override
@@ -24,7 +26,7 @@ class _EditScreenState extends State<EditScreen> {
             backgroundColor: Colors.transparent,
             body: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                child: EditForm(widget.activityChange)),
+                child: EditForm(widget.activityChange, widget.input)),
           )),
     );
   }

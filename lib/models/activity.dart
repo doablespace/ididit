@@ -18,11 +18,22 @@ class Activity extends ChangeNotifier {
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
       id: map['id'],
-      created: DateTime.fromMillisecondsSinceEpoch(map['created'], isUtc: true),
+      created:
+          DateTime.fromMillisecondsSinceEpoch(map['created'] ?? 0, isUtc: true),
       name: map['name'],
       icon: map['icon'],
       color: map['color'],
     );
+  }
+
+  factory Activity.tryParse(Map<String, String> map) {
+    Map<String, dynamic> parsed = {};
+    parsed['title'] = map['title'];
+    parsed['created'] = int.tryParse(map['created'] ?? '');
+    parsed['name'] = map['name'];
+    parsed['icon'] = int.tryParse(map['icon'] ?? '');
+    parsed['color'] = int.tryParse(map['color'] ?? '');
+    return Activity.fromMap(parsed);
   }
 
   Map<String, dynamic> toMap() {

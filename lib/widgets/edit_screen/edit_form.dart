@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class EditForm extends StatefulWidget {
   final ActivityChange _activityChange;
-  EditForm(this._activityChange);
+  final Activity _input;
+  EditForm(this._activityChange, this._input);
   @override
   EditFormState createState() {
     return EditFormState();
@@ -35,11 +36,15 @@ class EditFormState extends State<EditForm> {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
     // Call only on first access.
     if (activity == null) {
-      // Pick color at random. Here, to have effect on `ActivityImage`.
-      var colorId = Random().nextInt(ActivityColors.colors.length);
-      activity = widget._activityChange == ActivityChange.edit
-          ? activitiesBloc.currentActivity
-          : Activity(color: colorId);
+      if (widget._activityChange == ActivityChange.challenge) {
+        activity = widget._input;
+      } else {
+        // Pick color at random. Here, to have effect on `ActivityImage`.
+        var colorId = Random().nextInt(ActivityColors.colors.length);
+        activity = widget._activityChange == ActivityChange.edit
+            ? activitiesBloc.currentActivity
+            : Activity(color: colorId);
+      }
     }
 
     return Form(
