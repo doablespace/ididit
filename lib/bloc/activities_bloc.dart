@@ -4,6 +4,7 @@ import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
+import 'package:ididit/models/day_progress.dart';
 
 class ActivitiesBloc extends Bloc {
   final Db _db;
@@ -13,6 +14,7 @@ class ActivitiesBloc extends Bloc {
   final _stateController = StreamController<ActivitiesState>.broadcast();
   final _activityController = StreamController<List<Activity>>();
   final _currentController = StreamController<Activity>.broadcast();
+  final progress = DayProgress();
 
   ActivitiesBloc(this._db) {
     _init();
@@ -36,6 +38,8 @@ class ActivitiesBloc extends Bloc {
     } else {
       _setState(ActivitiesState.no_activities);
     }
+
+    for (final activity in _activities) progress.add(activity.state);
   }
 
   void editActivity(Activity activity) async {
@@ -53,13 +57,15 @@ class ActivitiesBloc extends Bloc {
 
     if (_state == ActivitiesState.no_activities)
       _setState(ActivitiesState.ready);
+
+    progress.add();
   }
 
-  void deleteActivity(int id) async {
-    await _db.deleteActivity(id);
+  void deleteActivity(Activity activity) async {
+    await _db.deleteActivity(activity.id);
 
     // Update current activity if it is the one being deleted.
-    if (_currentActivity != null && _currentActivity.id == id) {
+    if (_currentActivity != null && _currentActivity == activity) {
       // If no other activity exists, unset current.
       if (_activities.length == 1) {
         _setCurrent(null);
@@ -75,8 +81,10 @@ class ActivitiesBloc extends Bloc {
     // Update state.
     if (_activities.length == 1) _setState(ActivitiesState.no_activities);
 
-    _activities.removeWhere((a) => a.id == id);
+    _activities.remove(activity);
     _activityController.sink.add(_activities);
+
+    progress.remove(activity.state);
   }
 
   void select(Activity activity) {
@@ -86,7 +94,7 @@ class ActivitiesBloc extends Bloc {
   }
 
   void swipe(Activity activity, ActivityState targetState) {
-    final hadState = activity.logEntry != null;
+    final previousState = activity.state;
 
     // Mark the activity in the database unless user chose "skip".
     if (targetState != ActivityState.skip) {
@@ -95,7 +103,11 @@ class ActivitiesBloc extends Bloc {
 
     // Go to next activity only if in "normal flow" (i.e., not if user selected
     // some already-marked activity). Or always if "skip" was chosen.
-    if (!hadState || targetState == ActivityState.skip) _selectNext();
+    if (previousState == ActivityState.skip ||
+        targetState == ActivityState.skip) _selectNext();
+
+    // Update progress.
+    progress.update(previousState, targetState);
   }
 
   void _selectNext() {
