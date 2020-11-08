@@ -39,7 +39,7 @@ class Activity extends ChangeNotifier {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'created': created.toUtc().microsecondsSinceEpoch,
+      'created': created?.toUtc()?.microsecondsSinceEpoch,
       'name': name,
       'icon': icon,
       'color': color,

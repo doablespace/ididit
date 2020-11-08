@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/screens/edit_screen.dart';
@@ -10,6 +11,7 @@ import 'package:ididit/widgets/edit_screen/activity_image.dart';
 import 'package:ididit/widgets/edit_screen/activity_title.dart';
 import 'package:ididit/widgets/rounded_button.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class EditForm extends StatefulWidget {
   final ActivityChange _activityChange;
@@ -70,6 +72,35 @@ class EditFormState extends State<EditForm> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                IconButton(
+                  color: ThemeColors.upperBackground,
+                  icon: Icon(Icons.share_rounded),
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+                  tooltip: 'Challenge someone',
+                  onPressed: () {
+                    // Save old activity.
+                    final prev = activity;
+                    // Get form values into a clone.
+                    activity = Activity();
+                    _formKey.currentState.save();
+                    final values = activity.toMap();
+                    // Restore original activity.
+                    activity = prev;
+
+                    // Create deep link.
+                    final link = Uri(
+                        scheme: 'ididit',
+                        host: 'challenge',
+                        queryParameters: values);
+                    try {
+                      Share.share(link.toString());
+                    } on PlatformException {
+                      return;
+                    }
+
+                    Navigator.pop(context);
+                  },
+                ),
                 RoundedButton(
                   label: 'Cancel',
                   borderColor: ThemeColors.upperBackground,
