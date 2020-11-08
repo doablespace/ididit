@@ -30,7 +30,11 @@ class OptionsActivityBox extends StatelessWidget {
                 borderColor: state.color,
                 textColor: state.color,
                 buttonWidth: 36,
-                child: Icon(state.iconData, color: state.color),
+                icon: Icon(state.iconData, color: state.color),
+                onPressed: () {
+                  activitiesBloc.swipe(activity, state);
+                  Navigator.of(context).pop();
+                },
               ),
           ],
         ),
