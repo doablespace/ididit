@@ -31,9 +31,12 @@ class EditFormState extends State<EditForm> {
   Widget build(BuildContext context) {
     // Bloc to access database.
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
-    activity = widget._activityChange == ActivityChange.edit
-        ? activitiesBloc.currentActivity
-        : Activity(color: 0);
+    // Call only on first access.
+    if (activity == null) {
+      activity = widget._activityChange == ActivityChange.edit
+          ? activitiesBloc.currentActivity
+          : Activity(color: 0);
+    }
 
     return Form(
       key: _formKey,
