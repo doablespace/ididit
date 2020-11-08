@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/screens/onboarding_screen.dart';
 import 'package:ididit/ui/background_decoration.dart';
@@ -84,6 +85,7 @@ class SwipingScreen extends StatelessWidget {
   }
 
   void _onboard(BuildContext context) async {
+    await Hive.initFlutter('ididit');
     if (!await Hive.boxExists('first_run'))
       Navigator.push(
           context, MaterialPageRoute(builder: (_) => OnboardingScreen()));
