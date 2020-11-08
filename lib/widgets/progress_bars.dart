@@ -9,6 +9,10 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ProgressBars extends StatelessWidget {
+  final bool youDidIt;
+
+  const ProgressBars({Key key, this.youDidIt}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
