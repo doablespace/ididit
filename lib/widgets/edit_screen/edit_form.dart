@@ -81,9 +81,9 @@ class EditFormState extends State<EditForm> {
                 Padding(
                   padding: EdgeInsets.only(left: 12, right: 24),
                   child: RoundedButton(
-                    label: widget._activityChange == ActivityChange.add
-                        ? 'Add'
-                        : 'Edit',
+                    label: widget._activityChange == ActivityChange.edit
+                        ? 'Edit'
+                        : 'Add',
                     borderColor: ThemeColors.upperBackground,
                     backgroundColor: ThemeColors.upperBackground,
                     textColor: ThemeColors.lowerBackground,
@@ -93,11 +93,12 @@ class EditFormState extends State<EditForm> {
                       if (form.validate()) {
                         // Saves text from text input fields.
                         form.save();
-                        if (widget._activityChange == ActivityChange.add) {
+                        if (widget._activityChange == ActivityChange.edit) {
+                          activitiesBloc.editActivity(activity);
+                        } else {
                           activity.created = DateTime.now();
                           activitiesBloc.addActivity(activity);
-                        } else
-                          activitiesBloc.editActivity(activity);
+                        }
 
                         Navigator.pop(context);
                       }
