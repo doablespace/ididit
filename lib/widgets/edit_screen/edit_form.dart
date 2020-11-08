@@ -82,8 +82,12 @@ class EditFormState extends State<EditForm> {
                     if (form.validate()) {
                       // Saves text from text input fields.
                       form.save();
-                      activity.created = DateTime.now();
-                      activitiesBloc.addActivity(activity);
+                      if (widget._activityChange == ActivityChange.add) {
+                        activity.created = DateTime.now();
+                        activitiesBloc.addActivity(activity);
+                      } else
+                        activitiesBloc.editActivity(activity);
+
                       Navigator.pop(context);
                     }
                   },

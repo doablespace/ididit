@@ -38,6 +38,11 @@ class ActivitiesBloc extends Bloc {
     }
   }
 
+  void editActivity(Activity activity) async {
+    await _db.saveActivity(activity);
+    activity.notifyListeners();
+  }
+
   void addActivity(Activity activity) async {
     await _db.saveActivity(activity);
     _activities.add(activity);
