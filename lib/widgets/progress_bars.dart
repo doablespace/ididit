@@ -33,7 +33,7 @@ class ProgressBars extends StatelessWidget {
           lineHeight: 10,
           linearStrokeCap: LinearStrokeCap.roundAll,
           progressColor: state.color,
-          backgroundColor: state.color.withOpacity(0.2),
+          backgroundColor: Colors.transparent,
           leading: SizedBox(
             width: 20,
             child: Text(
