@@ -147,8 +147,8 @@ class ActivitiesBloc extends Bloc {
         }
       }
 
-      // If there is no such activity, select the one after current.
-      _setCurrent(_activities[(index + 1) % _activities.length]);
+      // If there is no such activity, we are done.
+      _setCurrent(null);
     }
   }
 
