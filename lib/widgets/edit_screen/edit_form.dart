@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
@@ -33,9 +35,11 @@ class EditFormState extends State<EditForm> {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
     // Call only on first access.
     if (activity == null) {
+      // Pick color at random. Here, to have effect on `ActivityImage`.
+      var colorId = Random().nextInt(ActivityColors.colors.length);
       activity = widget._activityChange == ActivityChange.edit
           ? activitiesBloc.currentActivity
-          : Activity(color: 0);
+          : Activity(color: colorId);
     }
 
     return Form(
