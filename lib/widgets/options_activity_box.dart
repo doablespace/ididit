@@ -39,6 +39,19 @@ class OptionsActivityBox extends StatelessWidget {
               ),
           ],
         ),
+        // Unmark button.
+        RoundedButton(
+          borderColor: ThemeColors.lightGrey,
+          textColor: ThemeColors.lightGrey,
+          label: 'Unmark',
+          iconLabel: Icons.autorenew_rounded,
+          buttonWidth: 240,
+          onPressed: () {
+            activitiesBloc.unmark(activity);
+            Navigator.pop(context);
+          },
+        ),
+        // Delete button.
         RoundedButton(
           borderColor: ThemeColors.lightGrey,
           textColor: ThemeColors.lightGrey,
@@ -81,6 +94,7 @@ class OptionsActivityBox extends StatelessWidget {
             );
           },
         ),
+        // Edit button.
         RoundedButton(
           borderColor: ThemeColors.lightGrey,
           backgroundColor: ThemeColors.lightGrey,

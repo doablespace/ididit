@@ -32,11 +32,11 @@ class _ActivityTitleState extends State<ActivityTitle> {
         ),
         cursorColor: ThemeColors.lightGrey,
         decoration: InputDecoration(
-          labelText: 'New mystery activity',
+          labelText: 'Activity name',
           labelStyle: CustomTextStyle(
             _isError ? ThemeColors.pastelRed : ThemeColors.lightGrey,
           ),
-          hintText: 'Input text',
+          hintText: 'New mystery activity',
           hintStyle: CustomTextStyle(
               _isError
                   ? ThemeColors.pastelRed.withOpacity(0.6)

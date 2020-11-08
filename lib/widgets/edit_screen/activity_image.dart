@@ -30,8 +30,7 @@ class _ActivityImageState extends State<ActivityImage> {
   Widget build(BuildContext context) {
     double _imageSize = 200;
     return TextButton(
-      onPressed: null,
-      onLongPress: () async {
+      onPressed: () async {
         int imageId = await _selectImage(context);
         // Update the referenced activity.
         widget.activity.icon = imageId;
