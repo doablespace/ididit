@@ -113,6 +113,8 @@ class ActivitiesBloc extends Bloc {
     if (log != null) {
       _db.deleteActivityLog(log.id);
       activity.logEntry = null;
+      progress.remove(log.state);
+      progress.add(ActivityState.skip);
     }
   }
 
@@ -133,8 +135,20 @@ class ActivitiesBloc extends Bloc {
 
   void _selectNext() {
     if (_activities.length > 1) {
+      // Find first activity after this one that's unmarked.
       final index = _activities.indexOf(_currentActivity);
-      _setCurrent(_activities[(index + 1) % _activities.length]);
+      for (int i = (index + 1) % _activities.length;
+          i != index;
+          i = (i + 1) % _activities.length) {
+        final activity = _activities[i];
+        if (activity.state == ActivityState.skip) {
+          _setCurrent(activity);
+          return;
+        }
+      }
+
+      // If there is no such activity, we are done.
+      _setCurrent(null);
     }
   }
 

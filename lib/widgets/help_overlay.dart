@@ -48,7 +48,7 @@ class NavigationHelp extends PopupRoute {
                       ),
                       DirectionText(
                         ThemeColors.yesColor,
-                        'up to mark',
+                        'swipe up to mark',
                         'yes',
                       )
                     ],
@@ -63,7 +63,7 @@ class NavigationHelp extends PopupRoute {
                     children: [
                       DirectionText(
                         ThemeColors.skipColor,
-                        'left to',
+                        'swipe left to',
                         'skip',
                       ),
                       DirectionIcon(
@@ -77,7 +77,7 @@ class NavigationHelp extends PopupRoute {
                     children: [
                       DirectionText(
                         ThemeColors.almostColor,
-                        'right to mark',
+                        'swipe right to mark',
                         'almost',
                         alignRight: true,
                       ),
@@ -125,7 +125,7 @@ class NavigationHelp extends PopupRoute {
                     ),
                     DirectionText(
                       ThemeColors.noColor,
-                      'down to mark',
+                      'swipe down to mark',
                       'no',
                     )
                   ],
@@ -191,7 +191,7 @@ class DirectionText extends StatelessWidget {
           alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Text(
-          'swipe $direction',
+          direction,
           style: CustomTextStyle(
             color,
             fontSize: fontSize,
@@ -199,7 +199,7 @@ class DirectionText extends StatelessWidget {
           ),
         ),
         Text(
-          '$action',
+          action,
           style: CustomTextStyle(
             color,
             fontSize: fontSize,

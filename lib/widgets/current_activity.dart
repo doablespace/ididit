@@ -67,6 +67,7 @@ class CurrentActivity extends StatelessWidget {
                 initialData: activitiesBloc.currentActivity,
                 builder: (context, snapshot) {
                   final activity = snapshot.data;
+                  if (activity == null) return Container();
                   return OptionsActivityBox(activity: activity);
                 },
               ),
@@ -84,6 +85,7 @@ class CurrentActivity extends StatelessWidget {
             initialData: activitiesBloc.currentActivity,
             builder: (context, snapshot) {
               final activity = snapshot.data;
+              if (activity == null) return Container();
               return ModelProvider<Activity>(
                 value: activity,
                 builder: (context, _, child) {
