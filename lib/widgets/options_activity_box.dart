@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/rounded_button.dart';
@@ -85,6 +86,16 @@ class OptionsActivityBox extends StatelessWidget {
           textColor: ThemeColors.lightBlue,
           label: 'Edit',
           buttonWidth: 240,
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditScreen(
+                  activityChange: ActivityChange.edit,
+                ),
+              ),
+            );
+          },
         ),
       ],
     );

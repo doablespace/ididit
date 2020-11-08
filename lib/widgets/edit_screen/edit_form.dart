@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
+import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/edit_screen/activity_color.dart';
 import 'package:ididit/widgets/edit_screen/activity_image.dart';
@@ -9,6 +10,8 @@ import 'package:ididit/widgets/rounded_button.dart';
 import 'package:provider/provider.dart';
 
 class EditForm extends StatefulWidget {
+  final ActivityChange _activityChange;
+  EditForm(this._activityChange);
   @override
   EditFormState createState() {
     return EditFormState();
@@ -18,7 +21,7 @@ class EditForm extends StatefulWidget {
 class EditFormState extends State<EditForm> {
   // Form identifier.
   final _formKey = GlobalKey<FormState>();
-  Activity activity = Activity(color: 0);
+  Activity activity;
 
   updateColor() {
     setState(() {});
@@ -28,6 +31,9 @@ class EditFormState extends State<EditForm> {
   Widget build(BuildContext context) {
     // Bloc to access database.
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+    activity = widget._activityChange == ActivityChange.edit
+        ? activitiesBloc.currentActivity
+        : Activity(color: 0);
 
     return Form(
       key: _formKey,
@@ -64,7 +70,9 @@ class EditFormState extends State<EditForm> {
                   ),
                 ),
                 RoundedButton(
-                  label: 'Add',
+                  label: widget._activityChange == ActivityChange.add
+                      ? 'Add'
+                      : 'Edit',
                   borderColor: ThemeColors.lightGrey,
                   backgroundColor: ThemeColors.lightGrey,
                   textColor: ThemeColors.lightBlue,

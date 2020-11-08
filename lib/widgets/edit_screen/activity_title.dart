@@ -22,6 +22,7 @@ class _ActivityTitleState extends State<ActivityTitle> {
     return Padding(
       padding: const EdgeInsets.only(top: 32.0, bottom: 16),
       child: TextFormField(
+        initialValue: widget.activity.name,
         style: CustomTextStyle(ThemeColors.lightGrey),
         cursorColor: ThemeColors.lightGrey,
         decoration: InputDecoration(
