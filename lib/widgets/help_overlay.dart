@@ -10,35 +10,34 @@ class NavigationHelp extends PopupRoute {
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
     return SafeArea(
-      child: CompositedTransformFollower(
-        link: _activityLink,
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          width: 400,
-          color: ThemeColors.darkBlue.withOpacity(0.7),
-          child: Scaffold(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        width: 400,
+        color: ThemeColors.darkBlue.withOpacity(0.7),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
             backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0, // Transparency.
-              automaticallyImplyLeading: false, // Remove back button.
-              actions: [
-                IconButton(
-                    icon: Icon(
-                      Icons.close_rounded,
-                      color: ThemeColors.lightGrey,
-                    ),
-                    tooltip: 'Close help',
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
-              ],
-            ),
-            body: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
+            elevation: 0, // Transparency.
+            automaticallyImplyLeading: false, // Remove back button.
+            actions: [
+              IconButton(
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: ThemeColors.lightGrey,
+                  ),
+                  tooltip: 'Close help',
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+            ],
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CompositedTransformFollower(
+                link: _activityLink,
+                child: Padding(
                   padding: EdgeInsets.only(bottom: 50),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -55,105 +54,105 @@ class NavigationHelp extends PopupRoute {
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DirectionText(
-                          ThemeColors.pastelGrey,
-                          'left to',
-                          'skip',
-                        ),
-                        DirectionIcon(
-                          ThemeColors.pastelGrey,
-                          Icons.arrow_back_ios_rounded,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        DirectionText(
-                          ThemeColors.pastelYellow,
-                          'right to mark',
-                          'almost',
-                        ),
-                        DirectionIcon(
-                          ThemeColors.pastelYellow,
-                          Icons.arrow_forward_ios_rounded,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DirectionIcon(
-                      ThemeColors.lightGrey,
-                      Icons.touch_app_rounded,
-                    ),
-                    Text(
-                      'touch to ',
-                      style: CustomTextStyle(
-                        ThemeColors.lightGrey,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      'edit',
-                      style: CustomTextStyle(
-                        ThemeColors.lightGrey,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DirectionIcon(
-                        ThemeColors.pastelRed,
-                        Icons.arrow_downward_rounded,
-                      ),
                       DirectionText(
-                        ThemeColors.pastelRed,
-                        'up to mark',
-                        'no',
-                      )
+                        ThemeColors.pastelGrey,
+                        'left to',
+                        'skip',
+                      ),
+                      DirectionIcon(
+                        ThemeColors.pastelGrey,
+                        Icons.arrow_back_ios_rounded,
+                      ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            bottomNavigationBar: Container(
-              height: 90,
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      DirectionText(
+                        ThemeColors.pastelYellow,
+                        'right to mark',
+                        'almost',
+                      ),
+                      DirectionIcon(
+                        ThemeColors.pastelYellow,
+                        Icons.arrow_forward_ios_rounded,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DirectionIcon(
                     ThemeColors.lightGrey,
-                    Icons.first_page_rounded,
+                    Icons.touch_app_rounded,
                   ),
-                  Container(
-                    height: 56,
-                    padding: EdgeInsets.only(top: 8),
-                    child: DirectionText(
+                  Text(
+                    'touch to ',
+                    style: CustomTextStyle(
                       ThemeColors.lightGrey,
-                      'scroll left to',
-                      'add new',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    'edit',
+                    style: CustomTextStyle(
+                      ThemeColors.lightGrey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DirectionIcon(
+                      ThemeColors.pastelRed,
+                      Icons.arrow_downward_rounded,
+                    ),
+                    DirectionText(
+                      ThemeColors.pastelRed,
+                      'up to mark',
+                      'no',
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: Container(
+            height: 90,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DirectionIcon(
+                  ThemeColors.lightGrey,
+                  Icons.first_page_rounded,
+                ),
+                Container(
+                  height: 56,
+                  padding: EdgeInsets.only(top: 8),
+                  child: DirectionText(
+                    ThemeColors.lightGrey,
+                    'scroll left to',
+                    'add new',
+                  ),
+                ),
+              ],
             ),
           ),
         ),
