@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/rounded_button.dart';
+import 'package:provider/provider.dart';
 
 /// [StatefulActivityBox] with options on click.
 class OptionsActivityBox extends StatelessWidget {
@@ -15,6 +17,8 @@ class OptionsActivityBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+
     final options = Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -35,6 +39,10 @@ class OptionsActivityBox extends StatelessWidget {
           textColor: ThemeColors.lightGrey,
           label: 'Delete',
           buttonWidth: 240,
+          onPressed: () {
+            activitiesBloc.deleteActivity(activity.id);
+            Navigator.of(context).pop();
+          },
         ),
         RoundedButton(
           borderColor: ThemeColors.lightGrey,
