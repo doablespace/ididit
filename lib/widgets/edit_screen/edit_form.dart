@@ -45,7 +45,7 @@ class EditFormState extends State<EditForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 64.0),
+            padding: const EdgeInsets.only(top: 50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,39 +61,39 @@ class EditFormState extends State<EditForm> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                RoundedButton(
+                  label: 'Cancel',
+                  borderColor: ThemeColors.lightGrey,
+                  textColor: ThemeColors.lightGrey,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 Padding(
-                  padding: EdgeInsets.only(right: 12),
+                  padding: EdgeInsets.only(left: 12, right: 24),
                   child: RoundedButton(
-                    label: 'Cancel',
+                    label: widget._activityChange == ActivityChange.add
+                        ? 'Add'
+                        : 'Edit',
                     borderColor: ThemeColors.lightGrey,
-                    textColor: ThemeColors.lightGrey,
+                    backgroundColor: ThemeColors.lightGrey,
+                    textColor: ThemeColors.lightBlue,
                     onPressed: () {
-                      Navigator.pop(context);
+                      var form = _formKey.currentState;
+                      // Check for
+                      if (form.validate()) {
+                        // Saves text from text input fields.
+                        form.save();
+                        if (widget._activityChange == ActivityChange.add) {
+                          activity.created = DateTime.now();
+                          activitiesBloc.addActivity(activity);
+                        } else
+                          activitiesBloc.editActivity(activity);
+
+                        Navigator.pop(context);
+                      }
                     },
                   ),
-                ),
-                RoundedButton(
-                  label: widget._activityChange == ActivityChange.add
-                      ? 'Add'
-                      : 'Edit',
-                  borderColor: ThemeColors.lightGrey,
-                  backgroundColor: ThemeColors.lightGrey,
-                  textColor: ThemeColors.lightBlue,
-                  onPressed: () {
-                    var form = _formKey.currentState;
-                    // Check for
-                    if (form.validate()) {
-                      // Saves text from text input fields.
-                      form.save();
-                      if (widget._activityChange == ActivityChange.add) {
-                        activity.created = DateTime.now();
-                        activitiesBloc.addActivity(activity);
-                      } else
-                        activitiesBloc.editActivity(activity);
-
-                      Navigator.pop(context);
-                    }
-                  },
                 ),
               ],
             ),
