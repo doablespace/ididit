@@ -79,6 +79,7 @@ class NavigationHelp extends PopupRoute {
                         ThemeColors.pastelYellow,
                         'right to mark',
                         'almost',
+                        alignRight: true,
                       ),
                       DirectionIcon(
                         ThemeColors.pastelYellow,
@@ -124,7 +125,7 @@ class NavigationHelp extends PopupRoute {
                     ),
                     DirectionText(
                       ThemeColors.pastelRed,
-                      'up to mark',
+                      'down to mark',
                       'no',
                     )
                   ],
@@ -177,13 +178,17 @@ class DirectionText extends StatelessWidget {
   final Color color;
   final String direction;
   final String action;
+  final bool alignRight;
 
-  DirectionText(this.color, this.direction, this.action);
+  DirectionText(this.color, this.direction, this.action,
+      {this.alignRight = false});
+
   @override
   Widget build(BuildContext context) {
     final double fontSize = 18;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment:
+          alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Text(
           'swipe $direction',
