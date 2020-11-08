@@ -16,8 +16,10 @@ class OptionsActivityBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final options = Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             for (final state in activityStates)
               RoundedButton(
