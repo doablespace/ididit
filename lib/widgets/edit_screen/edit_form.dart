@@ -4,10 +4,10 @@ import 'package:ididit/models/activity.dart';
 import 'package:ididit/screens/swiping_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/edit_screen/activity_color.dart';
+import 'package:ididit/widgets/edit_screen/activity_image.dart';
 import 'package:ididit/widgets/edit_screen/activity_title.dart';
+import 'package:ididit/widgets/rounded_button.dart';
 import 'package:provider/provider.dart';
-
-import 'activity_image.dart';
 
 class EditForm extends StatefulWidget {
   @override
@@ -29,9 +29,6 @@ class EditFormState extends State<EditForm> {
   Widget build(BuildContext context) {
     // Bloc to access database.
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
-
-    double buttonWidth = 100;
-    double buttonHeight = 36;
 
     return Form(
       key: _formKey,
@@ -56,53 +53,41 @@ class EditFormState extends State<EditForm> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  height: buttonHeight,
-                  width: buttonWidth,
-                  margin: EdgeInsets.only(right: 12),
-                  decoration: new BoxDecoration(
-                    border:
-                        Border.all(color: ThemeColors.lightGrey, width: 2.0),
-                    borderRadius: new BorderRadius.all(Radius.circular(100)),
+                Padding(
+                  padding: EdgeInsets.only(right: 12),
+                  child: RoundedButton(
+                    label: 'Cancel',
+                    borderColor: ThemeColors.lightGrey,
+                    textColor: ThemeColors.lightGrey,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SwipingScreen(),
+                          ));
+                    },
                   ),
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SwipingScreen(),
-                            ));
-                      },
-                      child: Text('CANCEL',
-                          style: CustomTextStyle(ThemeColors.lightGrey))),
                 ),
-                Container(
-                  height: buttonHeight,
-                  width: buttonWidth,
-                  decoration: new BoxDecoration(
-                    color: ThemeColors.lightGrey,
-                    border:
-                        Border.all(color: ThemeColors.lightGrey, width: 2.0),
-                    borderRadius: new BorderRadius.all(Radius.circular(100)),
-                  ),
-                  child: TextButton(
-                      onPressed: () {
-                        var form = _formKey.currentState;
-                        // Check for
-                        if (form.validate()) {
-                          // Saves text from text input fields.
-                          form.save();
-                          activity.created = DateTime.now();
-                          activitiesBloc.addActivity(activity);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SwipingScreen(),
-                              ));
-                        }
-                      },
-                      child: Text('ADD',
-                          style: CustomTextStyle(ThemeColors.lightBlue))),
+                RoundedButton(
+                  label: 'Add',
+                  borderColor: ThemeColors.lightGrey,
+                  backgroundColor: ThemeColors.lightGrey,
+                  textColor: ThemeColors.lightBlue,
+                  onPressed: () {
+                    var form = _formKey.currentState;
+                    // Check for
+                    if (form.validate()) {
+                      // Saves text from text input fields.
+                      form.save();
+                      activity.created = DateTime.now();
+                      activitiesBloc.addActivity(activity);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SwipingScreen(),
+                          ));
+                    }
+                  },
                 ),
               ],
             ),
