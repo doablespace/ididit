@@ -40,8 +40,39 @@ class OptionsActivityBox extends StatelessWidget {
           label: 'Delete',
           buttonWidth: 240,
           onPressed: () {
-            activitiesBloc.deleteActivity(activity.id);
-            Navigator.of(context).pop();
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Are you sure?'),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: [
+                        Text(
+                            'Activity ${activity.name} will be permanently deleted.'),
+                        Text('Do you want to continue?'),
+                      ],
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text('Delete',
+                          style: TextStyle(color: ThemeColors.pastelRed)),
+                      onPressed: () {
+                        activitiesBloc.deleteActivity(activity.id);
+                        Navigator.of(context)..pop()..pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           },
         ),
         RoundedButton(
