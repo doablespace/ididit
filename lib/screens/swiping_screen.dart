@@ -27,51 +27,48 @@ class SwipingScreen extends StatelessWidget {
           return Container(
             decoration: BackgroundDecoration(3.0, youDidIt ? 0.57 : 0.45),
             child: Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(100),
-                child: AppBar(
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: Container(
-                    alignment: Alignment.topLeft,
-                    height: 100,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(32, 16, 72, 0),
-                      // Needed for normal text style in child.
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: ProgressBars(youDidIt: youDidIt),
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
+                elevation: 0, // For actual transparency.
+                actions: [
+                  if (!youDidIt)
+                    IconButton(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                      icon: Icon(
+                        Icons.help_center_rounded,
+                        color: ThemeColors.lowerBackground,
                       ),
+                      tooltip: 'Show help',
+                      onPressed: () {
+                        Navigator.of(context).push(NavigationHelp(_helpLink));
+                      },
                     ),
-                  ),
-                  backgroundColor: Colors.transparent,
-                  elevation: 0, // For actual transparency.
-                  actions: [
-                    if (!youDidIt)
-                      IconButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-                        icon: Icon(
-                          Icons.help_center_rounded,
-                          color: ThemeColors.lowerBackground,
-                        ),
-                        tooltip: 'Show help',
-                        onPressed: () {
-                          Navigator.of(context).push(NavigationHelp(_helpLink));
-                        },
-                      ),
-                  ],
-                ),
+                ],
               ),
               backgroundColor: Colors.transparent,
               body: youDidIt
                   ? null
                   : Container(
-                      alignment: Alignment.center,
-                      child: SingleChildScrollView(
-                        child: CompositedTransformTarget(
-                          link: _helpLink,
-                          child: CurrentActivity(),
-                        ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(32, 16, 72, 16),
+                            // Needed for normal text style in child.
+                            child: Material(
+                              type: MaterialType.transparency,
+                              child: ProgressBars(youDidIt: youDidIt),
+                            ),
+                          ),
+                          Expanded(
+                            child: CompositedTransformTarget(
+                              link: _helpLink,
+                              child: CurrentActivity(),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
               bottomNavigationBar: ActivityList(),
