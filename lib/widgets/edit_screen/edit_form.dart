@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity.dart';
-import 'package:ididit/screens/swiping_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/edit_screen/activity_color.dart';
 import 'package:ididit/widgets/edit_screen/activity_image.dart';
@@ -60,11 +59,7 @@ class EditFormState extends State<EditForm> {
                     borderColor: ThemeColors.lightGrey,
                     textColor: ThemeColors.lightGrey,
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SwipingScreen(),
-                          ));
+                      Navigator.pop(context);
                     },
                   ),
                 ),
@@ -81,11 +76,7 @@ class EditFormState extends State<EditForm> {
                       form.save();
                       activity.created = DateTime.now();
                       activitiesBloc.addActivity(activity);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SwipingScreen(),
-                          ));
+                      Navigator.pop(context);
                     }
                   },
                 ),

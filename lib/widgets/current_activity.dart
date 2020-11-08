@@ -45,19 +45,8 @@ class CurrentActivity extends StatelessWidget {
         /// Handles swipes.
         Future<bool> confirmDismiss(DismissDirection direction) {
           final activity = activitiesBloc.currentActivity;
-          final hadState = activity.logEntry != null;
-
-          // Mark the activity in the database unless user chose "skip".
-          if (direction != DismissDirection.endToStart) {
-            final targetState = ActivityState.fromDirection(direction);
-            activitiesBloc.setState(activity, targetState);
-          }
-
-          // Go to next activity only if in "normal flow" (i.e., not if user selected
-          // some already-marked activity). Or always if "skip" was chosen.
-          if (!hadState || direction == DismissDirection.endToStart)
-            activitiesBloc.selectNext();
-
+          final targetState = ActivityState.fromDirection(direction);
+          activitiesBloc.swipe(activity, targetState);
           return Future.value(false);
         }
 

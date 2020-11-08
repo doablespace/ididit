@@ -23,25 +23,25 @@ class ActivityList extends StatelessWidget {
           Widget buildItem(int index) {
             if (index == 0)
               return ClickableActivityBox(
-                  color: ThemeColors.lightGrey,
-                  size: 90,
-                  child: Icon(Icons.add_rounded,
-                      size: 48, color: ThemeColors.lightBlue),
-                  onTap: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => EditScreen()));
-                  });
+                color: ThemeColors.lightGrey,
+                size: 90,
+                child: Icon(
+                  Icons.add_rounded,
+                  size: 48,
+                  color: ThemeColors.lightBlue,
+                ),
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => EditScreen()));
+                },
+              );
 
             final activity = activities[index - 1];
             return StatefulActivityBox(
-                activity: activity,
-                size: 90,
-                onTap: () {
-                  if (activitiesBloc.currentActivity == activity)
-                    activitiesBloc.deleteActivity(activity.id);
-                  else
-                    activitiesBloc.select(activity);
-                });
+              activity: activity,
+              size: 90,
+              onTap: () => activitiesBloc.select(activity),
+            );
           }
 
           return ListView.builder(

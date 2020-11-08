@@ -17,43 +17,42 @@ class ActivityState {
   factory ActivityState.fromDirection(DismissDirection direction) {
     switch (direction) {
       case DismissDirection.up:
-        return activityStates[0];
+        return yes;
       case DismissDirection.down:
-        return activityStates[1];
+        return no;
       case DismissDirection.startToEnd:
-        return activityStates[2];
+        return almost;
       case DismissDirection.endToStart:
-        return activityStates[3];
+        return skip;
       default:
         throw ArgumentError.value(
             direction, 'direction', 'Invalid DismissDirection provided.');
     }
   }
-}
 
-final activityStates = [
-  ActivityState(
+  static final yes = ActivityState(
     value: 0,
     iconData: Icons.check_rounded,
     text: 'yes',
     color: ThemeColors.pastelGreen,
-  ),
-  ActivityState(
+  );
+  static final no = ActivityState(
     value: 1,
     iconData: Icons.close_rounded,
     text: 'no',
     color: ThemeColors.pastelRed,
-  ),
-  ActivityState(
+  );
+  static final almost = ActivityState(
     value: 2,
     iconData: Icons.show_chart_rounded,
     text: 'almost',
     color: ThemeColors.pastelYellow,
-  ),
-  ActivityState(
+  );
+  static final skip = ActivityState(
     value: 3,
     iconData: Icons.chevron_left_rounded,
     text: 'skip',
     color: ThemeColors.pastelGrey,
-  ),
-];
+  );
+  static final values = [yes, no, almost, skip];
+}
