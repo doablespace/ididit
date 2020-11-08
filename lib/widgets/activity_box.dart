@@ -111,7 +111,7 @@ class StatefulActivityBox extends StatelessWidget {
           builder: (context, logEntry, child) {
             final state = logEntry?.state;
             return ClickableActivityBox(
-              color: activity.accent,
+              color: activity.ink,
               size: _sizes.box,
               onTap: onTap,
               child: Stack(

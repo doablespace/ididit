@@ -65,7 +65,7 @@ class OptionsActivityBox extends StatelessWidget {
                       child: Text('Delete'.toUpperCase(),
                           style: TextStyle(color: ThemeColors.pastelRed)),
                       onPressed: () {
-                        activitiesBloc.deleteActivity(activity.id);
+                        activitiesBloc.deleteActivity(activity);
                         Navigator.of(context)..pop()..pop();
                       },
                     ),
