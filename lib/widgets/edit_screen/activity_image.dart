@@ -72,7 +72,7 @@ Stack selectIllustrationPrompt(Activity activity, double imageSize) {
     Align(
       alignment: Alignment(0, -0.8),
       child: Text(
-        'Hold to select illustration',
+        'Tap to select illustration',
         style: CustomTextStyle(ThemeColors.darkBlue, fontSize: 20),
         textAlign: TextAlign.center,
       ),
