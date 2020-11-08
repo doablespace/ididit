@@ -31,6 +31,7 @@ class ActivityList extends StatelessWidget {
             return StatefulActivityBox(
               activity: activity,
               size: 90,
+              icon: 0,
               onTap: () => activitiesBloc.select(activity),
             );
           }
