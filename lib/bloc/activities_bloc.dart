@@ -118,12 +118,12 @@ class ActivitiesBloc extends Bloc {
     }
   }
 
-  void swipe(Activity activity, ActivityState targetState) {
+  void swipe(Activity activity, ActivityState targetState) async {
     final previousState = activity.state;
 
     // Mark the activity in the database unless user chose "skip".
     if (targetState != ActivityState.skip) {
-      _setActivityState(activity, targetState);
+      await _setActivityState(activity, targetState);
       progress.update(previousState, targetState);
     }
 
@@ -148,11 +148,14 @@ class ActivitiesBloc extends Bloc {
       }
     }
 
+    // If current activity is the only one, stay at it.
+    if (_currentActivity.state == ActivityState.skip) return;
+
     // If there is no such activity, we are done.
     _setCurrent(null);
   }
 
-  void _setActivityState(Activity activity, ActivityState state) async {
+  Future<void> _setActivityState(Activity activity, ActivityState state) async {
     await _db.markActivity(activity, DateTime.now(), state.value);
 
     _updateYouDidIt();
