@@ -96,9 +96,12 @@ class StatefulActivityBox extends StatelessWidget {
   final Activity activity;
   final void Function() onTap;
   final _Sizes _sizes;
+  final double _icon;
 
-  StatefulActivityBox({Key key, this.activity, this.onTap, double size})
+  StatefulActivityBox(
+      {Key key, this.activity, this.onTap, double size, double icon})
       : _sizes = _Sizes(size),
+        _icon = icon,
         super(key: key);
 
   @override
@@ -121,7 +124,7 @@ class StatefulActivityBox extends StatelessWidget {
                     child: ActivityIcon(
                       activity.iconAsset,
                       color: ThemeColors.inkColor,
-                      size: _sizes.icon,
+                      size: _icon == null ? _sizes.icon : _sizes.box - _icon,
                     ),
                   ),
 

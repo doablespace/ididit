@@ -7,7 +7,6 @@ import 'package:ididit/screens/edit_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/options_activity_box.dart';
-import 'package:ididit/widgets/progress_bars.dart';
 import 'package:provider/provider.dart';
 
 final activityTextStyle = TextStyle(
@@ -114,6 +113,7 @@ class _ActivityColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         box,
         Container(
