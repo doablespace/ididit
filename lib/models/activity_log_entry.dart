@@ -40,6 +40,7 @@ class ActivityLogEntry extends ChangeNotifier {
     notifyListeners();
   }
 
-  ActivityState get state =>
-      status != null ? activityStates[status % activityStates.length] : null;
+  ActivityState get state => status != null
+      ? ActivityState.values[status % ActivityState.values.length]
+      : null;
 }

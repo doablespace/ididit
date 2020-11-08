@@ -80,14 +80,27 @@ class ActivitiesBloc extends Bloc {
     }
   }
 
-  void selectNext() {
+  void swipe(Activity activity, ActivityState targetState) {
+    final hadState = activity.logEntry != null;
+
+    // Mark the activity in the database unless user chose "skip".
+    if (targetState != ActivityState.skip) {
+      _setActivityState(activity, targetState);
+    }
+
+    // Go to next activity only if in "normal flow" (i.e., not if user selected
+    // some already-marked activity). Or always if "skip" was chosen.
+    if (!hadState || targetState == ActivityState.skip) _selectNext();
+  }
+
+  void _selectNext() {
     if (_activities.length > 1) {
       final index = _activities.indexOf(_currentActivity);
       _setCurrent(_activities[(index + 1) % _activities.length]);
     }
   }
 
-  void setState(Activity activity, ActivityState state) async {
+  void _setActivityState(Activity activity, ActivityState state) async {
     await _db.markActivity(activity, DateTime.now(), state.value);
   }
 

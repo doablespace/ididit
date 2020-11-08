@@ -25,7 +25,7 @@ class OptionsActivityBox extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            for (final state in activityStates)
+            for (final state in ActivityState.values)
               RoundedButton(
                 borderColor: state.color,
                 textColor: state.color,
