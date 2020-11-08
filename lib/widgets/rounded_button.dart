@@ -12,6 +12,7 @@ class RoundedButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.icon,
+    this.iconLabel,
   }) : super(key: key);
 
   final double buttonHeight;
@@ -22,6 +23,7 @@ class RoundedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Widget icon;
+  final IconData iconLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +41,26 @@ class RoundedButton extends StatelessWidget {
               child: icon,
               style: TextButton.styleFrom(padding: EdgeInsets.zero),
             )
-          : TextButton(
-              onPressed: onPressed,
-              child:
-                  Text(label.toUpperCase(), style: CustomTextStyle(textColor)),
-            ),
+          : iconLabel != null
+              ? TextButton.icon(
+                  onPressed: onPressed,
+                  icon: Transform(
+                    child: Icon(iconLabel, color: textColor),
+                    // Icons are larger than text, so have to start earlier.
+                    transform: Matrix4.translationValues(0.0, -5.0, 0.0),
+                  ),
+                  label: Text(
+                    label.toUpperCase(),
+                    style: CustomTextStyle(textColor),
+                  ),
+                )
+              : TextButton(
+                  onPressed: onPressed,
+                  child: Text(
+                    label.toUpperCase(),
+                    style: CustomTextStyle(textColor),
+                  ),
+                ),
     );
   }
 }

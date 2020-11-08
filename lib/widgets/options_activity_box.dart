@@ -43,6 +43,7 @@ class OptionsActivityBox extends StatelessWidget {
           borderColor: ThemeColors.lightGrey,
           textColor: ThemeColors.lightGrey,
           label: 'Delete',
+          iconLabel: Icons.delete_forever_rounded,
           buttonWidth: 240,
           onPressed: () {
             showDialog(
@@ -85,6 +86,7 @@ class OptionsActivityBox extends StatelessWidget {
           backgroundColor: ThemeColors.lightGrey,
           textColor: ThemeColors.lightBlue,
           label: 'Edit',
+          iconLabel: Icons.create_rounded,
           buttonWidth: 240,
           onPressed: () {
             Navigator.pushReplacement(
