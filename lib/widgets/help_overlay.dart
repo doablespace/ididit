@@ -97,7 +97,7 @@ class NavigationHelp extends PopupRoute {
                     Icons.touch_app_rounded,
                   ),
                   Text(
-                    'touch to ',
+                    'touch for ',
                     style: CustomTextStyle(
                       ThemeColors.lightGrey,
                       fontSize: 18,
@@ -105,7 +105,7 @@ class NavigationHelp extends PopupRoute {
                     ),
                   ),
                   Text(
-                    'edit',
+                    'menu',
                     style: CustomTextStyle(
                       ThemeColors.lightGrey,
                       fontSize: 18,

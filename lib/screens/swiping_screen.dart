@@ -36,7 +36,7 @@ class SwipingScreen extends StatelessWidget {
                   IconButton(
                     padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                     icon: Icon(
-                      Icons.more_vert_rounded,
+                      Icons.help,
                       color: ThemeColors.lightBlue,
                     ),
                     tooltip: 'Show help',
