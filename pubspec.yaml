@@ -31,6 +31,9 @@ dependencies:
   scrollable_positioned_list: ^0.1.8
   uni_links: ^0.4.0
   share: '>=0.6.5+4 <2.0.0'
+  fancy_on_boarding: ^1.7.0
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

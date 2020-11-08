@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
+import 'package:ididit/screens/onboarding_screen.dart';
 import 'package:ididit/ui/background_decoration.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
@@ -14,6 +16,7 @@ class SwipingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _onboard(context);
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
     return SafeArea(
@@ -78,5 +81,11 @@ class SwipingScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _onboard(BuildContext context) async {
+    if (!await Hive.boxExists('first_run'))
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => OnboardingScreen()));
   }
 }
