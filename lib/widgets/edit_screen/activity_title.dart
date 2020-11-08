@@ -61,7 +61,7 @@ class _ActivityTitleState extends State<ActivityTitle> {
             setState(() {
               _isError = true;
             });
-            return 'Sadly, you have to do with maximum 50 characters.';
+            return 'Sadly, maximum 50 characters.';
           }
           if (title.length <= 0) {
             setState(() {
