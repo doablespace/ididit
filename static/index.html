@@ -14,13 +14,27 @@
         openInApp();
     }
     </script>
+    <style>
+        img {
+            height: calc(2.875rem + 26px);
+            margin: -12px;
+        }
+    </style>
 </head>
 <body class="container pt-5">
  
     <div class="jumbotron text-center">
-        <h1 class="display-4">You have been challenged to Do It!</h1>
-        <p class="lead">Click below to open the challenge in "I Did It" app.</p>
-        <a class="btn btn-success btn-lg" href="javascript:openInApp();" role="button">Open in "I Did It"</a>
+        <h1 class="display-4">You have been challenged to <strong>Do It</strong>!</h1>
+        <p class="lead">
+            This page should automatically import an activity into your <em>I Did It</em> app. If nothing happens, it might be because:
+            <ul class="list-unstyled">
+                <li>You have not installed the <em>I Did It</em> app&mdash;<a href="https://play.google.com/store/apps/details?id=com.knowledgepicker.ididit">Install It (Android)</a>!</li>
+                <li>You are not on your phone. Open this page on your phone and <a href="javascript:openInApp();" role="button">click to open</a> this activity in your <em>I Did It</em> app.</li>
+            </ul>
+        </p>
+        <hr class="my-4" />
+        <a class="btn btn-success btn-lg mr-2" href="javascript:openInApp();" role="button">Open in <em>I Did It</em></a>
+        <a href="https://play.google.com/store/apps/details?id=com.knowledgepicker.ididit"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/></a>
     </div>
  
 </body>
