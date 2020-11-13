@@ -1,4 +1,4 @@
-package com.example.ididit
+package com.knowledgepicker.ididit
 
 import io.flutter.embedding.android.FlutterActivity
 
