@@ -13,4 +13,14 @@ class DateTimeHelper {
     if (value == null) return null;
     return value.toUtc().difference(epoch).inDays;
   }
+
+  static DateTime fromRelative(DateTime base, int microseconds) {
+    if (base == null) return null;
+    return base.toUtc().add(Duration(microseconds: microseconds));
+  }
+
+  static int toRelative(DateTime base, DateTime value) {
+    if (base == null || value == null) return null;
+    return value.toUtc().difference(base.toUtc()).inMicroseconds;
+  }
 }

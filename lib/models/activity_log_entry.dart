@@ -14,13 +14,13 @@ class ActivityLogEntry extends ChangeNotifier {
       : _status = status;
 
   factory ActivityLogEntry.fromMap(Map<String, dynamic> map) {
+    final targetTime = DateTimeHelper.daysFromDatabase(map['target_time']);
     return ActivityLogEntry(
       id: map['id'],
       activityId: map['activity_id'],
       status: map['status'],
-      targetTime: DateTimeHelper.daysFromDatabase(map['target_time']),
-      modified:
-          DateTime.fromMicrosecondsSinceEpoch(map['modified'], isUtc: true),
+      targetTime: targetTime,
+      modified: DateTimeHelper.fromRelative(targetTime, map['modified']),
     );
   }
 
@@ -30,7 +30,7 @@ class ActivityLogEntry extends ChangeNotifier {
       'activity_id': activityId,
       'status': status,
       'target_time': DateTimeHelper.daysToDatabase(targetTime),
-      'modified': modified.toUtc().microsecondsSinceEpoch,
+      'modified': DateTimeHelper.toRelative(targetTime, modified),
     };
   }
 
