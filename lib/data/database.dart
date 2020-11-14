@@ -18,7 +18,7 @@ class Db {
   static FutureOr<void> _onUpgrade(
       Database db, int oldVersion, int newVersion) async {
     // Execute necessary migrations in order.
-    for (var i = oldVersion + 1; i <= newVersion; i++) {
+    for (var i = oldVersion; i < newVersion; i++) {
       await versions[i].execute(db);
     }
   }

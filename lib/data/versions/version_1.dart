@@ -5,7 +5,7 @@ class Version1 extends Version {
   const Version1();
 
   @override
-  Future<void> execute(Database db) async {
+  Future<void> execute(DatabaseExecutor db) async {
     await db.execute('''
       CREATE TABLE activities(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
