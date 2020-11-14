@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ididit/data/day_splitter.dart';
+import 'package:ididit/data/versions/versions.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_log_entry.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,29 +10,17 @@ import 'package:sqflite/sqflite.dart';
 class Db {
   final Future<Database> _database;
 
-  Db() : _database = openDatabase('ididit.db', onCreate: _onCreate, version: 1);
+  Db()
+      : _database = openDatabase('ididit.db',
+            onUpgrade: _onUpgrade, version: versions.length);
 
   /// Runs initial database migrations.
-  static FutureOr<void> _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE activities(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        created INTEGER,
-        name TEXT,
-        icon INTEGER,
-        color INTEGER
-      );
-      ''');
-    await db.execute('''
-      CREATE TABLE activity_log(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        activity_id INTEGER,
-        status INTEGER,
-        target_time INTEGER,
-        modified INTEGER,
-        FOREIGN KEY(activity_id) REFERENCES activities(id)
-      );
-      ''');
+  static FutureOr<void> _onUpgrade(
+      Database db, int oldVersion, int newVersion) async {
+    // Execute necessary migrations in order.
+    for (var i = oldVersion + 1; i <= newVersion; i++) {
+      await versions[i].execute(db);
+    }
   }
 
   /// Inserts or updates an [Activity].
