@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ididit/models/activity_states.dart';
+import 'package:ididit/models/date_time_helper.dart';
 
 class ActivityLogEntry extends ChangeNotifier {
   int id;
@@ -17,8 +18,7 @@ class ActivityLogEntry extends ChangeNotifier {
       id: map['id'],
       activityId: map['activity_id'],
       status: map['status'],
-      targetTime:
-          DateTime.fromMicrosecondsSinceEpoch(map['target_time'], isUtc: true),
+      targetTime: DateTimeHelper.daysFromDatabase(map['target_time']),
       modified:
           DateTime.fromMicrosecondsSinceEpoch(map['modified'], isUtc: true),
     );
@@ -29,7 +29,7 @@ class ActivityLogEntry extends ChangeNotifier {
       'id': id,
       'activity_id': activityId,
       'status': status,
-      'target_time': targetTime.toUtc().microsecondsSinceEpoch,
+      'target_time': DateTimeHelper.daysToDatabase(targetTime),
       'modified': modified.toUtc().microsecondsSinceEpoch,
     };
   }
