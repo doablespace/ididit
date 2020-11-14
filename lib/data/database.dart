@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:ididit/data/day_splitter.dart';
 import 'package:ididit/data/versions/versions.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_log_entry.dart';
+import 'package:ididit/models/date_time_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Db {
@@ -30,14 +29,15 @@ class Db {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Activity>> findActivities(DateTime time) async {
+  /// Finds activities and their corresponding [Activity.logEntry] for the
+  /// specified [day].
+  Future<List<Activity>> findActivities(DateTime day) async {
     final Database db = await _database;
-    final range = daySplitter.getRange(time);
     final List<Map<String, dynamic>> maps = await db.query('activities');
     final result = List<Activity>(maps.length);
     for (var i = 0; i < result.length; i++) {
       final activity = Activity.fromMap(maps[i]);
-      final logs = await findActivityLog(activity.id, range);
+      final logs = await findActivityLog(activity.id, day);
       activity.logEntry = logs.isNotEmpty ? logs.last : null;
       result[i] = activity;
     }
@@ -54,25 +54,23 @@ class Db {
     await db.delete('activity_log', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<List<ActivityLogEntry>> findActivityLog(
-      int id, DateTimeRange range) async {
+  /// Finds [ActivityLogEntry] of [Activity] with the specified [id] for the
+  /// specified [day].
+  Future<List<ActivityLogEntry>> findActivityLog(int id, DateTime day) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activity_log',
-        where: 'activity_id = ? and target_time >= ? and target_time < ?',
-        whereArgs: [
-          id,
-          range.start.microsecondsSinceEpoch,
-          range.end.microsecondsSinceEpoch
-        ]);
+        where: 'activity_id = ? and target_time = ?',
+        whereArgs: [id, DateTimeHelper.daysToDatabase(day)]);
     return List.generate(
         maps.length, (index) => ActivityLogEntry.fromMap(maps[index]));
   }
 
-  Future<void> markActivity(
-      Activity activity, DateTime time, int status) async {
+  /// Adds or updates [ActivityLogEntry] of the specified [activity] for the
+  /// specified [day] so that it has the specified [status].
+  Future<void> markActivity(Activity activity, DateTime day, int status) async {
     final Database db = await _database;
     if (activity.logEntry != null &&
-        daySplitter.inSameDay(activity.logEntry.targetTime, time)) {
+        DateTimeHelper.areSameDay(activity.logEntry.targetTime, day)) {
       activity.logEntry.status = status;
       await db.update('activity_log', activity.logEntry.toMap(),
           where: 'id = ?', whereArgs: [activity.logEntry.id]);
@@ -80,8 +78,8 @@ class Db {
       activity.logEntry = ActivityLogEntry(
         activityId: activity.id,
         status: status,
-        targetTime: time,
-        modified: time,
+        targetTime: day,
+        modified: DateTime.now().toUtc(),
       );
       activity.logEntry.id =
           await db.insert('activity_log', activity.logEntry.toMap());
