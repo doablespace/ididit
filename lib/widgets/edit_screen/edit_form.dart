@@ -131,7 +131,7 @@ class EditFormState extends State<EditForm> {
                         if (widget._activityChange == ActivityChange.edit) {
                           activitiesBloc.editActivity(activity);
                         } else {
-                          activity.created = DateTime.now();
+                          activity.created = DateTime.now().toUtc();
                           activitiesBloc.addActivity(activity);
                         }
 
