@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/date_time_helper.dart';
-import 'package:ididit/ui/color_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +29,24 @@ class _DaySelectorState extends State<DaySelector> {
         itemBuilder: (context, index) {
           final diff = dayDifference(currentIndex, index);
           final targetDay = currentDay.add(Duration(days: diff));
-          return Center(
-            child: _Day(targetDay),
+          return InkWell(
+            onTap: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: targetDay,
+                firstDate: targetDay.subtract(Duration(days: 10000)),
+                lastDate: targetDay.add(Duration(days: 10000)),
+              );
+              if (date != null) {
+                activities.changeDay(date);
+                setState(() {
+                  currentDay = date;
+                });
+              }
+            },
+            child: Center(
+              child: _Day(targetDay),
+            ),
           );
         },
         onIndexChanged: (index) {
@@ -44,7 +59,6 @@ class _DaySelectorState extends State<DaySelector> {
           });
         },
         control: SwiperControl(
-          color: ThemeColors.inkColor,
           iconPrevious: Icons.chevron_left_rounded,
           iconNext: Icons.chevron_right_rounded,
         ),
@@ -71,6 +85,7 @@ class _Day extends StatelessWidget {
     final today = DateTime.now().toUtc();
     final yesterday = today.subtract(const Duration(days: 1));
     final tomorrow = today.add(const Duration(days: 1));
+    final textStyle = DefaultTextStyle.of(context).style;
 
     return Text.rich(TextSpan(children: [
       if (DateTimeHelper.areSameDay(today, day)) TextSpan(text: 'Today, '),
@@ -80,7 +95,7 @@ class _Day extends StatelessWidget {
         TextSpan(text: 'Tomorrow, '),
       TextSpan(
         text: DateFormat.yMEd().format(day),
-        style: TextStyle(color: ThemeColors.inkColor.withOpacity(0.7)),
+        style: textStyle.apply(color: textStyle.color.withOpacity(0.7)),
       ),
     ]));
   }

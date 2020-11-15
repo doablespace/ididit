@@ -29,4 +29,7 @@ class DateTimeHelper {
     y = y.toUtc();
     return x.year == y.year && x.month == y.month && x.day == y.day;
   }
+
+  static final DateTime min = DateTime.utc(-271821, 04, 20);
+  static final DateTime max = DateTime.utc(275760, 09, 13);
 }

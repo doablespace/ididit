@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/screens/onboarding_screen.dart';
 import 'package:ididit/ui/background_decoration.dart';
-import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
 import 'package:ididit/widgets/current_activity.dart';
 import 'package:ididit/widgets/day_selector.dart';
@@ -35,10 +34,7 @@ class SwipingScreen extends StatelessWidget {
               actions: [
                 if (!youDidIt)
                   IconButton(
-                    icon: Icon(
-                      Icons.help_center_rounded,
-                      color: ThemeColors.lowerBackground,
-                    ),
+                    icon: Icon(Icons.help_center_rounded),
                     tooltip: 'Show help',
                     onPressed: () {
                       Navigator.of(context).push(NavigationHelp(_helpLink));
