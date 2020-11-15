@@ -73,14 +73,13 @@ class SwipingScreen extends StatelessWidget {
                       child: ProgressBars(youDidIt: youDidIt),
                     ),
                   ),
-                  youDidIt
-                      ? Text('') // TODO: Improve. Cannot have empty widget.
-                      : Expanded(
-                          child: CompositedTransformTarget(
-                            link: _helpLink,
-                            child: CurrentActivity(),
-                          ),
-                        ),
+                  if (!youDidIt)
+                    Expanded(
+                      child: CompositedTransformTarget(
+                        link: _helpLink,
+                        child: CurrentActivity(),
+                      ),
+                    ),
                 ],
               ),
             ),
