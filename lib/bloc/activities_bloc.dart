@@ -139,7 +139,7 @@ class ActivitiesBloc extends Bloc {
 
     // Mark the activity in the database unless user chose "skip".
     if (targetState != ActivityState.skip) {
-      await _setActivityState(activity, targetState);
+      await _setActivityState(activity, _currentDay, targetState);
       progress.update(previousState, targetState);
     }
 
@@ -171,8 +171,9 @@ class ActivitiesBloc extends Bloc {
     _setCurrent(null);
   }
 
-  Future<void> _setActivityState(Activity activity, ActivityState state) async {
-    await _db.markActivity(activity, DateTime.now(), state.value);
+  Future<void> _setActivityState(
+      Activity activity, DateTime day, ActivityState state) async {
+    await _db.markActivity(activity, day, state.value);
 
     _updateYouDidIt();
   }
