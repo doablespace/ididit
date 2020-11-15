@@ -5,6 +5,7 @@ import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
 import 'package:ididit/platform/deep_link_listener.dart';
 import 'package:ididit/screens/swiping_screen.dart';
+import 'package:ididit/ui/color_theme.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,9 +24,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'I Did It',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+        theme: ThemeData.from(
+          colorScheme: ColorScheme.light(
+            primary: ThemeColors.upperBackground,
+          ),
           // Apply Raleway font throughout app.
           textTheme: GoogleFonts.ralewayTextTheme(
             Theme.of(context).textTheme,

@@ -12,10 +12,12 @@ class ActivitiesBloc extends Bloc {
   final List<Activity> _activities = [];
   Activity _currentActivity;
   bool _youDidIt;
+  DateTime _currentDay = DateTime.now().toUtc();
   final _stateController = StreamController<ActivitiesState>.broadcast();
-  final _activityController = StreamController<List<Activity>>();
+  final _activityController = StreamController<List<Activity>>.broadcast();
   final _currentController = StreamController<Activity>.broadcast();
-  final _youDidItController = StreamController<bool>();
+  final _youDidItController = StreamController<bool>.broadcast();
+  final _currentDayController = StreamController<DateTime>.broadcast();
   final progress = DayProgress();
 
   ActivitiesBloc(this._db) {
@@ -30,9 +32,11 @@ class ActivitiesBloc extends Bloc {
   Stream<Activity> get currentActivityStream => _currentController.stream;
   bool get youDidIt => _youDidIt;
   Stream<bool> get youDidItStream => _youDidItController.stream;
+  DateTime get currentDay => _currentDay;
+  Stream<DateTime> get currentDayStream => _currentDayController.stream;
 
   void _init() async {
-    _activities.addAll(await _db.findActivities(DateTime.now()));
+    _activities.addAll(await _db.findActivities(_currentDay));
     _activityController.sink.add(_activities);
 
     // Update state.
@@ -50,6 +54,12 @@ class ActivitiesBloc extends Bloc {
     if (_activities.isNotEmpty && !_youDidIt) {
       _setCurrent(_activities.first);
     }
+  }
+
+  void changeDay(DateTime day) async {
+    await _db.findActivityLogs(_activities, day);
+    _currentDay = day;
+    _currentDayController.sink.add(day);
   }
 
   void editActivity(Activity activity) async {
@@ -188,6 +198,7 @@ class ActivitiesBloc extends Bloc {
     _activityController.close();
     _currentController.close();
     _youDidItController.close();
+    _currentDayController.close();
   }
 }
 

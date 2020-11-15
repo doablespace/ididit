@@ -34,14 +34,19 @@ class Db {
   Future<List<Activity>> findActivities(DateTime day) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activities');
-    final result = List<Activity>(maps.length);
-    for (var i = 0; i < result.length; i++) {
-      final activity = Activity.fromMap(maps[i]);
+    final activities = List<Activity>.generate(
+        maps.length, (index) => Activity.fromMap(maps[index]));
+    await findActivityLogs(activities, day);
+    return activities;
+  }
+
+  /// Fills [Activity.logEntry] for each of [activities] for the specified
+  /// [day].
+  Future<void> findActivityLogs(List<Activity> activities, DateTime day) async {
+    for (final activity in activities) {
       final logs = await findActivityLog(activity.id, day);
       activity.logEntry = logs.isNotEmpty ? logs.last : null;
-      result[i] = activity;
     }
-    return result;
   }
 
   Future<void> deleteActivity(int id) async {
