@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/models/activity_states.dart';
@@ -61,13 +62,18 @@ class ProgressBars extends StatelessWidget {
           linearStrokeCap: LinearStrokeCap.roundAll,
           progressColor: state.color,
           backgroundColor: Colors.transparent,
-          leading: SizedBox(
-            width: 20,
-            child: Text(
-              '$value',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+          leading: Padding(
+            padding: EdgeInsets.only(right: 8),
+            child: SizedBox(
+              width: 40,
+              child: AutoSizeText(
+                '$value',
+                maxLines: 1,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ),
