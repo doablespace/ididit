@@ -18,9 +18,6 @@ class ActivityImage extends StatefulWidget {
 }
 
 class _ActivityImageState extends State<ActivityImage> {
-  // Dummy icon id just for rerendering it after selection.
-  int _imageId;
-
   Future<int> _selectImage(BuildContext context) async {
     return await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ImagesScreen()));
@@ -35,9 +32,7 @@ class _ActivityImageState extends State<ActivityImage> {
         // Update the referenced activity.
         widget.activity.icon = imageId;
         // Redraw the picture.
-        setState(() {
-          _imageId = imageId;
-        });
+        setState(() {});
       },
       child: ActivityBox(
         color: widget.activity.ink,
