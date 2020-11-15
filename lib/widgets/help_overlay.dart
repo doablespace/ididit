@@ -32,6 +32,15 @@ class NavigationHelp extends PopupRoute {
                 },
               ),
             ],
+            title: SizedBox(
+              height: kToolbarHeight,
+              child: _DirectionHelp(
+                icon: Icons.settings_ethernet_rounded,
+                color: ThemeColors.upperBackground,
+                textIntro: 'scroll or tap to ',
+                textMain: 'change days',
+              ),
+            ),
           ),
           body: Stack(
             children: [
@@ -191,6 +200,7 @@ class _DirectionHelp extends StatelessWidget {
               color: color,
               fontWeight: FontWeight.w400,
             ),
+            maxLines: 2,
           ),
         ),
         SizedBox(width: 6, height: 6),
