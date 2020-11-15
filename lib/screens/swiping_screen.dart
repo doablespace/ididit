@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/screens/onboarding_screen.dart';
 import 'package:ididit/ui/background_decoration.dart';
+import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
 import 'package:ididit/widgets/current_activity.dart';
 import 'package:ididit/widgets/day_selector.dart';
@@ -42,6 +43,22 @@ class SwipingScreen extends StatelessWidget {
                   ),
               ],
               title: DaySelector(),
+
+              // Loading progress bar
+              flexibleSpace: Align(
+                alignment: Alignment.bottomCenter,
+                child: StreamBuilder(
+                  stream: activitiesBloc.loadingStream,
+                  initialData: activitiesBloc.loading,
+                  builder: (context, snapshot) {
+                    return LinearProgressIndicator(
+                      value: snapshot.data,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(ThemeColors.inkColor),
+                    );
+                  },
+                ),
+              ),
             ),
             backgroundColor: Colors.transparent,
             body: Container(

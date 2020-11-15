@@ -6,6 +6,8 @@ import 'package:ididit/models/activity_log_entry.dart';
 import 'package:ididit/models/date_time_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
+typedef void LoadingProgress(int loaded, int total);
+
 class Db {
   final Future<Database> _database;
 
@@ -31,21 +33,25 @@ class Db {
 
   /// Finds activities and their corresponding [Activity.logEntry] for the
   /// specified [day].
-  Future<List<Activity>> findActivities(DateTime day) async {
+  Future<List<Activity>> findActivities(DateTime day,
+      {LoadingProgress progress}) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activities');
     final activities = List<Activity>.generate(
         maps.length, (index) => Activity.fromMap(maps[index]));
-    await findActivityLogs(activities, day);
+    await findActivityLogs(activities, day, progress: progress);
     return activities;
   }
 
   /// Fills [Activity.logEntry] for each of [activities] for the specified
   /// [day].
-  Future<void> findActivityLogs(List<Activity> activities, DateTime day) async {
+  Future<void> findActivityLogs(List<Activity> activities, DateTime day,
+      {LoadingProgress progress}) async {
+    var i = 0;
     for (final activity in activities) {
       final logs = await findActivityLog(activity.id, day);
       activity.logEntry = logs.isNotEmpty ? logs.last : null;
+      progress?.call(i++, activities.length);
     }
   }
 

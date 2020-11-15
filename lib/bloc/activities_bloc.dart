@@ -13,11 +13,13 @@ class ActivitiesBloc extends Bloc {
   Activity _currentActivity;
   bool _youDidIt;
   DateTime _currentDay = DateTime.now().toUtc();
+  double _loading = 0.0;
   final _stateController = StreamController<ActivitiesState>.broadcast();
   final _activityController = StreamController<List<Activity>>.broadcast();
   final _currentController = StreamController<Activity>.broadcast();
   final _youDidItController = StreamController<bool>.broadcast();
   final _currentDayController = StreamController<DateTime>.broadcast();
+  final _loadingController = StreamController<double>.broadcast();
   final progress = DayProgress();
 
   ActivitiesBloc(this._db) {
@@ -34,9 +36,16 @@ class ActivitiesBloc extends Bloc {
   Stream<bool> get youDidItStream => _youDidItController.stream;
   DateTime get currentDay => _currentDay;
   Stream<DateTime> get currentDayStream => _currentDayController.stream;
+  double get loading => _loading;
+  Stream<double> get loadingStream => _loadingController.stream;
 
   void _init() async {
-    _activities.addAll(await _db.findActivities(_currentDay));
+    // Load all activities and their current state.
+    final activities =
+        await _db.findActivities(_currentDay, progress: _progress);
+    _setLoading(0);
+
+    _activities.addAll(activities);
     _activityController.sink.add(_activities);
 
     // Update state.
@@ -57,7 +66,10 @@ class ActivitiesBloc extends Bloc {
   }
 
   void changeDay(DateTime day) async {
-    await _db.findActivityLogs(_activities, day);
+    // Update current activity state of all activities.
+    await _db.findActivityLogs(_activities, day, progress: _progress);
+    _setLoading(0);
+
     _currentDay = day;
     _currentDayController.sink.add(day);
 
@@ -189,6 +201,15 @@ class ActivitiesBloc extends Bloc {
     _stateController.sink.add(state);
   }
 
+  void _progress(int loaded, int total) => _setLoading(loaded / total);
+
+  void _setLoading(double value) {
+    if (_loading != value) {
+      _loading = value;
+      _loadingController.sink.add(value);
+    }
+  }
+
   void _updateYouDidIt() {
     final value = _currentActivity == null &&
         _activities.isNotEmpty &&
@@ -206,6 +227,7 @@ class ActivitiesBloc extends Bloc {
     _currentController.close();
     _youDidItController.close();
     _currentDayController.close();
+    _loadingController.close();
   }
 }
 
