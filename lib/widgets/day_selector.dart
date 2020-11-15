@@ -31,8 +31,8 @@ class _DaySelectorState extends State<DaySelector> {
           final diff = dayDifference(currentIndex, index);
           final targetDay = currentDay.add(Duration(days: diff));
           return Padding(
-            // 40 = icon size (30) + 2 * padding (5)
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            // 40 = icon size (30) + padding (5)
+            padding: EdgeInsets.symmetric(horizontal: 35),
             child: InkWell(
               onTap: () async {
                 var date = await showDatePicker(
@@ -51,8 +51,11 @@ class _DaySelectorState extends State<DaySelector> {
                   });
                 }
               },
-              child: Center(
-                child: _Day(targetDay),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Center(
+                  child: _Day(targetDay),
+                ),
               ),
             ),
           );
