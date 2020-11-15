@@ -66,8 +66,7 @@ class SwipingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.fromLTRB(32, 16, youDidIt ? 32 : 72, 16),
+                    padding: EdgeInsets.fromLTRB(32, 16, 52, 16),
                     // Needed for normal text style in child.
                     child: Material(
                       type: MaterialType.transparency,
