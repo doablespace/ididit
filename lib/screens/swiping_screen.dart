@@ -28,7 +28,7 @@ class SwipingScreen extends StatelessWidget {
         final youDidIt = snapshot.data ?? false;
 
         return Container(
-          decoration: BackgroundDecoration(3.0, youDidIt ? 0.57 : 0.45),
+          decoration: BackgroundDecoration(3.0, youDidIt ? 0.57 : 0.48),
           child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
