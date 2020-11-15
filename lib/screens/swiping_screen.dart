@@ -13,8 +13,8 @@ import 'package:ididit/widgets/progress_bars.dart';
 import 'package:provider/provider.dart';
 
 class SwipingScreen extends StatelessWidget {
-  // Link between main activity position and overlayed help.
-  final LayerLink _helpLink = LayerLink();
+  // Links to synchronize the overlay help.
+  final LayerLink _boxLink = LayerLink();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class SwipingScreen extends StatelessWidget {
                     icon: Icon(Icons.help_center_rounded),
                     tooltip: 'Show help',
                     onPressed: () {
-                      Navigator.of(context).push(NavigationHelp(_helpLink));
+                      Navigator.of(context).push(NavigationHelp(_boxLink));
                     },
                   ),
               ],
@@ -75,10 +75,7 @@ class SwipingScreen extends StatelessWidget {
                   ),
                   if (!youDidIt)
                     Expanded(
-                      child: CompositedTransformTarget(
-                        link: _helpLink,
-                        child: CurrentActivity(),
-                      ),
+                      child: CurrentActivity(boxLink: _boxLink),
                     ),
                 ],
               ),

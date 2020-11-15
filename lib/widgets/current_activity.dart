@@ -17,6 +17,10 @@ final activityTextStyle = TextStyle(
 );
 
 class CurrentActivity extends StatelessWidget {
+  final LayerLink boxLink;
+
+  const CurrentActivity({Key key, this.boxLink}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
@@ -149,11 +153,16 @@ class _ActivityColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final parent = context.findAncestorWidgetOfExactType<CurrentActivity>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        box,
+        CompositedTransformTarget(
+          link: parent.boxLink,
+          child: box,
+        ),
         Container(
           margin: EdgeInsets.symmetric(
             vertical: 18,

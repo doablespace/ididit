@@ -1,19 +1,19 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/ui/color_theme.dart';
-import 'package:ididit/widgets/edit_screen/edit_form.dart';
 
 class NavigationHelp extends PopupRoute {
-  final LayerLink _activityLink;
-  NavigationHelp(this._activityLink);
+  final LayerLink _boxLink;
+
+  NavigationHelp(this._boxLink);
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        width: 400,
-        color: ThemeColors.inkColor.withOpacity(0.7),
+        color: ThemeColors.inkColor.withOpacity(0.4),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -22,138 +22,82 @@ class NavigationHelp extends PopupRoute {
             automaticallyImplyLeading: false, // Remove back button.
             actions: [
               IconButton(
-                  icon: Icon(
-                    Icons.close_rounded,
-                    color: ThemeColors.upperBackground,
-                  ),
-                  tooltip: 'Close help',
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: ThemeColors.upperBackground,
+                ),
+                tooltip: 'Close help',
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          body: Stack(
             children: [
               CompositedTransformFollower(
-                link: _activityLink,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DirectionIcon(
-                        ThemeColors.yesColor,
-                        Icons.arrow_upward_rounded,
-                      ),
-                      DirectionText(
-                        ThemeColors.yesColor,
-                        'swipe up to mark',
-                        'yes',
-                      )
-                    ],
+                link: _boxLink,
+                offset: Offset(0, -24),
+                child: Container(
+                  width: 280,
+                  child: _ActivityStateHelp(state: ActivityState.yes),
+                ),
+              ),
+              CompositedTransformFollower(
+                link: _boxLink,
+                offset: Offset(0, 256), // 280 - 24
+                child: Container(
+                  width: 280,
+                  child: _ActivityStateHelp(state: ActivityState.no),
+                ),
+              ),
+              CompositedTransformFollower(
+                link: _boxLink,
+                offset: Offset(220, 0), // 280 - 120/2
+                child: Container(
+                  height: 280,
+                  child: _ActivityStateHelp(
+                    state: ActivityState.almost,
+                    axis: Axis.vertical,
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DirectionText(
-                        ThemeColors.skipColor,
-                        'swipe left to',
-                        'skip',
-                      ),
-                      DirectionIcon(
-                        ThemeColors.skipColor,
-                        Icons.arrow_back_ios_rounded,
-                      ),
-                    ],
+              CompositedTransformFollower(
+                link: _boxLink,
+                offset: Offset(-60, 0), // 120/2
+                child: Container(
+                  height: 280,
+                  child: _ActivityStateHelp(
+                    state: ActivityState.skip,
+                    axis: Axis.vertical,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      DirectionText(
-                        ThemeColors.almostColor,
-                        'swipe right to mark',
-                        'almost',
-                        alignRight: true,
-                      ),
-                      DirectionIcon(
-                        ThemeColors.almostColor,
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DirectionIcon(
-                    ThemeColors.upperBackground,
-                    Icons.touch_app_rounded,
-                  ),
-                  Text(
-                    'touch for ',
-                    style: CustomTextStyle(
-                      ThemeColors.upperBackground,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  Text(
-                    'menu',
-                    style: CustomTextStyle(
-                      ThemeColors.upperBackground,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DirectionIcon(
-                      ThemeColors.noColor,
-                      Icons.arrow_downward_rounded,
-                    ),
-                    DirectionText(
-                      ThemeColors.noColor,
-                      'swipe down to mark',
-                      'no',
-                    )
-                  ],
                 ),
               ),
+              CompositedTransformFollower(
+                link: _boxLink,
+                child: Container(
+                  width: 280,
+                  height: 280,
+                  child: _DirectionHelp(
+                    color: ThemeColors.upperBackground,
+                    icon: Icons.touch_app_rounded,
+                    textIntro: 'touch for ',
+                    textMain: 'menu',
+                    axis: Axis.vertical,
+                  ),
+                ),
+              )
             ],
           ),
           bottomNavigationBar: Container(
-            height: 90,
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DirectionIcon(
-                  ThemeColors.upperBackground,
-                  Icons.first_page_rounded,
-                ),
-                Container(
-                  height: 56,
-                  padding: EdgeInsets.only(top: 8),
-                  child: DirectionText(
-                    ThemeColors.upperBackground,
-                    'scroll left to',
-                    'add new',
-                  ),
-                ),
-              ],
+            height: 102,
+            alignment: Alignment.centerLeft,
+            child: _DirectionHelp(
+              icon: Icons.first_page_rounded,
+              color: ThemeColors.upperBackground,
+              textIntro: 'scroll left to ',
+              textMain: 'add new',
+              alignment: MainAxisAlignment.start,
             ),
           ),
         ),
@@ -174,57 +118,83 @@ class NavigationHelp extends PopupRoute {
   Duration get transitionDuration => Duration.zero;
 }
 
-class DirectionText extends StatelessWidget {
-  final Color color;
-  final String direction;
-  final String action;
-  final bool alignRight;
+class _ActivityStateHelp extends StatelessWidget {
+  final ActivityState state;
+  final Axis axis;
 
-  DirectionText(this.color, this.direction, this.action,
-      {this.alignRight = false});
+  const _ActivityStateHelp({
+    Key key,
+    this.state,
+    this.axis,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final double fontSize = 18;
-    return Column(
-      crossAxisAlignment:
-          alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
-        Text(
-          direction,
-          style: CustomTextStyle(
-            color,
-            fontSize: fontSize,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        Text(
-          action,
-          style: CustomTextStyle(
-            color,
-            fontSize: fontSize,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
+    return _DirectionHelp(
+      icon: state.swipeIconData,
+      color: state.color,
+      textIntro: 'swipe ${state.swipeDirection} to mark ',
+      textMain: state.text,
+      axis: axis,
     );
   }
 }
 
-class DirectionIcon extends StatelessWidget {
-  final Color color;
+class _DirectionHelp extends StatelessWidget {
   final IconData icon;
+  final Color color;
+  final String textIntro;
+  final String textMain;
+  final Axis axis;
+  final MainAxisAlignment alignment;
 
-  DirectionIcon(this.color, this.icon);
+  const _DirectionHelp({
+    Key key,
+    this.icon,
+    this.color,
+    this.textIntro,
+    this.textMain,
+    this.axis,
+    this.alignment,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 8, top: 8),
-      child: Icon(
-        icon,
-        color: color,
-        size: 48,
-      ),
+    return Flex(
+      direction: axis ?? Axis.horizontal,
+      mainAxisAlignment: alignment ?? MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(width: 6, height: 6),
+        Icon(
+          icon,
+          color: color,
+          size: 48,
+        ),
+        SizedBox(width: 6, height: 6),
+        SizedBox(
+          width: 120,
+          height: 48,
+          child: AutoSizeText.rich(
+            TextSpan(
+              children: [
+                TextSpan(text: textIntro),
+                TextSpan(
+                  text: textMain,
+                  style: TextStyle(fontWeight: FontWeight.w700),
+                ),
+              ],
+            ),
+            textAlign: axis == Axis.vertical ? TextAlign.center : null,
+            style: TextStyle(
+              fontSize: 18,
+              color: color,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+        SizedBox(width: 6, height: 6),
+      ],
     );
   }
 }
