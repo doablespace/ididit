@@ -21,63 +21,61 @@ class SwipingScreen extends StatelessWidget {
     _onboard(context);
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
-    return SafeArea(
-      child: StreamBuilder<bool>(
-        stream: activitiesBloc.youDidItStream,
-        initialData: activitiesBloc.youDidIt,
-        builder: (context, snapshot) {
-          final youDidIt = snapshot.data ?? false;
+    return StreamBuilder<bool>(
+      stream: activitiesBloc.youDidItStream,
+      initialData: activitiesBloc.youDidIt,
+      builder: (context, snapshot) {
+        final youDidIt = snapshot.data ?? false;
 
-          return Container(
-            decoration: BackgroundDecoration(3.0, youDidIt ? 0.57 : 0.45),
-            child: Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                actions: [
-                  if (!youDidIt)
-                    IconButton(
-                      icon: Icon(
-                        Icons.help_center_rounded,
-                        color: ThemeColors.lowerBackground,
-                      ),
-                      tooltip: 'Show help',
-                      onPressed: () {
-                        Navigator.of(context).push(NavigationHelp(_helpLink));
-                      },
+        return Container(
+          decoration: BackgroundDecoration(3.0, youDidIt ? 0.57 : 0.45),
+          child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              actions: [
+                if (!youDidIt)
+                  IconButton(
+                    icon: Icon(
+                      Icons.help_center_rounded,
+                      color: ThemeColors.lowerBackground,
                     ),
-                ],
-                title: DaySelector(),
-              ),
-              backgroundColor: Colors.transparent,
-              body: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.fromLTRB(32, 16, youDidIt ? 32 : 72, 16),
-                      // Needed for normal text style in child.
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: ProgressBars(youDidIt: youDidIt),
-                      ),
-                    ),
-                    youDidIt
-                        ? Text('') // TODO: Improve. Cannot have empty widget.
-                        : Expanded(
-                            child: CompositedTransformTarget(
-                              link: _helpLink,
-                              child: CurrentActivity(),
-                            ),
-                          ),
-                  ],
-                ),
-              ),
-              bottomNavigationBar: ActivityList(),
+                    tooltip: 'Show help',
+                    onPressed: () {
+                      Navigator.of(context).push(NavigationHelp(_helpLink));
+                    },
+                  ),
+              ],
+              title: DaySelector(),
             ),
-          );
-        },
-      ),
+            backgroundColor: Colors.transparent,
+            body: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.fromLTRB(32, 16, youDidIt ? 32 : 72, 16),
+                    // Needed for normal text style in child.
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: ProgressBars(youDidIt: youDidIt),
+                    ),
+                  ),
+                  youDidIt
+                      ? Text('') // TODO: Improve. Cannot have empty widget.
+                      : Expanded(
+                          child: CompositedTransformTarget(
+                            link: _helpLink,
+                            child: CurrentActivity(),
+                          ),
+                        ),
+                ],
+              ),
+            ),
+            bottomNavigationBar: ActivityList(),
+          ),
+        );
+      },
     );
   }
 
