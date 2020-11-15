@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
@@ -29,26 +30,30 @@ class _DaySelectorState extends State<DaySelector> {
         itemBuilder: (context, index) {
           final diff = dayDifference(currentIndex, index);
           final targetDay = currentDay.add(Duration(days: diff));
-          return InkWell(
-            onTap: () async {
-              var date = await showDatePicker(
-                context: context,
-                initialDate: targetDay,
-                firstDate: targetDay.subtract(Duration(days: 10000)),
-                lastDate: targetDay.add(Duration(days: 10000)),
-              );
-              if (date != null) {
-                // The returned date is local, cast it to UTC.
-                date = DateTime.utc(date.year, date.month, date.day);
+          return Padding(
+            // 40 = icon size (30) + 2 * padding (5)
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: InkWell(
+              onTap: () async {
+                var date = await showDatePicker(
+                  context: context,
+                  initialDate: targetDay,
+                  firstDate: targetDay.subtract(Duration(days: 10000)),
+                  lastDate: targetDay.add(Duration(days: 10000)),
+                );
+                if (date != null) {
+                  // The returned date is local, cast it to UTC.
+                  date = DateTime.utc(date.year, date.month, date.day);
 
-                activities.changeDay(date);
-                setState(() {
-                  currentDay = date;
-                });
-              }
-            },
-            child: Center(
-              child: _Day(targetDay),
+                  activities.changeDay(date);
+                  setState(() {
+                    currentDay = date;
+                  });
+                }
+              },
+              child: Center(
+                child: _Day(targetDay),
+              ),
             ),
           );
         },
@@ -90,16 +95,19 @@ class _Day extends StatelessWidget {
     final tomorrow = today.add(const Duration(days: 1));
     final textStyle = DefaultTextStyle.of(context).style;
 
-    return Text.rich(TextSpan(children: [
-      if (DateTimeHelper.areSameDay(today, day)) TextSpan(text: 'Today, '),
-      if (DateTimeHelper.areSameDay(yesterday, day))
-        TextSpan(text: 'Yesterday, '),
-      if (DateTimeHelper.areSameDay(tomorrow, day))
-        TextSpan(text: 'Tomorrow, '),
-      TextSpan(
-        text: DateFormat.yMEd().format(day),
-        style: textStyle.apply(color: textStyle.color.withOpacity(0.7)),
-      ),
-    ]));
+    return AutoSizeText.rich(
+      TextSpan(children: [
+        if (DateTimeHelper.areSameDay(today, day)) TextSpan(text: 'Today, '),
+        if (DateTimeHelper.areSameDay(yesterday, day))
+          TextSpan(text: 'Yesterday, '),
+        if (DateTimeHelper.areSameDay(tomorrow, day))
+          TextSpan(text: 'Tomorrow, '),
+        TextSpan(
+          text: DateFormat.yMEd().format(day),
+          style: textStyle.apply(color: textStyle.color.withOpacity(0.7)),
+        ),
+      ]),
+      maxLines: 1,
+    );
   }
 }
