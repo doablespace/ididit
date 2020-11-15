@@ -31,13 +31,16 @@ class _DaySelectorState extends State<DaySelector> {
           final targetDay = currentDay.add(Duration(days: diff));
           return InkWell(
             onTap: () async {
-              final date = await showDatePicker(
+              var date = await showDatePicker(
                 context: context,
                 initialDate: targetDay,
                 firstDate: targetDay.subtract(Duration(days: 10000)),
                 lastDate: targetDay.add(Duration(days: 10000)),
               );
               if (date != null) {
+                // The returned date is local, cast it to UTC.
+                date = DateTime.utc(date.year, date.month, date.day);
+
                 activities.changeDay(date);
                 setState(() {
                   currentDay = date;
