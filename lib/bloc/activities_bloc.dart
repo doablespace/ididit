@@ -63,7 +63,7 @@ class ActivitiesBloc extends Bloc {
 
     progress.reset(_activities.map((a) => a.state));
     _updateYouDidIt();
-    if (_activities.isNotEmpty && !_youDidIt) {
+    if (_activities.isNotEmpty && !_youDidIt && _currentActivity == null) {
       _setCurrent(_activities.first);
     }
   }
