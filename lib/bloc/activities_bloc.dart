@@ -47,7 +47,7 @@ class ActivitiesBloc extends Bloc {
     }
 
     // Update progress.
-    for (final activity in _activities) progress.add(activity.state);
+    progress.reset(_activities.map((a) => a.state));
 
     // All done?
     _updateYouDidIt();
@@ -60,6 +60,12 @@ class ActivitiesBloc extends Bloc {
     await _db.findActivityLogs(_activities, day);
     _currentDay = day;
     _currentDayController.sink.add(day);
+
+    progress.reset(_activities.map((a) => a.state));
+    _updateYouDidIt();
+    if (_activities.isNotEmpty && !_youDidIt) {
+      _setCurrent(_activities.first);
+    }
   }
 
   void editActivity(Activity activity) async {

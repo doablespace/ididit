@@ -22,5 +22,15 @@ class DayProgress extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reset(Iterable<ActivityState> states) {
+    // Reset state to zero.
+    _numbers.setAll(0, Iterable.generate(_numbers.length, (_) => 0));
+
+    // Count number of each state.
+    for (final state in states) _numbers[state.value]++;
+
+    notifyListeners();
+  }
+
   Iterable<int> get values => _numbers;
 }
