@@ -13,7 +13,7 @@ class NavigationHelp extends PopupRoute {
       Animation<double> secondaryAnimation) {
     return SafeArea(
       child: Container(
-        color: ThemeColors.inkColor.withOpacity(0.4),
+        color: ThemeColors.inkColor.withOpacity(0.7),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
