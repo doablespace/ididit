@@ -61,9 +61,10 @@ class SwipingScreen extends StatelessWidget {
               ),
             ),
             backgroundColor: Colors.transparent,
-            body: Container(
+            body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(32, 16, 52, 16),
@@ -73,10 +74,7 @@ class SwipingScreen extends StatelessWidget {
                       child: ProgressBars(youDidIt: youDidIt),
                     ),
                   ),
-                  if (!youDidIt)
-                    Expanded(
-                      child: CurrentActivity(boxLink: _boxLink),
-                    ),
+                  if (!youDidIt) CurrentActivity(boxLink: _boxLink),
                 ],
               ),
             ),

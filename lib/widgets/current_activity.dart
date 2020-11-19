@@ -16,6 +16,8 @@ final activityTextStyle = TextStyle(
   color: ThemeColors.upperBackground,
 );
 
+const double activityBoxSize = 280;
+
 class CurrentActivity extends StatelessWidget {
   final LayerLink boxLink;
 
@@ -34,7 +36,7 @@ class CurrentActivity extends StatelessWidget {
         // Show "loading" placeholder.
         if (state == ActivitiesState.loading)
           return _ActivityColumn(
-            box: SizedBox(width: 280, height: 280),
+            box: SizedBox(width: activityBoxSize, height: activityBoxSize),
             text: Text('Loading...', style: activityTextStyle),
           );
 
@@ -42,8 +44,8 @@ class CurrentActivity extends StatelessWidget {
         if (state == ActivitiesState.no_activities)
           return _ActivityColumn(
             box: SizedBox(
-              width: 280,
-              height: 280,
+              width: activityBoxSize,
+              height: activityBoxSize,
               child: Image.asset('assets/logo.png'),
             ),
             text: Text('No activities', style: activityTextStyle),
@@ -139,6 +141,43 @@ class CurrentActivity extends StatelessWidget {
               );
             },
           ),
+          streak: StreamBuilder<Activity>(
+              stream: activitiesBloc.currentActivityStream,
+              initialData: activitiesBloc.currentActivity,
+              builder: (context, snapshot) {
+                final activity = snapshot.data;
+                if (activity == null) return Container();
+                return ModelProvider<Activity>(
+                  value: activity,
+                  builder: (context, _, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        for (var i = 0; i < activity.logHistory.length - 1; i++)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                  color: activity.logHistory[i].state.color,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(3.0))),
+                            ),
+                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Text(
+                            "streak",
+                            style: CustomTextStyle(ThemeColors.upperBackground),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }),
         );
       },
     );
@@ -148,8 +187,10 @@ class CurrentActivity extends StatelessWidget {
 class _ActivityColumn extends StatelessWidget {
   final Widget box;
   final Widget text;
+  final Widget streak;
 
-  const _ActivityColumn({Key key, this.box, this.text}) : super(key: key);
+  const _ActivityColumn({Key key, this.box, this.text, this.streak})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +198,7 @@ class _ActivityColumn extends StatelessWidget {
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CompositedTransformTarget(
@@ -164,8 +206,13 @@ class _ActivityColumn extends StatelessWidget {
           child: box,
         ),
         Container(
+          padding: const EdgeInsets.only(top: 16),
+          width: activityBoxSize,
+          child: streak,
+        ),
+        Container(
           margin: EdgeInsets.symmetric(
-            vertical: 18,
+            vertical: 16,
             horizontal: 12,
           ),
           child: text,
