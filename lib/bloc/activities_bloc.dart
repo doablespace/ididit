@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
+import 'package:ididit/data/open_moji_database.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/day_progress.dart';
 
 class ActivitiesBloc extends Bloc {
   final Db _db;
+  OpenMojiDatabase _openMojis;
   ActivitiesState _state = ActivitiesState.loading;
   final List<Activity> _activities = [];
   Activity _currentActivity;
@@ -23,8 +25,8 @@ class ActivitiesBloc extends Bloc {
   final _loadingController = StreamController<double>.broadcast();
   final progress = DayProgress();
 
-  ActivitiesBloc(this._db) {
-    _init();
+  ActivitiesBloc(this._db, Future<OpenMojiDatabase> openMojiDatabase) {
+    _init(openMojiDatabase);
   }
 
   ActivitiesState get state => _state;
@@ -40,7 +42,10 @@ class ActivitiesBloc extends Bloc {
   double get loading => _loading;
   Stream<double> get loadingStream => _loadingController.stream;
 
-  void _init() async {
+  void _init(Future<OpenMojiDatabase> openMojiDatabase) async {
+    // Load OpenMoji database.
+    _openMojis = await openMojiDatabase;
+
     // Load all activities and their current state.
     final activities = await _db.findActivities(_currentDay, historyLength,
         progress: _progress);

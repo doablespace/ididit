@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
+import 'package:ididit/data/open_moji_database.dart';
 import 'package:ididit/platform/deep_link_listener.dart';
 import 'package:ididit/screens/swiping_screen.dart';
 import 'package:ididit/ui/color_theme.dart';
@@ -47,7 +48,13 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<Db>(create: (_) => Db()),
         BlocProvider<ActivitiesBloc>(create: (context) {
-          return ActivitiesBloc(Provider.of<Db>(context, listen: false));
+          return ActivitiesBloc(
+            Provider.of<Db>(context, listen: false),
+            OpenMojiDatabase.load(
+              DefaultAssetBundle.of(context),
+              'assets/openmoji.csv',
+            ),
+          );
         }),
       ],
       child: MaterialApp(
