@@ -26,7 +26,7 @@ class OpenMoji {
       group: row[2],
       subgroup: row[3],
       annotation: row[4],
-      tags: _parseTags(row[5]).followedBy(_parseTags(row[6])).toList(),
+      tags: _parseTags(row[5]).followedBy(_parseTags(row[6])).toSet().toList(),
       skintoneBaseEmoji: row[11],
     );
   }
@@ -41,4 +41,19 @@ class OpenMoji {
   String toString() => '$emoji $annotation';
 
   String get assetName => 'assets/openmoji/$hexcode.svg';
+
+  /// Determines whether this [OpenMoji] has [skintoneBaseEmoji] *different*
+  /// from itself.
+  bool get hasSkintoneBaseEmoji =>
+      skintoneBaseEmoji != null &&
+      skintoneBaseEmoji.length > 0 &&
+      emoji != skintoneBaseEmoji;
+
+  Iterable<String> getAllTags(Map<String, OpenMoji> map) {
+    if (hasSkintoneBaseEmoji) {
+      final baseTags = map[skintoneBaseEmoji].tags;
+      return tags.followedBy(baseTags);
+    }
+    return tags;
+  }
 }

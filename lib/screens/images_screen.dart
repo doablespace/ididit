@@ -41,6 +41,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
       body: AnimatedBuilder(
         animation: search,
         builder: (context, child) {
+          final map = activitiesBloc.openMojis.map;
+
           // Search OpenMojis.
           final result =
               activitiesBloc.openMojis.fuse.search(search.query ?? '');
@@ -65,8 +67,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
                       content: Text(
                         '${openMoji.group} > ${openMoji.subgroup} > ' +
                             '${openMoji.annotation} ' +
-                            '[${openMoji.tags.join('] [')}]' +
-                            (openMoji.skintoneBaseEmoji != null
+                            '[${openMoji.getAllTags(map).join('] [')}]' +
+                            (openMoji.hasSkintoneBaseEmoji
                                 ? ' (${openMoji.skintoneBaseEmoji})'
                                 : ''),
                       ),

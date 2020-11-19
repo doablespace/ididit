@@ -23,7 +23,7 @@ class OpenMojiDatabase {
               WeightedKey(
                   weight: 0.9,
                   name: 'tags',
-                  getter: (openmoji) => openmoji.tags.join(' ')),
+                  getter: (openmoji) => openmoji.getAllTags(map).join(' ')),
               WeightedKey(
                 weight: 0.8,
                 name: 'group',
