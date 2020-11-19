@@ -51,6 +51,7 @@ class Db {
     for (final activity in activities) {
       final logs = await findActivityLog(activity.id, day);
       activity.logEntry = logs.isNotEmpty ? logs.last : null;
+      activity.logHistory = logs.isNotEmpty ? logs : List.empty();
       progress?.call(i++, activities.length);
     }
   }
@@ -66,12 +67,19 @@ class Db {
   }
 
   /// Finds [ActivityLogEntry] of [Activity] with the specified [id] for the
-  /// specified [day].
+  /// specified [day] along with extra 7 day history.
   Future<List<ActivityLogEntry>> findActivityLog(int id, DateTime day) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activity_log',
-        where: 'activity_id = ? and target_time = ?',
-        whereArgs: [id, DateTimeHelper.daysToDatabase(day)]);
+        where:
+            'activity_id = ? and target_time <= ? and target_time >= ? order by target_time asc',
+        whereArgs: [
+          id,
+          DateTimeHelper.daysToDatabase(day),
+          DateTimeHelper.daysToDatabase(
+            day.add(Duration(days: -8)),
+          ), // 7 extra days.
+        ]);
     return List.generate(
         maps.length, (index) => ActivityLogEntry.fromMap(maps[index]));
   }
