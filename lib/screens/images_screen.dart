@@ -13,10 +13,17 @@ class _ImageSearch extends ChangeNotifier {
   }
 }
 
-class ImagesScreen extends StatelessWidget {
+class ImagesScreen extends StatefulWidget {
+  @override
+  _ImagesScreenState createState() => _ImagesScreenState();
+}
+
+class _ImagesScreenState extends State<ImagesScreen> {
+  final search = _ImageSearch();
+  final scrollController = ScrollController();
+
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
-    final search = _ImageSearch();
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +45,11 @@ class ImagesScreen extends StatelessWidget {
           final result =
               activitiesBloc.openMojis.fuse.search(search.query ?? '');
 
+          // Scroll to beginning when query changes.
+          if (scrollController.hasClients) scrollController.jumpTo(0);
+
           return GridView.builder(
+            controller: scrollController,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 80,
             ),
