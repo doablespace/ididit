@@ -65,7 +65,10 @@ class _ImagesScreenState extends State<ImagesScreen> {
                       content: Text(
                         '${openMoji.group} > ${openMoji.subgroup} > ' +
                             '${openMoji.annotation} ' +
-                            '[${openMoji.tags.join('] [')}]',
+                            '[${openMoji.tags.join('] [')}]' +
+                            (openMoji.skintoneBaseEmoji != null
+                                ? ' (${openMoji.skintoneBaseEmoji})'
+                                : ''),
                       ),
                     ),
                   );

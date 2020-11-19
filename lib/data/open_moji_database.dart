@@ -5,10 +5,11 @@ import 'package:fuzzy/fuzzy.dart';
 import 'package:ididit/models/open_moji.dart';
 
 class OpenMojiDatabase {
+  final Map<String, OpenMoji> map;
   final List<OpenMoji> list;
   final Fuzzy<OpenMoji> fuse;
 
-  OpenMojiDatabase._(this.list)
+  OpenMojiDatabase._(this.map, this.list)
       : fuse = Fuzzy(
           list,
           options: FuzzyOptions(
@@ -47,16 +48,18 @@ class OpenMojiDatabase {
           ),
         );
 
-  static Future<OpenMojiDatabase> load(AssetBundle assets, String file) async {
-    final list = await assets.loadStructuredData(file, (value) async {
+  static Future<OpenMojiDatabase> load(AssetBundle assets, String file) {
+    return assets.loadStructuredData(file, (value) async {
       final rows = CsvToListConverter(
         csvSettingsDetector: FirstOccurrenceSettingsDetector(
           eols: ['\r\n', '\n'],
         ),
         shouldParseNumbers: false,
       ).convert(value);
-      return rows.skip(1).map((row) => OpenMoji.fromRow(row)).toList();
+      final openMojis = rows.skip(1).map((row) => OpenMoji.fromRow(row));
+      final map = Map<String, OpenMoji>.fromIterable(openMojis,
+          key: (openMoji) => openMoji.emoji);
+      return OpenMojiDatabase._(map, openMojis.toList());
     });
-    return OpenMojiDatabase._(list);
   }
 }

@@ -7,6 +7,7 @@ class OpenMoji {
   final String subgroup;
   final String annotation;
   final List<String> tags;
+  final String skintoneBaseEmoji;
 
   OpenMoji({
     @required this.emoji,
@@ -15,6 +16,7 @@ class OpenMoji {
     @required this.subgroup,
     @required this.annotation,
     @required this.tags,
+    this.skintoneBaseEmoji,
   });
 
   factory OpenMoji.fromRow(List<dynamic> row) {
@@ -25,6 +27,7 @@ class OpenMoji {
       subgroup: row[3],
       annotation: row[4],
       tags: _parseTags(row[5]).followedBy(_parseTags(row[6])).toList(),
+      skintoneBaseEmoji: row[11],
     );
   }
 
