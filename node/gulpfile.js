@@ -1,10 +1,15 @@
 const gulp = require('gulp');
 const svgo = require('gulp-svgo');
 
-function build() {
+function optimizeSvgs() {
     return gulp.src('node_modules/openmoji/color/svg/*.svg')
         .pipe(svgo())
         .pipe(gulp.dest('../assets/openmoji'));
 }
 
-exports.default = build;
+function copyData() {
+    return gulp.src('node_modules/openmoji/data/openmoji.csv')
+        .pipe(gulp.dest('../assets'));
+}
+
+exports.default = gulp.series(optimizeSvgs, copyData);
