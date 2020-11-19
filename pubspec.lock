@@ -158,6 +158,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fuzzy:
+    dependency: "direct main"
+    description:
+      name: fuzzy
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   google_fonts:
     dependency: "direct main"
     description:
@@ -207,6 +214,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.1"
+  latinize:
+    dependency: transitive
+    description:
+      name: latinize
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   matcher:
     dependency: transitive
     description:
