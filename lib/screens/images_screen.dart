@@ -45,7 +45,21 @@ class ImagesScreen extends StatelessWidget {
             itemCount: result.length,
             itemBuilder: (context, index) {
               final openMoji = result[index].item;
-              return SvgPicture.asset(openMoji.assetName);
+              return InkWell(
+                child: SvgPicture.asset(openMoji.assetName),
+                onTap: () {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        '${openMoji.group} > ${openMoji.subgroup} > ' +
+                            '${openMoji.annotation} ' +
+                            '[${openMoji.tags.join('] [')}]',
+                      ),
+                    ),
+                  );
+                },
+              );
             },
           );
         },
