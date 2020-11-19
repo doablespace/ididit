@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:ididit/models/activity.dart';
-import 'package:ididit/ui/activity_icons.dart';
-import 'package:ididit/ui/color_theme.dart';
-import 'package:ididit/widgets/activity_icon.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:ididit/bloc/activities_bloc.dart';
+import 'package:provider/provider.dart';
 
 class ImagesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: Colors.white,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: GridView.count(
-            // Put images into two columns.
-            crossAxisCount: 2,
-            children: List.generate(ActivityIcons.values.length, (i) {
-              return TextButton(
-                onPressed: () {
-                  Navigator.pop(context, i);
-                },
-                child: Center(
-                  child: ActivityIcon(
-                    Activity.indexIcon(i),
-                    color: ThemeColors.inkColor,
-                  ),
-                ),
-              );
-            }),
+    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: TextField(
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: 'Search',
+            border: InputBorder.none,
           ),
         ),
+      ),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 80,
+        ),
+        itemCount: activitiesBloc.openMojis.list.length,
+        itemBuilder: (context, index) {
+          final openMoji = activitiesBloc.openMojis.list[index];
+          return SvgPicture.asset(openMoji.assetName);
+        },
       ),
     );
   }

@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:ididit/models/open_moji.dart';
 
 class OpenMojiDatabase {
-  final List<OpenMoji> _list;
+  final List<OpenMoji> list;
 
-  OpenMojiDatabase._(List<OpenMoji> list) : _list = list;
+  OpenMojiDatabase._(this.list);
 
   static Future<OpenMojiDatabase> load(AssetBundle assets, String file) async {
     final list = await assets.loadStructuredData(file, (value) async {

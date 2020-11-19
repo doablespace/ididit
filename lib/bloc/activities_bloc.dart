@@ -29,6 +29,7 @@ class ActivitiesBloc extends Bloc {
     _init(openMojiDatabase);
   }
 
+  OpenMojiDatabase get openMojis => _openMojis;
   ActivitiesState get state => _state;
   Stream<ActivitiesState> get stateStream => _stateController.stream;
   Iterable<Activity> get activities => _activities;
