@@ -29,7 +29,7 @@ class OpenMoji {
   }
 
   static Iterable<String> _parseTags(dynamic cell) {
-    return (cell as String).split(',');
+    return (cell as String).split(', ');
   }
 
   @override
