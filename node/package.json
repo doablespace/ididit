@@ -2,6 +2,8 @@
   "name": "ididit",
   "license": "ISC",
   "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-svgo": "^2.2.1",
     "openmoji": "^13.0.0",
     "svgo": "^1.3.2"
   }
