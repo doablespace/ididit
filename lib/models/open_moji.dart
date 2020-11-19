@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class OpenMoji {
   final String emoji;
+  final String hexcode;
   final String group;
   final String subgroup;
   final String annotation;
@@ -9,6 +10,7 @@ class OpenMoji {
 
   OpenMoji({
     @required this.emoji,
+    @required this.hexcode,
     @required this.group,
     @required this.subgroup,
     @required this.annotation,
@@ -18,6 +20,7 @@ class OpenMoji {
   factory OpenMoji.fromRow(List<dynamic> row) {
     return OpenMoji(
       emoji: row[0],
+      hexcode: row[1],
       group: row[2],
       subgroup: row[3],
       annotation: row[4],
@@ -31,4 +34,6 @@ class OpenMoji {
 
   @override
   String toString() => '$emoji $annotation';
+
+  String get assetName => 'assets/openmoji/$hexcode.svg';
 }

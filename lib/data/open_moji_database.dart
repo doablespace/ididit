@@ -14,6 +14,7 @@ class OpenMojiDatabase {
         csvSettingsDetector: FirstOccurrenceSettingsDetector(
           eols: ['\r\n', '\n'],
         ),
+        shouldParseNumbers: false,
       ).convert(value);
       return rows.skip(1).map((row) => OpenMoji.fromRow(row)).toList();
     });
