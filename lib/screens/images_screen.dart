@@ -47,6 +47,11 @@ class _ImagesScreenState extends State<ImagesScreen> {
           final result =
               activitiesBloc.openMojis.fuse.search(search.query ?? '');
 
+          // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
+          result.forEach(
+              (r) => r.score = r.matches.isEmpty ? 1 : r.matches.first.score);
+          result.sort((a, b) => a.score.compareTo(b.score));
+
           // Scroll to beginning when query changes.
           if (scrollController.hasClients) scrollController.jumpTo(0);
 

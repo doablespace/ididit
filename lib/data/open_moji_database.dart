@@ -14,6 +14,7 @@ class OpenMojiDatabase {
           list,
           options: FuzzyOptions(
             shouldNormalize: true,
+            shouldSort: false, // We sort manually.
             keys: [
               WeightedKey(
                 weight: 1,
