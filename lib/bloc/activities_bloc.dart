@@ -14,6 +14,7 @@ class ActivitiesBloc extends Bloc {
   bool _youDidIt;
   DateTime _currentDay = DateTime.now().toUtc();
   double _loading = 0.0;
+  final historyLength = 7; // How many past days results to display.
   final _stateController = StreamController<ActivitiesState>.broadcast();
   final _activityController = StreamController<List<Activity>>.broadcast();
   final _currentController = StreamController<Activity>.broadcast();
@@ -41,8 +42,8 @@ class ActivitiesBloc extends Bloc {
 
   void _init() async {
     // Load all activities and their current state.
-    final activities =
-        await _db.findActivities(_currentDay, progress: _progress);
+    final activities = await _db.findActivities(_currentDay, historyLength,
+        progress: _progress);
     _setLoading(0);
 
     _activities.addAll(activities);
@@ -67,7 +68,12 @@ class ActivitiesBloc extends Bloc {
 
   void changeDay(DateTime day) async {
     // Update current activity state of all activities.
-    await _db.findActivityLogs(_activities, day, progress: _progress);
+    await _db.findActivityLogs(
+      _activities,
+      day,
+      historyLength,
+      progress: _progress,
+    );
     _setLoading(0);
 
     _currentDay = day;

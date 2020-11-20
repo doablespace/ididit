@@ -9,9 +9,13 @@ class ActivityLogEntry extends ChangeNotifier {
   DateTime targetTime;
   DateTime modified;
 
-  ActivityLogEntry(
-      {this.id, this.activityId, int status, this.targetTime, this.modified})
-      : _status = status;
+  ActivityLogEntry({
+    this.id,
+    this.activityId,
+    int status,
+    this.targetTime,
+    this.modified,
+  }) : _status = status;
 
   factory ActivityLogEntry.fromMap(Map<String, dynamic> map) {
     final targetTime = DateTimeHelper.daysFromDatabase(map['target_time']);

@@ -33,23 +33,29 @@ class Db {
 
   /// Finds activities and their corresponding [Activity.logEntry] for the
   /// specified [day].
-  Future<List<Activity>> findActivities(DateTime day,
+  Future<List<Activity>> findActivities(DateTime day, int historyLength,
       {LoadingProgress progress}) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activities');
     final activities = List<Activity>.generate(
         maps.length, (index) => Activity.fromMap(maps[index]));
-    await findActivityLogs(activities, day, progress: progress);
+    await findActivityLogs(
+      activities,
+      day,
+      historyLength,
+      progress: progress,
+    );
     return activities;
   }
 
   /// Fills [Activity.logEntry] for each of [activities] for the specified
   /// [day].
-  Future<void> findActivityLogs(List<Activity> activities, DateTime day,
+  Future<void> findActivityLogs(
+      List<Activity> activities, DateTime day, int historyLength,
       {LoadingProgress progress}) async {
     var i = 0;
     for (final activity in activities) {
-      final logs = await findActivityLog(activity.id, day);
+      final logs = await findActivityLog(activity.id, day, historyLength);
       activity.logEntry = logs.isNotEmpty ? logs.last : null;
       activity.logHistory = logs.isNotEmpty ? logs : List.empty();
       progress?.call(i++, activities.length);
@@ -68,7 +74,11 @@ class Db {
 
   /// Finds [ActivityLogEntry] of [Activity] with the specified [id] for the
   /// specified [day] along with extra 7 day history.
-  Future<List<ActivityLogEntry>> findActivityLog(int id, DateTime day) async {
+  Future<List<ActivityLogEntry>> findActivityLog(
+    int id,
+    DateTime day,
+    int historyLength,
+  ) async {
     final Database db = await _database;
     final List<Map<String, dynamic>> maps = await db.query('activity_log',
         where:
@@ -77,7 +87,9 @@ class Db {
           id,
           DateTimeHelper.daysToDatabase(day),
           DateTimeHelper.daysToDatabase(
-            day.add(Duration(days: -8)),
+            day.add(
+              Duration(days: -historyLength),
+            ),
           ), // 7 extra days.
         ]);
     return List.generate(
