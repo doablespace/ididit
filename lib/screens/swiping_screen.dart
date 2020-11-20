@@ -6,7 +6,7 @@ import 'package:ididit/screens/onboarding_screen.dart';
 import 'package:ididit/ui/background_decoration.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_list.dart';
-import 'package:ididit/widgets/current_activity.dart';
+import 'package:ididit/widgets/current_activity/current_activity.dart';
 import 'package:ididit/widgets/day_selector.dart';
 import 'package:ididit/widgets/help_overlay.dart';
 import 'package:ididit/widgets/progress_bars.dart';

@@ -8,7 +8,8 @@ import 'package:ididit/widgets/activity_box.dart';
 import 'package:ididit/widgets/options_activity_box.dart';
 import 'package:provider/provider.dart';
 
-import 'edit_screen/edit_form.dart';
+import '../edit_screen/edit_form.dart';
+import 'direction_help.dart';
 
 final activityTextStyle = TextStyle(
   fontSize: 24,
@@ -141,12 +142,15 @@ class CurrentActivity extends StatelessWidget {
               );
             },
           ),
-          streak: StreamBuilder<Activity>(
-              stream: activitiesBloc.currentActivityStream,
-              initialData: activitiesBloc.currentActivity,
+          streak: StreamBuilder<DateTime>(
+              stream: activitiesBloc.currentDayStream,
+              initialData: activitiesBloc.currentDay,
               builder: (context, snapshot) {
-                final activity = snapshot.data;
+                final currentDay = snapshot.data;
+                final activity = activitiesBloc.currentActivity;
+
                 if (activity == null) return Container();
+
                 return ModelProvider<Activity>(
                   value: activity,
                   builder: (context, _, child) {
@@ -154,14 +158,18 @@ class CurrentActivity extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        for (var i = 0; i < activity.logHistory.length - 1; i++)
+                        for (var tuple in activity.logHistoryIterator(
+                            currentDay, activitiesBloc.historyLength))
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Container(
+                              child: Text(
+                                "${tuple[1]}",
+                              ),
                               height: 20,
                               width: 20,
                               decoration: BoxDecoration(
-                                  color: activity.logHistory[i].state.color,
+                                  color: tuple[0],
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(3.0))),
                             ),
@@ -218,51 +226,6 @@ class _ActivityColumn extends StatelessWidget {
           child: text,
         ),
       ],
-    );
-  }
-}
-
-class DirectionHelp extends StatelessWidget {
-  final Color _color;
-  final String _text;
-  final IconData _iconData;
-  final MainAxisAlignment _colAlign;
-  final CrossAxisAlignment _rowAlign;
-  final Axis _axis;
-
-  const DirectionHelp(this._color, this._text, this._iconData, this._colAlign,
-      this._rowAlign, this._axis,
-      {Key key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          vertical: _axis == Axis.vertical ? 32 : 16, horizontal: 16),
-      child: Flex(
-        direction: _axis,
-        mainAxisAlignment: _colAlign,
-        crossAxisAlignment: _rowAlign,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              _text,
-              style: CustomTextStyle(
-                _color,
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          Icon(
-            _iconData,
-            size: 40,
-            color: _color,
-          )
-        ],
-      ),
     );
   }
 }
