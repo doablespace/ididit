@@ -5,7 +5,7 @@ import 'package:ididit/models/activity_states.dart';
 import 'package:ididit/models/model_provider.dart';
 import 'package:ididit/ui/color_theme.dart';
 import 'package:ididit/widgets/activity_box.dart';
-import 'package:ididit/widgets/options_activity_box.dart';
+import 'package:ididit/widgets/current_activity/options_activity_box.dart';
 import 'package:provider/provider.dart';
 
 import '../edit_screen/edit_form.dart';
