@@ -41,12 +41,12 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
           // Search OpenMojis.
           final query = (queryController.text ?? '').trim();
-          final result = activitiesBloc.openMojis.fuse.search(query);
+          final results = activitiesBloc.openMojis.fuse.search(query);
 
           // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
-          result.forEach(
+          results.forEach(
               (r) => r.score = r.matches.isEmpty ? 1 : r.matches.first.score);
-          result.sort((a, b) => a.score.compareTo(b.score));
+          results.sort((a, b) => a.score.compareTo(b.score));
 
           // Scroll to beginning when query changes.
           if (scrollController.hasClients) scrollController.jumpTo(0);
@@ -56,9 +56,10 @@ class _ImagesScreenState extends State<ImagesScreen> {
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 80,
             ),
-            itemCount: result.length,
+            itemCount: results.length,
             itemBuilder: (context, index) {
-              final openMoji = result[index].item;
+              final result = results[index];
+              final openMoji = result.item;
               return InkWell(
                 child: SvgPicture.asset(openMoji.assetName),
                 onTap: () {
@@ -75,6 +76,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
                       ),
                     ),
                   );
+
+                  print(result);
                 },
               );
             },
