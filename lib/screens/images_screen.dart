@@ -3,23 +3,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
 import 'package:provider/provider.dart';
 
-class _ImageSearch extends ChangeNotifier {
-  String _query;
-
-  String get query => _query;
-  set query(String value) {
-    _query = value;
-    notifyListeners();
-  }
-}
-
 class ImagesScreen extends StatefulWidget {
   @override
   _ImagesScreenState createState() => _ImagesScreenState();
 }
 
 class _ImagesScreenState extends State<ImagesScreen> {
-  final search = _ImageSearch();
+  final queryController = TextEditingController();
   final scrollController = ScrollController();
 
   Widget build(BuildContext context) {
@@ -28,24 +18,30 @@ class _ImagesScreenState extends State<ImagesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          controller: queryController,
           autofocus: true,
           decoration: InputDecoration(
             hintText: 'Search',
             border: InputBorder.none,
           ),
-          onChanged: (value) {
-            search.query = value;
-          },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.clear_rounded),
+            onPressed: () {
+              queryController.text = '';
+            },
+          ),
+        ],
       ),
       body: AnimatedBuilder(
-        animation: search,
+        animation: queryController,
         builder: (context, child) {
           final map = activitiesBloc.openMojis.map;
 
           // Search OpenMojis.
           final result =
-              activitiesBloc.openMojis.fuse.search(search.query ?? '');
+              activitiesBloc.openMojis.fuse.search(queryController.text ?? '');
 
           // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
           result.forEach(
