@@ -14,6 +14,8 @@ class OpenMojiDatabase {
           list,
           options: FuzzyOptions(
             shouldNormalize: true,
+            tokenize: true,
+            findAllMatches: true,
             shouldSort: false, // We sort manually.
             keys: [
               WeightedKey(
@@ -22,9 +24,10 @@ class OpenMojiDatabase {
                 getter: (openmoji) => openmoji.annotation,
               ),
               WeightedKey(
-                  weight: 0.9,
-                  name: 'tags',
-                  getter: (openmoji) => openmoji.getAllTags(map).join(' ')),
+                weight: 0.9,
+                name: 'tags',
+                getter: (openmoji) => openmoji.getAllTags(map).join(' '),
+              ),
               WeightedKey(
                 weight: 0.8,
                 name: 'group',

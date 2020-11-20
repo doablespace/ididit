@@ -40,8 +40,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
           final map = activitiesBloc.openMojis.map;
 
           // Search OpenMojis.
-          final result =
-              activitiesBloc.openMojis.fuse.search(queryController.text ?? '');
+          final query = (queryController.text ?? '').trim();
+          final result = activitiesBloc.openMojis.fuse.search(query);
 
           // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
           result.forEach(
