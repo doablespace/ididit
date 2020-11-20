@@ -46,7 +46,11 @@ class _ImagesScreenState extends State<ImagesScreen> {
           // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
           results.forEach(
               (r) => r.score = r.matches.isEmpty ? 1 : r.matches.first.score);
-          results.sort((a, b) => a.score.compareTo(b.score));
+          results.sort((a, b) {
+            final c = a.score.compareTo(b.score);
+            if (c != 0) return c;
+            return a.item.order.compareTo(b.item.order);
+          });
 
           // Scroll to beginning when query changes.
           if (scrollController.hasClients) scrollController.jumpTo(0);

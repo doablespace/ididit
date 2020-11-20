@@ -2,6 +2,7 @@ import 'package:csv/csv.dart';
 import 'package:csv/csv_settings_autodetection.dart';
 import 'package:flutter/services.dart';
 import 'package:fuzzy/fuzzy.dart';
+import 'package:ididit/extensions.dart';
 import 'package:ididit/models/open_moji.dart';
 
 class OpenMojiDatabase {
@@ -13,6 +14,7 @@ class OpenMojiDatabase {
       : fuse = Fuzzy(
           list,
           options: FuzzyOptions(
+            distance: 10,
             shouldNormalize: true,
             tokenize: true,
             findAllMatches: true,
@@ -60,7 +62,9 @@ class OpenMojiDatabase {
         ),
         shouldParseNumbers: false,
       ).convert(value);
-      final openMojis = rows.skip(1).map((row) => OpenMoji.fromRow(row));
+      final openMojis = rows
+          .skip(1)
+          .mapIndexed((index, row) => OpenMoji.fromRow(row, order: index + 1));
       final map = Map<String, OpenMoji>.fromIterable(openMojis,
           key: (openMoji) => openMoji.emoji);
       return OpenMojiDatabase._(map, openMojis.toList());

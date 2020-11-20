@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OpenMoji {
+  final int order;
   final String emoji;
   final String hexcode;
   final String group;
@@ -10,6 +11,7 @@ class OpenMoji {
   final String skintoneBaseEmoji;
 
   OpenMoji({
+    @required this.order,
     @required this.emoji,
     @required this.hexcode,
     @required this.group,
@@ -19,8 +21,9 @@ class OpenMoji {
     this.skintoneBaseEmoji,
   });
 
-  factory OpenMoji.fromRow(List<dynamic> row) {
+  factory OpenMoji.fromRow(List<dynamic> row, {@required int order}) {
     return OpenMoji(
+      order: order,
       emoji: row[0],
       hexcode: row[1],
       group: row[2],
