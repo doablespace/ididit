@@ -15,6 +15,8 @@ class _ImagesScreenState extends State<ImagesScreen> {
   final queryController = TextEditingController();
   final scrollController = ScrollController();
 
+  String previousQuery = '';
+
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
 
@@ -53,7 +55,9 @@ class _ImagesScreenState extends State<ImagesScreen> {
           );
 
           // Scroll to beginning when query changes.
-          if (scrollController.hasClients) scrollController.jumpTo(0);
+          if (scrollController.hasClients && previousQuery != query)
+            scrollController.jumpTo(0);
+          previousQuery = query;
 
           return FutureBuilder<List<TermSearchResult<OpenMoji>>>(
             future: fts.execute(),
