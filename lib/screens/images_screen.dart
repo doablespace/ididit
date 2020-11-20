@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:full_text_search/full_text_search.dart';
+import 'package:full_text_search/term_search_result.dart';
 import 'package:ididit/bloc/activities_bloc.dart';
+import 'package:ididit/models/open_moji.dart';
 import 'package:provider/provider.dart';
 
 class ImagesScreen extends StatefulWidget {
@@ -41,47 +44,53 @@ class _ImagesScreenState extends State<ImagesScreen> {
 
           // Search OpenMojis.
           final query = (queryController.text ?? '').trim();
-          final results = activitiesBloc.openMojis.fuse.search(query);
-
-          // HACK: Workaround https://github.com/comigor/fuzzy/issues/8.
-          results.forEach(
-              (r) => r.score = r.matches.isEmpty ? 1 : r.matches.first.score);
-          results.sort((a, b) {
-            final c = a.score.compareTo(b.score);
-            if (c != 0) return c;
-            return a.item.order.compareTo(b.item.order);
-          });
+          final fts = FullTextSearch<OpenMoji>(
+            term: query,
+            items: map.values,
+            tokenize: (openMoji) {
+              return [openMoji.annotation, ...openMoji.getAllTags(map)];
+            },
+          );
 
           // Scroll to beginning when query changes.
           if (scrollController.hasClients) scrollController.jumpTo(0);
 
-          return GridView.builder(
-            controller: scrollController,
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 80,
-            ),
-            itemCount: results.length,
-            itemBuilder: (context, index) {
-              final result = results[index];
-              final openMoji = result.item;
-              return InkWell(
-                child: SvgPicture.asset(openMoji.assetName),
-                onTap: () {
-                  Scaffold.of(context).hideCurrentSnackBar();
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '${openMoji.group} > ${openMoji.subgroup} > ' +
-                            '${openMoji.annotation} ' +
-                            '[${openMoji.getAllTags(map).join('] [')}]' +
-                            (openMoji.hasSkintoneBaseEmoji
-                                ? ' (${openMoji.skintoneBaseEmoji})'
-                                : ''),
-                      ),
-                    ),
-                  );
+          return FutureBuilder<List<TermSearchResult<OpenMoji>>>(
+            future: fts.execute(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return CircularProgressIndicator();
 
-                  print(result);
+              final results = snapshot.data;
+
+              return GridView.builder(
+                controller: scrollController,
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 80,
+                ),
+                itemCount: results.length,
+                itemBuilder: (context, index) {
+                  final result = results[index];
+                  final openMoji = result.result;
+                  return InkWell(
+                    child: SvgPicture.asset(openMoji.assetName),
+                    onTap: () {
+                      Scaffold.of(context).hideCurrentSnackBar();
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${openMoji.group} > ${openMoji.subgroup} > ' +
+                                '${openMoji.annotation} ' +
+                                '[${openMoji.getAllTags(map).join('] [')}]' +
+                                (openMoji.hasSkintoneBaseEmoji
+                                    ? ' (${openMoji.skintoneBaseEmoji})'
+                                    : ''),
+                          ),
+                        ),
+                      );
+
+                      print(result);
+                    },
+                  );
                 },
               );
             },
