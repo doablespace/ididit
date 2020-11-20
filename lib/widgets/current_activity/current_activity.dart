@@ -158,26 +158,23 @@ class CurrentActivity extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        for (var tuple in activity.logHistoryIterator(
+                        for (var color in activity.logHistoryIterator(
                             currentDay, activitiesBloc.historyLength))
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Container(
-                              child: Text(
-                                "${tuple[1]}",
-                              ),
                               height: 20,
                               width: 20,
                               decoration: BoxDecoration(
-                                  color: tuple[0],
+                                  color: color,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(3.0))),
                             ),
                           ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
+                          padding: const EdgeInsets.only(left: 8.0),
                           child: Text(
-                            "streak",
+                            "past 7 days",
                             style: CustomTextStyle(ThemeColors.upperBackground),
                           ),
                         ),

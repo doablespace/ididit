@@ -67,19 +67,19 @@ class Activity extends ChangeNotifier {
 
   void saved() => notifyListeners();
 
-  Iterable<List> logHistoryIterator(DateTime currentDay, int dayOffset) sync* {
+  Iterable<Color> logHistoryIterator(DateTime currentDay, int dayOffset) sync* {
     for (var log in logHistory) {
       var logDayOffset = currentDay.difference(log.targetTime).inDays;
       while (dayOffset > logDayOffset) {
         dayOffset -= 1;
-        yield [ThemeColors.skipColor, '#'];
+        yield ThemeColors.skipColor;
       }
       dayOffset -= 1;
-      if (logDayOffset != 0) yield [log.state.color, log.targetTime.day];
+      if (logDayOffset != 0) yield log.state.color;
     }
     while (dayOffset > 0) {
       dayOffset -= 1;
-      yield [ThemeColors.skipColor, '#'];
+      yield ThemeColors.skipColor;
     }
   }
 }
