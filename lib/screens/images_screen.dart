@@ -123,14 +123,16 @@ class _SimilarMatch with TermMatcherMixin {
   @override
   List<TermMatch> apply<T>(FullTextSearch<T> search, TokenizedItem<T> item,
       String term, Token token) {
+    if (term.length < 4 || token.token.length < 4) return const [];
     term = term.toLowerCase();
     // final similarity = StringSimilarity.compareTwoStrings(term, token.token);
     // return [
     //   if (similarity > 0.5) _SimilarTermMatch(term, token, similarity),
     // ];
-    final distance = Levenshtein().normalizedDistance(term, token.token);
+    final distance = Levenshtein().distance(term, token.token);
     return [
-      if (distance < 0.2) _SimilarTermMatch(term, token, 1 - distance),
+      if (distance > 0 && distance < 3)
+        _SimilarTermMatch(term, token, 1 - (distance - 1) / 2),
     ];
   }
 
