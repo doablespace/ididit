@@ -56,7 +56,10 @@ class Db {
     var i = 0;
     for (final activity in activities) {
       final logs = await findActivityLog(activity.id, day, historyLength);
-      activity.logEntry = logs.isNotEmpty ? logs.last : null;
+      activity.logEntry =
+          logs.isNotEmpty && day.difference(logs.last.targetTime).inDays == 0
+              ? logs.last
+              : null;
       activity.logHistory = logs.isNotEmpty ? logs : List.empty();
       progress?.call(i++, activities.length);
     }
