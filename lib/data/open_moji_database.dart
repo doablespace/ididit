@@ -99,6 +99,10 @@ class _SimilarTermMatch extends Equatable implements TermMatch {
 }
 
 class _SimilarityScoring extends SearchScoring {
+  final String debugLabel;
+
+  _SimilarityScoring([this.debugLabel = "tokenSimilar"]);
+
   @override
   void scoreTerm(FullTextSearch search, TermSearchResult term, Score current) {
     for (final t in term.matchedTokens) {
@@ -106,7 +110,7 @@ class _SimilarityScoring extends SearchScoring {
         case _SimilarMatch.matchKey:
           current += Boost.amount(
             (t as _SimilarTermMatch).similarity,
-            "tokenSimilar",
+            debugLabel,
           );
           break;
       }
