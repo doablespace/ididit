@@ -32,6 +32,43 @@ class OpenMojiDatabase {
   }
 
   OpenMojiSearch search(String query) => OpenMojiSearch(this, query);
+
+  Future<List<OpenMoji>> textToEmoji(String text) async {
+    // Split text into words.
+    final words = text
+        .split(_tokenizer)
+        .where((t) => t != null && t.isNotEmpty)
+        .mapIndexed((i, t) => _Word(i, t))
+        .toList();
+
+    // Find longest words.
+    words.sort((x, y) => y.value.length.compareTo(x.value.length));
+
+    // Find three emojis for longest words.
+    var resultCount = 0;
+    for (final word in words) {
+      final fts = search(word.value).fts;
+      final results = await fts.execute();
+      if (results.isEmpty) continue;
+      word.openMoji = results.first.result;
+
+      if (++resultCount == 3) break;
+    }
+
+    // Reorder according to original order.
+    final results = words.where((w) => w.openMoji != null).toList();
+    results.sort((x, y) => x.originalIndex.compareTo(y.originalIndex));
+
+    return results.map((w) => w.openMoji).toList();
+  }
+}
+
+class _Word {
+  final int originalIndex;
+  final String value;
+  OpenMoji openMoji;
+
+  _Word(this.originalIndex, this.value);
 }
 
 final _tokenizer = RegExp("[\\s\-\.:]");
