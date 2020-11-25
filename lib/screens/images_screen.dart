@@ -6,6 +6,10 @@ import 'package:ididit/models/open_moji.dart';
 import 'package:provider/provider.dart';
 
 class ImagesScreen extends StatefulWidget {
+  final String initialQuery;
+
+  const ImagesScreen({Key key, this.initialQuery}) : super(key: key);
+
   @override
   _ImagesScreenState createState() => _ImagesScreenState();
 }
@@ -15,6 +19,13 @@ class _ImagesScreenState extends State<ImagesScreen> {
   final scrollController = ScrollController();
 
   String previousQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    queryController.text = previousQuery = widget.initialQuery;
+  }
 
   Widget build(BuildContext context) {
     final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);

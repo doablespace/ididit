@@ -20,7 +20,13 @@ class ActivityImage extends StatefulWidget {
 class _ActivityImageState extends State<ActivityImage> {
   Future<int> _selectImage(BuildContext context) async {
     return await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ImagesScreen()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImagesScreen(
+          initialQuery: widget.activity.name,
+        ),
+      ),
+    );
   }
 
   @override
