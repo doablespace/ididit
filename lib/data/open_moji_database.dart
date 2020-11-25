@@ -54,6 +54,7 @@ class OpenMojiSearch {
             MatchedTokensScoring(),
             MatchedTermsScoring(),
             _SimilarityScoring(),
+            _EqualityBoostScoring(),
           ],
           matchers: [
             EqualsMatch(),
@@ -119,6 +120,17 @@ class _SimilarityScoring extends SearchScoring {
           );
           break;
       }
+    }
+  }
+}
+
+/// Applies boost to long tokens matched exactly (boost is linear in the length
+/// of the token).
+class _EqualityBoostScoring extends SearchScoring {
+  void scoreTerm(FullTextSearch search, TermSearchResult term, Score current) {
+    for (final t in term.matchedTokens) {
+      if (t.key == EqualsMatch.matchKey && t.matchedToken.token.length > 3)
+        current += Boost.amount(t.term.length.toDouble(), "tokenEqualsBoost");
     }
   }
 }
