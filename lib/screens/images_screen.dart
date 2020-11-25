@@ -85,6 +85,7 @@ class _ImagesScreenState extends State<ImagesScreen> {
                         ),
                       );
 
+                      print('Tokens: ${fts.tokenize(openMoji)}');
                       print(result);
                     },
                   );
