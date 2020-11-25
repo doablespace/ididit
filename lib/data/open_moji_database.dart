@@ -34,6 +34,8 @@ class OpenMojiDatabase {
   OpenMojiSearch search(String query) => OpenMojiSearch(this, query);
 }
 
+final _tokenizer = RegExp("[\\s\-\.:]");
+
 class OpenMojiSearch {
   final FullTextSearch<OpenMoji> fts;
 
@@ -42,7 +44,10 @@ class OpenMojiSearch {
           term: query,
           items: Stream.fromIterable(db.list),
           tokenize: (openMoji) {
-            return [openMoji.annotation, ...openMoji.getAllTags(db.map)];
+            final annotationTokens = openMoji.annotation
+                .split(_tokenizer)
+                .where((t) => t != null && t.isNotEmpty);
+            return [...annotationTokens, ...openMoji.getAllTags(db.map)];
           },
           scorers: [
             MatchAllTermsScoring(),
