@@ -70,10 +70,6 @@ class _SimilarMatch with TermMatcherMixin {
       String term, Token token) {
     if (term.length < 4 || token.token.length < 4) return const [];
     term = term.toLowerCase();
-    // final similarity = StringSimilarity.compareTwoStrings(term, token.token);
-    // return [
-    //   if (similarity > 0.5) _SimilarTermMatch(term, token, similarity),
-    // ];
     final distance = Levenshtein().distance(term, token.token);
     return [
       if (distance > 0 && distance < 3)
