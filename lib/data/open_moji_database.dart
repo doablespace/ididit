@@ -47,7 +47,11 @@ class OpenMojiSearch {
             final annotationTokens = openMoji.annotation
                 .split(_tokenizer)
                 .where((t) => t != null && t.isNotEmpty);
-            return [...annotationTokens, ...openMoji.getAllTags(db.map)];
+            return [
+              ...annotationTokens,
+              ...openMoji.getAllTags(db.map),
+              openMoji.emoji
+            ];
           },
           scorers: [
             MatchAllTermsScoring(),
