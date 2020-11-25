@@ -71,20 +71,13 @@ class _ImagesScreenState extends State<ImagesScreen> {
                   return InkWell(
                     child: SvgPicture.asset(openMoji.assetName),
                     onTap: () {
-                      Scaffold.of(context).hideCurrentSnackBar();
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            '${openMoji.group} > ${openMoji.subgroup} > ' +
-                                '${openMoji.annotation} ' +
-                                '[${openMoji.getAllTags(map).join('] [')}]' +
-                                (openMoji.hasSkintoneBaseEmoji
-                                    ? ' (${openMoji.skintoneBaseEmoji})'
-                                    : ''),
-                          ),
-                        ),
-                      );
-
+                      print('Emoji: ${openMoji.group} > ' +
+                          '${openMoji.subgroup} > ' +
+                          '${openMoji.annotation} ' +
+                          '[${openMoji.getAllTags(map).join('] [')}]' +
+                          (openMoji.hasSkintoneBaseEmoji
+                              ? ' (${openMoji.skintoneBaseEmoji})'
+                              : ''));
                       print('Tokens: ${fts.tokenize(openMoji)}');
                       print(result);
                     },
