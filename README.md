@@ -13,3 +13,7 @@ For each task you swipe:
 The app is beautiful, fun and breeze to use!
 
 Want to challenge your friend? Create activity for them and share it via a messaging service.
+
+## Development
+
+Execute `yarn install` and `yarn gulp run` inside `/node/` folder to prepare OpenMoji data.
