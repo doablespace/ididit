@@ -145,40 +145,47 @@ class CurrentActivity extends StatelessWidget {
           streak: StreamBuilder<DateTime>(
               stream: activitiesBloc.currentDayStream,
               initialData: activitiesBloc.currentDay,
-              builder: (context, snapshot) {
-                final currentDay = snapshot.data;
-                final activity = activitiesBloc.currentActivity;
+              builder: (context, dateSnapshot) {
+                return StreamBuilder<Activity>(
+                  stream: activitiesBloc.currentActivityStream,
+                  initialData: activitiesBloc.currentActivity,
+                  builder: (context, activitySnapshot) {
+                    final currentDay = dateSnapshot.data;
+                    final activity = activitiesBloc.currentActivity;
 
-                if (activity == null) return Container();
+                    if (activity == null) return Container();
 
-                return ModelProvider<Activity>(
-                  value: activity,
-                  builder: (context, _, child) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        for (var color in activity.logHistoryIterator(
-                            currentDay, activitiesBloc.historyLength))
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                  color: color,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(3.0))),
+                    return ModelProvider<Activity>(
+                      value: activity,
+                      builder: (context, _, child) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            for (var color in activity.logHistoryIterator(
+                                currentDay, activitiesBloc.historyLength))
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Container(
+                                  height: 20,
+                                  width: 20,
+                                  decoration: BoxDecoration(
+                                      color: color,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(3.0))),
+                                ),
+                              ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                "past 7 days",
+                                style: CustomTextStyle(
+                                    ThemeColors.upperBackground),
+                              ),
                             ),
-                          ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "past 7 days",
-                            style: CustomTextStyle(ThemeColors.upperBackground),
-                          ),
-                        ),
-                      ],
+                          ],
+                        );
+                      },
                     );
                   },
                 );
