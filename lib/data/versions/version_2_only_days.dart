@@ -1,3 +1,4 @@
+import 'package:ididit/data/open_moji_database.dart';
 import 'package:ididit/data/versions/versions.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
@@ -5,7 +6,7 @@ class Version2OnlyDays extends Version {
   const Version2OnlyDays();
 
   @override
-  Future<void> execute(DatabaseExecutor db) async {
+  Future<void> execute(DatabaseExecutor db, OpenMojiDatabase openMojis) async {
     for (final activity in await db
         .query('activity_log', columns: ['id', 'target_time', 'modified'])) {
       // Parse `target_time` microseconds since epoch to `DateTime`.

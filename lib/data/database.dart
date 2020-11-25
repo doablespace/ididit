@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ididit/data/open_moji_database.dart';
 import 'package:ididit/data/versions/versions.dart';
 import 'package:ididit/models/activity.dart';
 import 'package:ididit/models/activity_log_entry.dart';
@@ -10,18 +11,22 @@ typedef void LoadingProgress(int loaded, int total);
 
 class Db {
   final Future<Database> _database;
+  final Future<OpenMojiDatabase> openMojiDatabase;
 
-  Db()
+  Db(this.openMojiDatabase)
       : _database = openDatabase('ididit.db',
-            onUpgrade: _onUpgrade, version: versions.length);
+            onUpgrade: _onUpgrade(openMojiDatabase), version: versions.length);
 
   /// Runs initial database migrations.
-  static FutureOr<void> _onUpgrade(
-      Database db, int oldVersion, int newVersion) async {
-    // Execute necessary migrations in order.
-    for (var i = oldVersion; i < newVersion; i++) {
-      await versions[i].execute(db);
-    }
+  static FutureOr<void> _onUpgrade(Future<OpenMojiDatabase> openMojiDatabase) {
+    return (Database db, int oldVersion, int newVersion) async {
+      final openMojis = await openMojiDatabase;
+
+      // Execute necessary migrations in order.
+      for (var i = oldVersion; i < newVersion; i++) {
+        await versions[i].execute(db, openMojis);
+      }
+    };
   }
 
   /// Inserts or updates an [Activity].

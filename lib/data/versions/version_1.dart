@@ -1,3 +1,4 @@
+import 'package:ididit/data/open_moji_database.dart';
 import 'package:ididit/data/versions/versions.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -5,7 +6,7 @@ class Version1 extends Version {
   const Version1();
 
   @override
-  Future<void> execute(DatabaseExecutor db) async {
+  Future<void> execute(DatabaseExecutor db, OpenMojiDatabase openMojis) async {
     await db.execute('''
       CREATE TABLE activities(
         id INTEGER PRIMARY KEY AUTOINCREMENT,

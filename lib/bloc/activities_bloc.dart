@@ -25,8 +25,8 @@ class ActivitiesBloc extends Bloc {
   final _loadingController = StreamController<double>.broadcast();
   final progress = DayProgress();
 
-  ActivitiesBloc(this._db, Future<OpenMojiDatabase> openMojiDatabase) {
-    _init(openMojiDatabase);
+  ActivitiesBloc(this._db) {
+    _init();
   }
 
   OpenMojiDatabase get openMojis => _openMojis;
@@ -43,9 +43,9 @@ class ActivitiesBloc extends Bloc {
   double get loading => _loading;
   Stream<double> get loadingStream => _loadingController.stream;
 
-  void _init(Future<OpenMojiDatabase> openMojiDatabase) async {
+  void _init() async {
     // Load OpenMoji database.
-    _openMojis = await openMojiDatabase;
+    _openMojis = await _db.openMojiDatabase;
 
     // Load all activities and their current state.
     final activities = await _db.findActivities(_currentDay, historyLength,

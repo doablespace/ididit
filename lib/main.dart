@@ -46,15 +46,14 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        Provider<Db>(create: (_) => Db()),
+        Provider<Db>(
+          create: (context) => Db(OpenMojiDatabase.load(
+            DefaultAssetBundle.of(context),
+            'assets/openmoji.csv',
+          )),
+        ),
         BlocProvider<ActivitiesBloc>(create: (context) {
-          return ActivitiesBloc(
-            Provider.of<Db>(context, listen: false),
-            OpenMojiDatabase.load(
-              DefaultAssetBundle.of(context),
-              'assets/openmoji.csv',
-            ),
-          );
+          return ActivitiesBloc(Provider.of<Db>(context, listen: false));
         }),
       ],
       child: MaterialApp(
