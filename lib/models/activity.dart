@@ -10,11 +10,19 @@ class Activity extends ChangeNotifier {
   String name;
   int icon;
   int color;
+  String emoji;
 
   ActivityLogEntry _logEntry;
   List<ActivityLogEntry> logHistory;
 
-  Activity({this.id, this.created, this.name, this.icon, this.color});
+  Activity({
+    this.id,
+    this.created,
+    this.name,
+    this.icon,
+    this.color,
+    this.emoji,
+  });
 
   factory Activity.fromMap(Map<String, dynamic> map) {
     return Activity(
@@ -24,6 +32,7 @@ class Activity extends ChangeNotifier {
       name: map['name'],
       icon: map['icon'],
       color: map['color'],
+      emoji: map['emoji'],
     );
   }
 
@@ -34,6 +43,7 @@ class Activity extends ChangeNotifier {
     parsed['name'] = map['name'];
     parsed['icon'] = int.tryParse(map['icon'] ?? '');
     parsed['color'] = int.tryParse(map['color'] ?? '');
+    parsed['emoji'] = map['emoji'];
     return Activity.fromMap(parsed);
   }
 
@@ -44,6 +54,7 @@ class Activity extends ChangeNotifier {
       'name': name,
       'icon': icon,
       'color': color,
+      'emoji': emoji,
     };
   }
 
