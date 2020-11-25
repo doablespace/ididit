@@ -16,4 +16,4 @@ Want to challenge your friend? Create activity for them and share it via a messa
 
 ## Development
 
-Execute `yarn install` and `yarn gulp run` inside `/node/` folder to prepare OpenMoji data.
+Execute `yarn install` and `yarn run gulp` inside `/node/` folder to prepare OpenMoji data.
