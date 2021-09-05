@@ -30,3 +30,25 @@ Want to challenge your friend? Create activity for them and share it via a messa
 5. Now you can unconnect the device from USB and it still should show up in `adb devices`.
 6. In container, run `adb connect 192.168.0.10:5555`.
 7. Launch the app from VS Code or using `flutter run`.
+
+## Contributing
+
+I Did It is free, open-source software licensed under AGPLv3.
+All contributions are welcome.
+Feel free to open a [pull request](https://github.com/doablespace/ididit/pulls) or file an [issue](https://github.com/doablespace/ididit/issues).
+
+## License
+
+I Did It is a simple and fun activity tracker. Copyright &copy; 2020&ndash;2021 Jana Řežábková & Jan Joneš.
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
