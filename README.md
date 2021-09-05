@@ -15,7 +15,7 @@ The app is beautiful, fun and breeze to use!
 
 Want to challenge your friend? Create activity for them and share it via a messaging service.
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.knowledgepicker.ididit)
+<a href='https://play.google.com/store/apps/details?id=com.knowledgepicker.ididit'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="64"/></a>
 
 ## Development
 
