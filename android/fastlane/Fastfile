@@ -16,22 +16,22 @@
 default_platform(:android)
 
 platform :android do
-  desc "Submit a new beta build to Google Play"
-  lane :beta do
-    sh "flutter build appbundle -v --flavor prod"
-    changelog_from_git_commits
-    upload_to_play_store(
-      track: 'alpha',
-      aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab'
-    )
+  desc "Submit the build to Google Play alpha track"
+  lane :alpha do
+    publish(track: 'alpha')
   end
 
-  desc "Submit a new production build to Google Play"
+  desc "Submit the build to Google Play production track"
   lane :production do
+    publish(track: 'production')
+  end
+  
+  desc "Submit the build to Google Play"
+  lane :publish do |options|
     sh "flutter build appbundle -v --flavor prod"
     changelog_from_git_commits
     upload_to_play_store(
-      track: 'production',
+      track: options[:track],
       aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab'
     )
   end
