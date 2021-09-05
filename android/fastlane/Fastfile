@@ -18,21 +18,34 @@ default_platform(:android)
 platform :android do
   desc "Submit the build to Google Play alpha track"
   lane :alpha do
-    publish(track: 'alpha')
+    publish(track: "alpha")
   end
 
   desc "Submit the build to Google Play production track"
   lane :production do
-    publish(track: 'production')
+    publish(track: "production")
   end
   
   desc "Submit the build to Google Play"
   lane :publish do |options|
-    sh "flutter build appbundle -v --flavor prod"
+    # Increment version number to one more than currently released version.
+    versions = google_play_track_version_codes(track: options[:track])
+    version = versions[0] + 1
+
+    # Retrieve version name from Git tag (includes commit hash)
+    tag = sh "git describe --tags"
+
+    # Build Flutter app.
+    sh "flutter build appbundle -v --flavor prod --build-number=#{version} " +
+      "--build-name=#{tag}"
+
+    # Generate changelog.
     changelog_from_git_commits
+
+    # Upload to Google Play.
     upload_to_play_store(
       track: options[:track],
-      aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab'
+      aab: "../build/app/outputs/bundle/prodRelease/app-prod-release.aab"
     )
   end
 end
