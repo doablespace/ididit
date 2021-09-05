@@ -22,7 +22,7 @@ ENV PATH="$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$ANDROID_SDK_ROOT/emulator:$
 # Install all dependencies.
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 sudo \
+    && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential sudo \
     && rm -rf /var/lib/{apt,dpkg,cache,log}
 
 # Create user.
@@ -63,3 +63,7 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && flutter doctor \
     && flutter emulators --create \
     && flutter update-packages
+
+# Install Fastlane (https://docs.fastlane.tools/).
+RUN sudo gem install bundler \
+    && bundle install
