@@ -15,6 +15,8 @@ The app is beautiful, fun and breeze to use!
 
 Want to challenge your friend? Create activity for them and share it via a messaging service.
 
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.knowledgepicker.ididit)
+
 ## Development
 
 1. Install Visual Studio Code, Docker Desktop and [ADB](https://developer.android.com/studio/releases/platform-tools).
