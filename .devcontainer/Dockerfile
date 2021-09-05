@@ -55,6 +55,8 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && mkdir -p $FLUTTER_HOME \
     && tar xf flutter.tar.xz -C /home/$USER \
     && rm flutter.tar.xz \
+    # HACK: Patch Flutter (allows transparent dismissible widget).
+    && (cd $FLUTTER_HOME && git apply /workspaces/ididit/flutter.patch) \
     && flutter config --no-analytics \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \

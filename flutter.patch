@@ -1,0 +1,19 @@
+diff --git a/packages/flutter/lib/src/widgets/dismissible.dart b/packages/flutter/lib/src/widgets/dismissible.dart
+index e6d1fd7501..e0d933232b 100644
+--- a/packages/flutter/lib/src/widgets/dismissible.dart
++++ b/packages/flutter/lib/src/widgets/dismissible.dart
+@@ -561,10 +561,10 @@ class _DismissibleState extends State<Dismissible> with TickerProviderStateMixin
+         if (!_moveAnimation.isDismissed)
+           Positioned.fill(
+             child: ClipRect(
+-              clipper: _DismissibleClipper(
+-                axis: _directionIsXAxis ? Axis.horizontal : Axis.vertical,
+-                moveAnimation: _moveAnimation,
+-              ),
++              // clipper: _DismissibleClipper(
++              //   axis: _directionIsXAxis ? Axis.horizontal : Axis.vertical,
++              //   moveAnimation: _moveAnimation,
++              // ),
+               child: background,
+             ),
+           ),
