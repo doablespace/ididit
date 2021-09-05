@@ -1,2 +1,2 @@
-json_key_file("/home/developer/pc-api-7974479802823773424-313-59102d449e9f.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file("play-store-api.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("com.knowledgepicker.ididit")
