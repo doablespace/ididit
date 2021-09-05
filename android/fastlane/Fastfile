@@ -28,6 +28,9 @@ platform :android do
   
   desc "Submit the build to Google Play"
   lane :publish do |options|
+    # Avoid generating `README.md`.
+    skip_docs
+
     # Increment version number to one more than currently released version.
     versions = google_play_track_version_codes(track: options[:track])
     version = versions[0] + 1
