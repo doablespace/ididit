@@ -1,0 +1,42 @@
+name: Deploy master to Play Store
+on:
+  workflow_dispatch:
+    # Enable manual run.
+    inputs:
+      lane:
+        description: 'Fastlane lane to use (alpha OR production)'
+        required: true
+        default: 'alpha'
+  push:
+    branches:
+      # Deploy every merged pull request.
+      - main
+
+jobs:
+  fastlane-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Configure Android signing
+        working-directory: android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+
+      - name: Build deployment Docker image
+        run: docker build --target ci -t ididit .
+
+      - name: Run deployment in Docker
+        run: >
+          docker run --rm -it -w android ididit bundle exec fastlane
+          ${{ github.event.inputs.lane || 'beta' }}
