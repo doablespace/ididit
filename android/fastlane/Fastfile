@@ -19,6 +19,7 @@ platform :android do
   desc "Submit a new beta build to Google Play"
   lane :beta do
     sh "flutter build appbundle -v --flavor prod"
+    changelog_from_git_commits
     upload_to_play_store(
       track: 'alpha',
       aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab'
@@ -28,6 +29,7 @@ platform :android do
   desc "Submit a new production build to Google Play"
   lane :production do
     sh "flutter build appbundle -v --flavor prod"
+    changelog_from_git_commits
     upload_to_play_store(
       track: 'production',
       aab: '../build/app/outputs/bundle/prodRelease/app-prod-release.aab'
