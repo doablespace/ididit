@@ -3,5 +3,6 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "extensions": ["dart-code.dart-code", "dart-code.flutter"]
+  "extensions": ["dart-code.dart-code", "dart-code.flutter"],
+  "postCreateCommand": "flutter pub get"
 }
