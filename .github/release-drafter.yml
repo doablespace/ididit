@@ -1,0 +1,24 @@
+# See https://github.com/release-drafter/release-drafter. Used by GitHub Action
+# `draft-release`.
+
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Features'
+    labels: [ 'enhancement' ]
+  - title: '🐛 Bug Fixes'
+    labels: [ 'bug' ]
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&`'
+version-resolver:
+  major:
+    labels:
+      - 'breaking'
+  minor:
+    labels:
+      - 'enhancement'
+  default: patch
+template: |
+  ## Changes
+
+  $CHANGES

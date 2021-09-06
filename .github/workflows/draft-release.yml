@@ -1,0 +1,15 @@
+name: Draft release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      # Configured in `/.github/release-drafter.yml`.
+      - name: Run Release Drafter
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
