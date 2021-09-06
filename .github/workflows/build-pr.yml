@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  fastlane-deploy:
+  fastlane-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
