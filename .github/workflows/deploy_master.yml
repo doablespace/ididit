@@ -55,9 +55,10 @@ jobs:
       - name: Run deployment in Docker
         run: >
           docker run --rm -it
-          --mount type=bind,source=.,target=/workspaces/ididit/
-          -w /workspaces/ididit/android ididit
-          bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}
+          --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
+          -w /workspaces/ididit ididit sh -c
+          "./entrypoint.sh && cd android &&
+          bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}"
       
       - name: Move cache
         run: |
