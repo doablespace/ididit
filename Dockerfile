@@ -1,5 +1,6 @@
 # Inspired by https://github.com/matsp/docker-flutter/blob/3cd6be2dad8deb6b984892e300db5dad18f78c73/stable/Dockerfile.
-FROM ubuntu:20.04 AS base
+# Used by VSCode dev containers and GitHub Actions.
+FROM ubuntu:20.04
 
 ENV UID=1000
 ENV GID=1000
@@ -67,9 +68,3 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
 # Install Fastlane (https://docs.fastlane.tools/).
 RUN sudo gem install bundler \
     && bundle install
-
-# Create image for continuous integration (used by GitHub Actions).
-FROM base AS ci
-
-# Copy source code.
-COPY . ./
