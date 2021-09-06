@@ -23,8 +23,15 @@ ENV PATH="$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$ANDROID_SDK_ROOT/emulator:$
 # Install all dependencies.
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt-get update \
-    && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential sudo \
+    && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential locales sudo \
     && rm -rf /var/lib/{apt,dpkg,cache,log}
+
+# Fastlane requires UTF-8. See https://docs.fastlane.tools/getting-started/ios/setup/#set-up-environment-variables.
+# Inspired by https://stackoverflow.com/a/2840600.
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # Create user.
 RUN groupadd --gid $GID $USER \
