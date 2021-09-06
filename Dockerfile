@@ -56,8 +56,6 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && mkdir -p $FLUTTER_HOME \
     && tar xf flutter.tar.xz -C /home/$USER \
     && rm flutter.tar.xz \
-    # HACK: Patch Flutter (allows transparent dismissible widget).
-    && (cd $FLUTTER_HOME && git apply /workspaces/ididit/flutter.patch) \
     && flutter config --no-analytics \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
@@ -65,6 +63,7 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && flutter emulators --create \
     && flutter update-packages
 
-# Install Fastlane (https://docs.fastlane.tools/).
-RUN sudo gem install bundler \
-    && bundle install
+# Install Ruby bundler (needed to install Fastlane dependency).
+RUN sudo gem install bundler
+
+# When source code is mounted, continue with `entrypoint.sh`.
