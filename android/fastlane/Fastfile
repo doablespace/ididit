@@ -16,13 +16,15 @@
 default_platform(:android)
 
 platform :android do
+  before_all do |lane, options|
+    # Avoid generating `README.md`.
+    skip_docs
+  end
+
   desc "Prepare build"
   lane :prepare do |options|
     # Choose default track if not specified.
     track = options[:track] || "alpha"
-
-    # Avoid generating `README.md`.
-    skip_docs
 
     # Increment version number to one more than currently released version.
     versions = google_play_track_version_codes(track: track)
@@ -47,6 +49,29 @@ platform :android do
     upload_to_play_store(
       track: options[:track],
       aab: "../build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+    )
+  end
+
+  desc "Promote alpha track to production on Google Play"
+  lane :release do
+    track = "alpha"
+
+    # Detect currently released alpha version.
+    versions = google_play_track_release_names(track: track)
+    version = versions[0]
+
+    # Check that it matches the current commit.
+    tag = sh "git describe --tags"
+    if tag != version
+      UI.abort_with_message! "Cannot promote to production because " +
+        "#{tag} is not deployed in #{track}"
+    end
+
+    # Promote.
+    upload_to_play_store(
+      track: track,
+      track_promote_to: "production",
+      skip_upload_changelogs: true
     )
   end
 end
