@@ -3,9 +3,8 @@ on:
   workflow_dispatch:
     # Enable manual run.
   pull_request:
-    branches-ignore:
-      # Main branch is built and deployed separately.
-      # IMPORTANT: Keep consistent with `deploy-main.yml`.
+    branches:
+      # Build pull requests against the main branch.
       - main
 
 jobs:

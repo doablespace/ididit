@@ -1,4 +1,4 @@
-name: Deploy main to Play Store
+name: Deploy version to Play Store
 on:
   workflow_dispatch:
     # Enable manual run.
@@ -8,10 +8,9 @@ on:
         required: true
         default: 'alpha'
   push:
-    branches:
-      # Deploy every merged pull request.
-      # IMPORTANT: Keep consistent with `build-pr.yml`.
-      - main
+    tags:
+      # Deploy every tagged version.
+      - 'v*'
 
 jobs:
   fastlane-deploy:

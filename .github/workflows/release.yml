@@ -2,11 +2,9 @@ name: Release to production in Play Store
 on:
   workflow_dispatch:
     # Enable manual run.
-  push:
-    # Run when version tag is pushed (also happens when GitHub release is
-    # published).
-    tags:
-      - 'v*'
+  release:
+    # Run when (previously drafted) release is published.
+    types: [ published ]
 
 jobs:
   fastlane-promote:
