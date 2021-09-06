@@ -16,23 +16,16 @@
 default_platform(:android)
 
 platform :android do
-  desc "Submit the build to Google Play alpha track"
-  lane :alpha do
-    publish(track: "alpha")
-  end
+  desc "Prepare build"
+  lane :prepare do |options|
+    # Choose default track if not specified.
+    track = options[:track] || "alpha"
 
-  desc "Submit the build to Google Play production track"
-  lane :production do
-    publish(track: "production")
-  end
-  
-  desc "Submit the build to Google Play"
-  lane :publish do |options|
     # Avoid generating `README.md`.
     skip_docs
 
     # Increment version number to one more than currently released version.
-    versions = google_play_track_version_codes(track: options[:track])
+    versions = google_play_track_version_codes(track: track)
     version = versions[0] + 1
 
     # Retrieve version name from Git tag (includes commit hash)
@@ -44,6 +37,11 @@ platform :android do
     # Build Flutter app.
     sh "flutter build appbundle -v --flavor prod --build-number=#{version} " +
       "--build-name=#{tag}"
+  end
+  
+  desc "Submit the build to Google Play"
+  lane :publish do |options|
+    prepare(options)
 
     # Upload to Google Play.
     upload_to_play_store(

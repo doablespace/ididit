@@ -1,16 +1,11 @@
-name: Deploy main to Play Store
+name: Build
 on:
   workflow_dispatch:
     # Enable manual run.
-    inputs:
-      track:
-        description: 'Play Store track to use (alpha OR production)'
-        required: true
-        default: 'alpha'
-  push:
-    branches:
-      # Deploy every merged pull request.
-      # IMPORTANT: Keep consistent with `build-pr.yml`.
+  pull_request:
+    branches-ignore:
+      # Main branch is built and deployed separately.
+      # IMPORTANT: Keep consistent with `deploy-main.yml`.
       - main
 
 jobs:
@@ -58,8 +53,7 @@ jobs:
           docker run --rm -it
           --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
           -w /workspaces/ididit ididit sh -c
-          "./entrypoint.sh && cd android && bundle exec fastlane build
-          track:${{ github.event.inputs.track || 'alpha' }}"
+          "./entrypoint.sh && cd android && bundle exec fastlane prepare
       
       - name: Move cache
         run: |
