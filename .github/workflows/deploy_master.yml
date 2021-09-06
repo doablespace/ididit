@@ -58,7 +58,7 @@ jobs:
           --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
           -w /workspaces/ididit ididit sh -c
           "./entrypoint.sh && cd android &&
-          bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}"
+          bundle exec fastlane ${{ github.event.inputs.lane || 'alpha' }}"
       
       - name: Move cache
         run: |
