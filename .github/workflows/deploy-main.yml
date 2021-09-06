@@ -45,7 +45,7 @@ jobs:
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
 
-      - name: Build deployment Docker image
+      - name: Build development Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
