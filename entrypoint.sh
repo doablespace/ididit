@@ -11,4 +11,4 @@ set -e
 bundle install
 
 # Restore Dart dependencies.
-flutter pub get
+flutter pub get -v
