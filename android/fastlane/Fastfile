@@ -54,23 +54,24 @@ platform :android do
 
   desc "Promote alpha track to production on Google Play"
   lane :release do
-    track = "alpha"
+    source_track = "alpha"
+    target_track = "production"
 
     # Detect currently released alpha version.
-    versions = google_play_track_release_names(track: track)
+    versions = google_play_track_release_names(track: source_track)
     version = versions[0]
 
     # Check that it matches the current commit.
     tag = sh "git describe --tags"
     if tag != version
-      UI.abort_with_message! "Cannot promote to production because " +
-        "#{tag} is not deployed in #{track}"
+      UI.abort_with_message! "Cannot promote to #{target_track} because " +
+        "#{tag} is not deployed in #{source_track}"
     end
 
     # Promote.
     upload_to_play_store(
       track: track,
-      track_promote_to: "production",
+      track_promote_to: target_track,
       skip_upload_changelogs: true
     )
   end
