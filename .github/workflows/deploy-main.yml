@@ -1,4 +1,4 @@
-name: Deploy master to Play Store
+name: Deploy main to Play Store
 on:
   workflow_dispatch:
     # Enable manual run.
