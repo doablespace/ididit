@@ -44,7 +44,8 @@ Want to challenge your friend? Create activity for them and share it via a messa
    git push origin v1.2.3
    ```
 
-   This is built and released in alpha track on Google Play.
+   This builts and releases the app in alpha track on Google Play.
+   The resulting app bundle is also attached to the drafted release on GitHub.
 3. When tested, publish the drafted release on GitHub.
    This promotes the alpha track to production on Google Play.
 
