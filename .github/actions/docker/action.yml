@@ -61,7 +61,7 @@ runs:
     - name: Run command in Docker
       shell: bash
       run: >
-        docker run --rm -it
+        docker run --rm -t
         --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
         --mount type=bind,source=/tmp/.pub-cache,target=/home/developer/.pub-cache/
         -w /workspaces/ididit ididit sh -c "${{ inputs.command }}"
