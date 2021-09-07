@@ -58,6 +58,11 @@ runs:
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
+    - name: Ensure Dart package cache directory exists
+      # Otherwise Docker mount below fails if the directory doesn't exist.
+      shell: bash
+      run: mkdir -p /tmp/.pub-cache
+
     - name: Run command in Docker
       shell: bash
       run: >
