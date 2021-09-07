@@ -11,6 +11,9 @@ jobs:
   fastlane-build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
       - name: Build the application
         uses: ./.github/actions/docker
         with:

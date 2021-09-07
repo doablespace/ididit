@@ -10,6 +10,9 @@ jobs:
   fastlane-promote:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
       - name: Promote the application
         uses: ./.github/actions/docker
         with:
