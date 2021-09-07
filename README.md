@@ -31,6 +31,15 @@ Want to challenge your friend? Create activity for them and share it via a messa
 
 5. Now you can unconnect the device from USB and it still should show up in `adb devices`.
 6. In container, run `adb connect 192.168.0.10:5555`.
+   If there are problems, ensure the container is not running until this step (i.e., VS Code is closed).
+   If device shows up as `unauthorized`, restart ADB server:
+
+   ```bash
+   adb kill-server
+   adb start-server
+   ```
+
+   And retry the action (e.g., `adb connect ...`).
 7. Launch the app from VS Code or using `flutter run`.
 
 ### Continuous integration and deployment
