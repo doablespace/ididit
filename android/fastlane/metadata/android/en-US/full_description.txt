@@ -8,3 +8,6 @@ For each task you swipe:
 The app is beautiful, fun and breeze to use!
 
 Want to challenge your friend? Create activity for them and share it via a messaging service.
+
+This app is completely open source on https://github.com/doablespace/ididit.
+It is written in Flutter and any contributions are welcome.
