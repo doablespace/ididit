@@ -40,7 +40,7 @@ Want to challenge your friend? Create activity for them and share it via a messa
    ```
 
    And retry the action (e.g., `adb connect ...`).
-7. Launch the app from VS Code or using `flutter run`.
+7. Launch the app from VS Code or using `flutter run --flavor dev`.
 
 ### Continuous integration and deployment
 
