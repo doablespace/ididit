@@ -68,7 +68,7 @@ runs:
       run: >
         docker run --rm -t
         --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
-        --mount type=bind,source=/tmp/.pub-cache,target=/home/developer/.pub-cache/
+        --mount type=bind,source=/tmp/.pub-cache,target=/home/developer/flutter/.pub-cache/
         -w /workspaces/ididit ididit sh -c "${{ inputs.command }}"
     
     - name: Move Docker cache
