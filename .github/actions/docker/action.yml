@@ -4,6 +4,18 @@ inputs:
   command:
     description: Shell command to run in Docker
     required: true
+  play_store_upload_key:
+    description: Base64-encoded upload keystore
+    required: true
+  keystore_key_alias:
+    description: Name of key in the keystore
+    required: true
+  keystore_key_password:
+    description: Password to the key in the keystore
+    required: true
+  keystore_store_password:
+    description: Store password to the key in the keystore
+    required: true
 
 runs:
   using: "composite"
@@ -31,10 +43,10 @@ runs:
         echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
         echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
       env:
-        PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
-        KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-        KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-        KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        PLAY_STORE_UPLOAD_KEY: ${{ inputs.play_store_upload_key }}
+        KEYSTORE_KEY_ALIAS: ${{ inputs.keystore_key_alias }}
+        KEYSTORE_KEY_PASSWORD: ${{ inputs.keystore_key_password }}
+        KEYSTORE_STORE_PASSWORD: ${{ inputs.keystore_store_password }}
 
     - name: Build development Docker image
       uses: docker/build-push-action@v2

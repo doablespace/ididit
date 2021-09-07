@@ -25,6 +25,10 @@ jobs:
           command: >
             ./entrypoint.sh && cd android && bundle exec fastlane build
             track:${{ github.event.inputs.track || 'alpha' }}
+          play_store_upload_key: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          keystore_key_alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          keystore_key_password: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          keystore_store_password: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
 
       - name: Detect pushed tag name
         id: tag

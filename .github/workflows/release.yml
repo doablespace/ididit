@@ -18,3 +18,7 @@ jobs:
         with:
           command: >
             ./entrypoint.sh && cd android && bundle exec fastlane release
+          play_store_upload_key: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          keystore_key_alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          keystore_key_password: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          keystore_store_password: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
