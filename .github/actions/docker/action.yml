@@ -51,6 +51,8 @@ runs:
     - name: Build development Docker image
       uses: docker/build-push-action@v2
       with:
+        # Load the built image into local Docker. Used in the next step.
+        load: true
         context: .
         tags: ididit
         cache-from: type=local,src=/tmp/.buildx-cache
