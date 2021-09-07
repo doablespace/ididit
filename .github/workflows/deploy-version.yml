@@ -22,3 +22,34 @@ jobs:
           command: >
             ./entrypoint.sh && cd android && bundle exec fastlane build
             track:${{ github.event.inputs.track || 'alpha' }}
+
+      - name: Detect pushed tag name
+        id: tag
+        # Inspired by https://stackoverflow.com/a/58178121.
+        run: echo ::set-output name=name::${GITHUB_REF#refs/*/}
+
+      - name: Describe current version
+        id: version
+        # This version includes tag name + commit hash.
+        run: echo ::set-output name=name::$(git describe --tags)
+
+      - name: Draft release
+        id: draft 
+        # Configured in `/.github/release-drafter.yml`.
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Use the pushed version tag instead of auto-drafted one.
+        with:
+          name: ${{ steps.tag.outputs.name }}
+          tag: ${{ steps.tag.outputs.name }}
+
+      - name: Upload app bundle as release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.draft.outputs.upload_url }}
+          asset_path: ./build/app/outputs/bundle/prodRelease/app-prod-release.aab
+          asset_name: ididit-${{ steps.version.outputs.name }}.aab
+          asset_content_type: application/octet-stream

@@ -3,13 +3,16 @@ on:
   push:
     branches:
       - main
+    tags-ignore:
+      # Tagged versions are handled by `deploy-version`.
+      - 'v*'
 
 jobs:
   draft-release:
     runs-on: ubuntu-latest
     steps:
-      # Configured in `/.github/release-drafter.yml`.
       - name: Run Release Drafter
+        # Configured in `/.github/release-drafter.yml`.
         uses: release-drafter/release-drafter@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
