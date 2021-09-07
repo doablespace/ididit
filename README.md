@@ -35,9 +35,6 @@ Want to challenge your friend? Create activity for them and share it via a messa
 
 ### Continuous integration and deployment
 
-<details>
-<summary>Instructions for maintainers</summary>
-
 1. Merge pull requests with changes to the main branch.
    These are automatically added to changelog of a draft release.
 2. When ready to release, push new version tag.
@@ -50,8 +47,6 @@ Want to challenge your friend? Create activity for them and share it via a messa
    This is built and released in alpha track on Google Play.
 3. When tested, publish the drafted release on GitHub.
    This promotes the alpha track to production on Google Play.
-
-</details>
 
 ## Contributing
 
