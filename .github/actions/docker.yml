@@ -14,10 +14,12 @@ runs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Cache Docker layers
+    - name: Cache Docker layers and Dart packages
       uses: actions/cache@v2
       with:
-        path: /tmp/.buildx-cache
+        path: |
+          /tmp/.buildx-cache
+          /tmp/.pub-cache
         key: ${{ runner.os }}-buildx-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-buildx-
@@ -48,9 +50,10 @@ runs:
       run: >
         docker run --rm -it
         --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
+        --mount type=bind,source=/tmp/.pub-cache,target=/home/developer/.pub-cache/
         -w /workspaces/ididit ididit sh -c "${{ inputs.command }}"
     
-    - name: Move cache
+    - name: Move Docker cache
       run: |
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
