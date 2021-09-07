@@ -23,6 +23,7 @@ runs:
 
     - name: Configure Android signing
       working-directory: android
+      shell: bash
       run: |
         echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
         echo "storeFile=upload-keystore.jks" >> key.properties
@@ -44,6 +45,7 @@ runs:
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
     - name: Run command in Docker
+      shell: bash
       run: >
         docker run --rm -it
         --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
@@ -51,6 +53,7 @@ runs:
         -w /workspaces/ididit ididit sh -c "${{ inputs.command }}"
     
     - name: Move Docker cache
+      shell: bash
       run: |
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
