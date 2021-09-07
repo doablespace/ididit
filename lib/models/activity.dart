@@ -12,7 +12,7 @@ class Activity extends ChangeNotifier {
   int color;
 
   ActivityLogEntry _logEntry;
-  List<ActivityLogEntry> logHistory;
+  List<ActivityLogEntry> logHistory = List.empty();
 
   Activity({this.id, this.created, this.name, this.icon, this.color});
 
