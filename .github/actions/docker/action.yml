@@ -100,3 +100,9 @@ runs:
       run: |
         rm -rf /tmp/.buildx-cache
         mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+    - name: Permit Dart package cache access to everyone
+      # This is needed to avoid permission errors when packing up the cache.
+      # Similar to https://github.com/actions/virtual-environments/issues/1337.
+      shell: bash
+      run: chmod -R a+rwx /tmp/.pub-cache
