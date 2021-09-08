@@ -57,6 +57,10 @@ runs:
         tags: ididit
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        # Run as root to prevent file permission errors in GitHub Actions. See
+        # https://stackoverflow.com/a/61024770.
+        build-args: |
+          USER=root
 
     - name: Ensure Dart package cache directory exists
       # Otherwise Docker mount below fails if the directory doesn't exist.
@@ -68,9 +72,9 @@ runs:
       run: >
         docker run --rm -t
         --mount type=bind,source="$(pwd)",target=/workspaces/ididit/
-        --mount type=bind,source=/tmp/.pub-cache,target=/home/developer/flutter/.pub-cache/
+        --mount type=bind,source=/tmp/.pub-cache,target=/home/root/flutter/.pub-cache/
         -w /workspaces/ididit ididit sh -c "${{ inputs.command }}"
-    
+
     - name: Move Docker cache
       shell: bash
       run: |

@@ -2,9 +2,11 @@
 # Used by VSCode dev containers and GitHub Actions.
 FROM ubuntu:20.04
 
+ARG USER="developer"
+
 ENV UID=1000
 ENV GID=1000
-ENV USER="developer"
+ENV USER=${USER}
 ENV JAVA_VERSION="8"
 ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
 ENV ANDROID_VERSION="29"
