@@ -33,6 +33,20 @@ runs:
         restore-keys: |
           ${{ runner.os }}-buildx-
 
+    - name: Build development Docker image
+      uses: docker/build-push-action@v2
+      with:
+        # Load the built image into local Docker. Used in the next step.
+        load: true
+        context: .
+        tags: ididit
+        cache-from: type=local,src=/tmp/.buildx-cache
+        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+        # Run as root to prevent file permission errors in GitHub Actions. See
+        # https://stackoverflow.com/a/61024770.
+        build-args: |
+          USER=root
+
     - name: Configure Android signing
       working-directory: android
       shell: bash
@@ -48,19 +62,13 @@ runs:
         KEYSTORE_KEY_PASSWORD: ${{ inputs.keystore_key_password }}
         KEYSTORE_STORE_PASSWORD: ${{ inputs.keystore_store_password }}
 
-    - name: Build development Docker image
-      uses: docker/build-push-action@v2
-      with:
-        # Load the built image into local Docker. Used in the next step.
-        load: true
-        context: .
-        tags: ididit
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-        # Run as root to prevent file permission errors in GitHub Actions. See
-        # https://stackoverflow.com/a/61024770.
-        build-args: |
-          USER=root
+    - name: Configure Google Play API access
+      working-directory: android
+      shell: bash
+      run: |
+        echo "$PLAY_STORE_CONFIG_JSON" > play-store-api.json
+      env:
+        PLAY_STORE_CONFIG_JSON: ${{ inputs.play_store_config_json }}
 
     - name: Ensure Dart package cache directory exists
       # Otherwise Docker mount below fails if the directory doesn't exist.
