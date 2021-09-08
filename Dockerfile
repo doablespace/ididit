@@ -35,11 +35,12 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Create user.
-RUN groupadd --gid $GID $USER \
+# Create user if it's not root.
+RUN if [[ "$USER" != "root" ]] ; then \
+    groupadd --gid $GID $USER \
     && useradd -s /bin/bash --uid $UID --gid $GID -m $USER \
     && echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER \
-    && chmod 0440 /etc/sudoers.d/$USER
+    && chmod 0440 /etc/sudoers.d/$USER ; fi
 
 USER $USER
 WORKDIR /home/$USER
