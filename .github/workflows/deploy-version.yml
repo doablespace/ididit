@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/docker
         with:
           command: >
-            ./entrypoint.sh && cd android && bundle exec fastlane build
+            ./entrypoint.sh && cd android && bundle exec fastlane publish
             track:${{ github.event.inputs.track || 'alpha' }}
           play_store_upload_key: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
           keystore_key_alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
