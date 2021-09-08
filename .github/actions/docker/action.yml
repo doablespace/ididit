@@ -23,6 +23,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Checkout treeless version
+      # This converts shallow clone performed using `git checkout --depth=1` by
+      # `actions/checkout` to treeless clone where command `git describe --tags`
+      # works.
+      shell: bash
+      run: |
+        rm -rf .* * || echo "Ignoring rm failure"
+        git clone --filter=tree:0 https://github.com/${{ github.repository }} .
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
