@@ -29,6 +29,7 @@ jobs:
           keystore_key_alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
           keystore_key_password: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
           keystore_store_password: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          play_store_config_json: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
 
       - name: Detect pushed tag name
         id: tag

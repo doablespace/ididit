@@ -16,6 +16,9 @@ inputs:
   keystore_store_password:
     description: Store password to the key in the keystore
     required: true
+  play_store_config_json:
+    description: Google Play JSON service account key
+    required: true
 
 runs:
   using: "composite"
