@@ -36,7 +36,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 # Create user if it's not root.
-RUN if [[ "$USER" != "root" ]] ; then \
+RUN if [ "$USER" != "root" ] ; then \
     groupadd --gid $GID $USER \
     && useradd -s /bin/bash --uid $UID --gid $GID -m $USER \
     && echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER \
