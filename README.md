@@ -19,6 +19,8 @@ Want to challenge your friend? Create activity for them and share it via a messa
 
 ## Development
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/doablespace/ididit)
+
 1. Install Visual Studio Code, Docker Desktop and [ADB](https://developer.android.com/studio/releases/platform-tools).
 2. Install VS Code extension for Remote Container development.
 3. Reopen or clone the repository in container through the extension.
