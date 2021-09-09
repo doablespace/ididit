@@ -31,7 +31,7 @@ platform :android do
     version = versions[0] + 1
 
     # Retrieve version name from Git tag (includes commit hash)
-    tag = sh "git describe --tags"
+    tag = (sh "git describe --tags").strip
 
     # Generate changelog from merged pull requests.
     changelog_from_git_commits(merge_commit_filtering: "only_include_merges")
@@ -62,15 +62,15 @@ platform :android do
     version = versions[0]
 
     # Check that it matches the current commit.
-    tag = sh "git describe --tags"
+    tag = (sh "git describe --tags").strip
     if tag != version
       UI.abort_with_message! "Cannot promote to #{target_track} because " +
-        "#{tag} is not deployed in #{source_track}"
+        "'#{tag}' is not deployed in #{source_track} (there is '#{version}')"
     end
 
     # Promote.
     upload_to_play_store(
-      track: track,
+      track: source_track,
       track_promote_to: target_track,
       skip_upload_changelogs: true
     )
