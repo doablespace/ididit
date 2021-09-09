@@ -1,0 +1,4 @@
+# See https://www.gitpod.io/docs/references/gitpod-yml.
+
+image:
+  file: Dockerfile
