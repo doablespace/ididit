@@ -1,12 +1,8 @@
 {
   "name": "Flutter",
   "build": {
-    "dockerfile": "../Dockerfile",
-    "args": {
-      "USER": "developer"
-    }
+    "dockerfile": "../Dockerfile"
   },
-  "remoteUser": "developer",
   "extensions": ["dart-code.dart-code", "dart-code.flutter"],
   "postCreateCommand": "./entrypoint.sh"
 }

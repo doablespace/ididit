@@ -2,7 +2,7 @@
 # Used by VSCode dev containers and GitHub Actions.
 FROM ubuntu:20.04
 
-ARG USER="gitpod"
+ARG USER="developer"
 
 ENV UID=1000
 ENV GID=1000
@@ -41,6 +41,10 @@ RUN if [ "$USER" != "root" ] ; then \
     && useradd -s /bin/bash --uid $UID --gid $GID -m $USER \
     && echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER \
     && chmod 0440 /etc/sudoers.d/$USER ; fi
+
+# Add Gitpod user to sudoers.
+RUN echo gitpod ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/gitpod \
+    && chmod 0440 /etc/sudoers.d/gitpod
 
 USER $USER
 WORKDIR /home/$USER
