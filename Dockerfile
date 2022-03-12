@@ -2,7 +2,7 @@
 # Used by VSCode dev containers and GitHub Actions.
 FROM ubuntu:20.04
 
-ARG USER="developer"
+ARG USER="gitpod"
 
 ENV UID=1000
 ENV GID=1000
