@@ -21,6 +21,10 @@ Want to challenge your friend? Create activity for them and share it via a messa
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/doablespace/ididit)
 
+If using [Gitpod](https://www.gitpod.io/), skip the first three steps in the instructions below.
+Tunnel via [Tailscale](https://tailscale.com/) to your local machine before connecting to an Android device or an emulator
+(Tailscale client is already installed in the Docker image, you only need to install it locally).
+
 [![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/doablespace/ididit)
 
 1. Install Visual Studio Code, Docker Desktop and [ADB](https://developer.android.com/studio/releases/platform-tools).

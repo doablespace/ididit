@@ -26,6 +26,13 @@ RUN apt-get update \
     && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential locales sudo \
     && rm -rf /var/lib/{apt,dpkg,cache,log}
 
+# Install Tailscale proxy.
+RUN curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.gpg | apt-key add - \
+    && curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/focal.list | tee /etc/apt/sources.list.d/tailscale.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends tailscale \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}
+
 # Fastlane requires UTF-8. See https://docs.fastlane.tools/getting-started/ios/setup/#set-up-environment-variables.
 # Inspired by https://stackoverflow.com/a/2840600.
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
