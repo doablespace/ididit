@@ -2,3 +2,10 @@
 
 image:
   file: Dockerfile
+
+tasks:
+  - init: ./entrypoint.sh
+
+vscode:
+  extensions:
+    - Dart-Code.flutter
