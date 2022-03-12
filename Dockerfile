@@ -2,21 +2,35 @@
 # Used by VSCode dev containers and GitHub Actions.
 FROM ubuntu:20.04
 
-ARG USER="developer"
+ARG USER="gitpod"
 
-ENV UID=1000
-ENV GID=1000
-ENV USER=${USER}
+# Create user. Based on https://github.com/gitpod-io/workspace-images/blob/481f7600b725e0ab507fbf8377641a562a475625/base/Dockerfile.
+# '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
+RUN useradd -l -u 33333 -G sudo -md /home/${USER} -s /bin/bash -p ${USER} ${USER} \
+    # passwordless sudo for users in the 'sudo' group
+    && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
+ENV HOME=/home/${USER}
+WORKDIR $HOME
+# custom Bash prompt
+RUN { echo && echo "PS1='\[\033[01;32m\]\u\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]\$(__git_ps1 \" (%s)\") $ '" ; } >> .bashrc
+
+USER ${USER}
+# use sudo so that user does not get sudo usage info on (the first) login
+RUN sudo echo "Running 'sudo' for ${USER}: success" && \
+    # create .bashrc.d folder and source it in the bashrc
+    mkdir -p $HOME/.bashrc.d && \
+    (echo; echo "for i in \$(ls -A \$HOME/.bashrc.d/); do source \$HOME/.bashrc.d/\$i; done"; echo) >> $HOME/.bashrc
+
 ENV JAVA_VERSION="8"
 ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
 ENV ANDROID_VERSION="29"
 ENV ANDROID_BUILD_TOOLS_VERSION="29.0.3"
 ENV ANDROID_ARCHITECTURE="x86_64"
-ENV ANDROID_SDK_ROOT="/home/$USER/android"
+ENV ANDROID_SDK_ROOT="$HOME/android"
 ENV FLUTTER_CHANNEL="stable"
 ENV FLUTTER_VERSION="1.22.0"
 ENV FLUTTER_URL="https://storage.googleapis.com/flutter_infra/releases/$FLUTTER_CHANNEL/linux/flutter_linux_$FLUTTER_VERSION-$FLUTTER_CHANNEL.tar.xz"
-ENV FLUTTER_HOME="/home/$USER/flutter"
+ENV FLUTTER_HOME="$HOME/flutter"
 ENV FLUTTER_WEB_PORT="8090"
 ENV FLUTTER_DEBUG_PORT="42000"
 ENV FLUTTER_EMULATOR_NAME="flutter_emulator"
@@ -24,35 +38,21 @@ ENV PATH="$ANDROID_SDK_ROOT/cmdline-tools/tools/bin:$ANDROID_SDK_ROOT/emulator:$
 
 # Install all dependencies.
 ENV DEBIAN_FRONTEND="noninteractive"
-RUN apt-get update \
-    && apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential locales sudo \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}
+RUN sudo apt-get update \
+    && sudo apt-get install --yes --no-install-recommends openjdk-$JAVA_VERSION-jdk curl unzip sed git bash xz-utils libglvnd0 ssh xauth x11-xserver-utils libpulse0 libxcomposite1 libgl1-mesa-glx gnupg2 ruby-dev build-essential locales \
+    && sudo rm -rf /var/lib/{apt,dpkg,cache,log}
 
 # Fastlane requires UTF-8. See https://docs.fastlane.tools/getting-started/ios/setup/#set-up-environment-variables.
 # Inspired by https://stackoverflow.com/a/2840600.
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
+RUN sudo sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && sudo locale-gen
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Create user if it's not root.
-RUN if [ "$USER" != "root" ] ; then \
-    groupadd --gid $GID $USER \
-    && useradd -s /bin/bash --uid $UID --gid $GID -m $USER \
-    && echo $USER ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER \
-    && chmod 0440 /etc/sudoers.d/$USER ; fi
-
-# Add Gitpod user to sudoers.
-RUN echo gitpod ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/gitpod \
-    && chmod 0440 /etc/sudoers.d/gitpod
-
-USER $USER
-WORKDIR /home/$USER
-
 # Install Android SDK.
 RUN mkdir -p $ANDROID_SDK_ROOT \
-    && mkdir -p /home/$USER/.android \
-    && touch /home/$USER/.android/repositories.cfg \
+    && mkdir -p $HOME/.android \
+    && touch $HOME/.android/repositories.cfg \
     && curl -o android_tools.zip $ANDROID_TOOLS_URL \
     && unzip -qq -d "$ANDROID_SDK_ROOT" android_tools.zip \
     && rm android_tools.zip \
@@ -68,7 +68,7 @@ RUN mkdir -p $ANDROID_SDK_ROOT \
 # Install Flutter.
 RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && mkdir -p $FLUTTER_HOME \
-    && tar xf flutter.tar.xz -C /home/$USER \
+    && tar xf flutter.tar.xz -C $HOME \
     && rm flutter.tar.xz \
     && flutter config --no-analytics \
     && flutter precache \
@@ -78,6 +78,6 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && flutter update-packages
 
 # Install Ruby bundler (needed to install Fastlane dependency).
-RUN sudo gem install bundler
+RUN gem install bundler
 
 # When source code is mounted, continue with `entrypoint.sh`.
