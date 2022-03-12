@@ -78,6 +78,6 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && flutter update-packages
 
 # Install Ruby bundler (needed to install Fastlane dependency).
-RUN gem install bundler
+RUN sudo gem install bundler
 
 # When source code is mounted, continue with `entrypoint.sh`.
