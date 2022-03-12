@@ -51,32 +51,8 @@ class OptionsActivityBox extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        // Stats button.
-        RoundedButton(
-          borderColor: ThemeColors.upperBackground,
-          backgroundColor: ThemeColors.upperBackground,
-          textColor: ThemeColors.lowerBackground,
-          label: 'Stats',
-          iconLabel: Icons.assessment_rounded,
-          buttonWidth: 230,
-          onPressed: () {
-            showDialog(
-              context: context,
-              child: AlertDialog(
-                title: Text('Coming soon'),
-                content: Text('And it will be AWESOME.'),
-                actions: [
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ),
-            );
-          },
-        ),
+        // Move buttons.
+        _MoveAction(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -199,4 +175,56 @@ class _Options extends PopupRoute {
 
   @override
   Duration get transitionDuration => Duration.zero;
+}
+
+class _MoveAction extends StatefulWidget {
+  const _MoveAction({Key key}) : super(key: key);
+
+  @override
+  State<_MoveAction> createState() => _MoveActionState();
+}
+
+class _MoveActionState extends State<_MoveAction> {
+  bool moving = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (moving) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _moveButton(icon: Icons.first_page_rounded),
+          _moveButton(icon: Icons.keyboard_arrow_left_rounded),
+          _moveButton(icon: Icons.keyboard_arrow_right_rounded),
+          _moveButton(icon: Icons.last_page_rounded),
+        ],
+      );
+    }
+    return RoundedButton(
+      borderColor: ThemeColors.upperBackground,
+      textColor: ThemeColors.upperBackground,
+      label: 'Move',
+      iconLabel: Icons.swap_horiz_rounded,
+      buttonWidth: 230,
+      onPressed: () {
+        setState(() {
+          moving = true;
+        });
+      },
+    );
+  }
+
+  Widget _moveButton({IconData icon}) {
+    return RoundedButton(
+      borderColor: ThemeColors.upperBackground,
+      textColor: ThemeColors.upperBackground,
+      buttonWidth: 36,
+      icon: Icon(icon, color: ThemeColors.upperBackground),
+      onPressed: () {
+        setState(() {
+          moving = false;
+        });
+      },
+    );
+  }
 }
