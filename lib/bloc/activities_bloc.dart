@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:ididit/bloc/bloc_provider.dart';
 import 'package:ididit/data/database.dart';
@@ -39,6 +40,11 @@ class ActivitiesBloc extends Bloc {
   Stream<DateTime> get currentDayStream => _currentDayController.stream;
   double get loading => _loading;
   Stream<double> get loadingStream => _loadingController.stream;
+
+  int get minOrder =>
+      activities.isEmpty ? 0 : activities.map((a) => a.customOrder).reduce(min);
+  int get maxOrder =>
+      activities.isEmpty ? 0 : activities.map((a) => a.customOrder).reduce(max);
 
   void _init() async {
     // Load all activities and their current state.
@@ -165,6 +171,11 @@ class ActivitiesBloc extends Bloc {
     // some already-marked activity). Or always if "skip" was chosen.
     if (previousState == ActivityState.skip ||
         targetState == ActivityState.skip) _selectNext();
+  }
+
+  void sort() {
+    _activities.sort((a, b) => a.customOrder.compareTo(b.customOrder));
+    _activityController.sink.add(_activities);
   }
 
   void _selectNext() {

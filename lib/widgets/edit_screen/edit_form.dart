@@ -44,14 +44,12 @@ class EditFormState extends State<EditForm> {
         // Pick color at random. Here, to have effect on `ActivityImage`.
         var colorId = Random().nextInt(ActivityColors.colors.length);
 
-        // Detect lowest custom order.
-        var customOrder = activitiesBloc.activities.isEmpty
-            ? 1
-            : activitiesBloc.activities.map((a) => a.customOrder).reduce(min);
-
         activity = widget._activityChange == ActivityChange.edit
             ? activitiesBloc.currentActivity
-            : Activity(color: colorId, customOrder: customOrder - 1);
+            : Activity(
+                color: colorId,
+                customOrder: activitiesBloc.minOrder - 1,
+              );
       }
     }
 
