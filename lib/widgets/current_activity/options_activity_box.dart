@@ -198,8 +198,10 @@ class _MoveActionState extends State<_MoveAction> {
           _moveButton(
             icon: Icons.first_page_rounded,
             handler: (activitiesBloc) {
-              widget.activity.customOrder = activitiesBloc.minOrder - 1;
-              activitiesBloc.moved(widget.activity);
+              if (widget.activity.customOrder != activitiesBloc.minOrder) {
+                widget.activity.customOrder = activitiesBloc.minOrder - 1;
+                activitiesBloc.moved(widget.activity);
+              }
               setState(() {
                 moving = false;
               });
@@ -216,8 +218,10 @@ class _MoveActionState extends State<_MoveAction> {
           _moveButton(
             icon: Icons.last_page_rounded,
             handler: (activitiesBloc) {
-              widget.activity.customOrder = activitiesBloc.maxOrder + 1;
-              activitiesBloc.moved(widget.activity);
+              if (widget.activity.customOrder != activitiesBloc.maxOrder) {
+                widget.activity.customOrder = activitiesBloc.maxOrder + 1;
+                activitiesBloc.moved(widget.activity);
+              }
               setState(() {
                 moving = false;
               });
@@ -259,7 +263,7 @@ class _MoveActionState extends State<_MoveAction> {
     return (ActivitiesBloc activitiesBloc) {
       var newOrder = widget.activity.customOrder + delta;
       var oldActivity = activitiesBloc.activities.firstWhere(
-        (a) => a.customOrder == newOrder,
+        (a) => a.customOrder == newOrder && a != widget.activity,
         orElse: () => null,
       );
       var oldOrder = widget.activity.customOrder;
