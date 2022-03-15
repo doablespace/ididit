@@ -202,9 +202,6 @@ class _MoveActionState extends State<_MoveAction> {
                 widget.activity.customOrder = activitiesBloc.minOrder - 1;
                 activitiesBloc.moved(widget.activity);
               }
-              setState(() {
-                moving = false;
-              });
             },
           ),
           _moveButton(
@@ -232,9 +229,6 @@ class _MoveActionState extends State<_MoveAction> {
                 widget.activity.customOrder = activitiesBloc.maxOrder + 1;
                 activitiesBloc.moved(widget.activity);
               }
-              setState(() {
-                moving = false;
-              });
             },
           ),
         ],
