@@ -9,8 +9,7 @@ class Version3Order extends Version {
     await db.execute('''
       ALTER TABLE activities
         ADD COLUMN custom_order INTEGER;
-
-      UPDATE activities SET custom_order = id;
     ''');
+    await db.execute('UPDATE activities SET custom_order = id;');
   }
 }
