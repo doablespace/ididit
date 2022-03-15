@@ -10,12 +10,7 @@ class Version3Order extends Version {
       ALTER TABLE activities
         ADD COLUMN custom_order INTEGER;
 
-      WITH a AS (
-        SELECT ROW_NUMBER() OVER(ORDER BY created) AS c, id 
-        FROM activities
-      )
-      UPDATE activities SET custom_order = a.c
-      FROM a WHERE activities.id = a.id;
+      UPDATE activities SET custom_order = id;
     ''');
   }
 }
