@@ -51,32 +51,8 @@ class OptionsActivityBox extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        // Stats button.
-        RoundedButton(
-          borderColor: ThemeColors.upperBackground,
-          backgroundColor: ThemeColors.upperBackground,
-          textColor: ThemeColors.lowerBackground,
-          label: 'Stats',
-          iconLabel: Icons.assessment_rounded,
-          buttonWidth: 230,
-          onPressed: () {
-            showDialog(
-              context: context,
-              child: AlertDialog(
-                title: Text('Coming soon'),
-                content: Text('And it will be AWESOME.'),
-                actions: [
-                  TextButton(
-                    child: Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
-              ),
-            );
-          },
-        ),
+        // Move buttons.
+        _MoveAction(activity),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -199,4 +175,104 @@ class _Options extends PopupRoute {
 
   @override
   Duration get transitionDuration => Duration.zero;
+}
+
+class _MoveAction extends StatefulWidget {
+  final Activity activity;
+
+  const _MoveAction(this.activity, {Key key}) : super(key: key);
+
+  @override
+  State<_MoveAction> createState() => _MoveActionState();
+}
+
+class _MoveActionState extends State<_MoveAction> {
+  bool moving = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (moving) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _moveButton(
+            icon: Icons.first_page_rounded,
+            handler: (activitiesBloc) {
+              if (widget.activity.customOrder != activitiesBloc.minOrder) {
+                widget.activity.customOrder = activitiesBloc.minOrder - 1;
+                activitiesBloc.moved(widget.activity);
+              }
+            },
+          ),
+          _moveButton(
+            icon: Icons.keyboard_arrow_left_rounded,
+            handler: _swapActivities((activitiesBloc) {
+              return activitiesBloc.activities.lastWhere(
+                (a) => a.customOrder < widget.activity.customOrder,
+                orElse: () => null,
+              );
+            }),
+          ),
+          _moveButton(
+            icon: Icons.keyboard_arrow_right_rounded,
+            handler: _swapActivities((activitiesBloc) {
+              return activitiesBloc.activities.firstWhere(
+                (a) => a.customOrder > widget.activity.customOrder,
+                orElse: () => null,
+              );
+            }),
+          ),
+          _moveButton(
+            icon: Icons.last_page_rounded,
+            handler: (activitiesBloc) {
+              if (widget.activity.customOrder != activitiesBloc.maxOrder) {
+                widget.activity.customOrder = activitiesBloc.maxOrder + 1;
+                activitiesBloc.moved(widget.activity);
+              }
+            },
+          ),
+        ],
+      );
+    }
+    return RoundedButton(
+      borderColor: ThemeColors.upperBackground,
+      textColor: ThemeColors.upperBackground,
+      label: 'Move',
+      iconLabel: Icons.swap_horiz_rounded,
+      buttonWidth: 230,
+      onPressed: () {
+        setState(() {
+          moving = true;
+        });
+      },
+    );
+  }
+
+  Widget _moveButton({IconData icon, void Function(ActivitiesBloc) handler}) {
+    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+
+    return RoundedButton(
+      borderColor: ThemeColors.upperBackground,
+      textColor: ThemeColors.upperBackground,
+      buttonWidth: 36,
+      icon: Icon(icon, color: ThemeColors.upperBackground),
+      onPressed: () {
+        handler(activitiesBloc);
+        activitiesBloc.sort();
+      },
+    );
+  }
+
+  _swapActivities(Activity Function(ActivitiesBloc) otherSelector) {
+    return (ActivitiesBloc activitiesBloc) {
+      var otherActivity = otherSelector(activitiesBloc);
+      if (otherActivity != null) {
+        var oldOrder = widget.activity.customOrder;
+        widget.activity.customOrder = otherActivity.customOrder;
+        activitiesBloc.moved(widget.activity);
+        otherActivity.customOrder = oldOrder;
+        activitiesBloc.moved(otherActivity);
+      }
+    };
+  }
 }

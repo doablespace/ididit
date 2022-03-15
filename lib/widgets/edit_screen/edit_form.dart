@@ -43,9 +43,13 @@ class EditFormState extends State<EditForm> {
       } else {
         // Pick color at random. Here, to have effect on `ActivityImage`.
         var colorId = Random().nextInt(ActivityColors.colors.length);
+
         activity = widget._activityChange == ActivityChange.edit
             ? activitiesBloc.currentActivity
-            : Activity(color: colorId);
+            : Activity(
+                color: colorId,
+                customOrder: activitiesBloc.minOrder - 1,
+              );
       }
     }
 

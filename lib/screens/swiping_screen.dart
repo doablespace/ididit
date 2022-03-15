@@ -87,8 +87,33 @@ class SwipingScreen extends StatelessWidget {
 
   void _onboard(BuildContext context) async {
     await Hive.initFlutter('ididit');
-    if (!await Hive.boxExists('first_run'))
+    if (!await Hive.boxExists('first_run')) {
       Navigator.push(
           context, MaterialPageRoute(builder: (_) => OnboardingScreen()));
+    } else {
+      var versionBox = await Hive.openBox<int>('version');
+      var version = versionBox.get('release', defaultValue: 0);
+      if (version < 1) {
+        showDialog(
+          context: context,
+          child: AlertDialog(
+            title: Text("💡 What's new"),
+            content: Text(
+              'You can now reorder activities. Simply tap on the activity and '
+              'select "↔️ Move".',
+            ),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  versionBox.put('release', 1);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 }

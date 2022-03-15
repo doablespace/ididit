@@ -36,7 +36,10 @@ class Db {
   Future<List<Activity>> findActivities(DateTime day, int historyLength,
       {LoadingProgress progress}) async {
     final Database db = await _database;
-    final List<Map<String, dynamic>> maps = await db.query('activities');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'activities',
+      orderBy: 'custom_order',
+    );
     final activities = List<Activity>.generate(
         maps.length, (index) => Activity.fromMap(maps[index]));
     await findActivityLogs(
