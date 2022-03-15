@@ -209,11 +209,11 @@ class _MoveActionState extends State<_MoveAction> {
           ),
           _moveButton(
             icon: Icons.keyboard_arrow_left_rounded,
-            handler: _swapActivities(-1),
+            handler: _swapActivities((a, b) => a < b),
           ),
           _moveButton(
             icon: Icons.keyboard_arrow_right_rounded,
-            handler: _swapActivities(1),
+            handler: _swapActivities((a, b) => a > b),
           ),
           _moveButton(
             icon: Icons.last_page_rounded,
@@ -259,19 +259,18 @@ class _MoveActionState extends State<_MoveAction> {
     );
   }
 
-  _swapActivities(int delta) {
+  _swapActivities(bool Function(int, int) comparer) {
     return (ActivitiesBloc activitiesBloc) {
-      var newOrder = widget.activity.customOrder + delta;
-      var oldActivity = activitiesBloc.activities.firstWhere(
-        (a) => a.customOrder == newOrder && a != widget.activity,
+      var otherActivity = activitiesBloc.activities.firstWhere(
+        (a) => comparer(a.customOrder, widget.activity.customOrder),
         orElse: () => null,
       );
-      var oldOrder = widget.activity.customOrder;
-      widget.activity.customOrder = newOrder;
-      activitiesBloc.moved(widget.activity);
-      if (oldActivity != null) {
-        oldActivity.customOrder = oldOrder;
-        activitiesBloc.moved(oldActivity);
+      if (otherActivity != null) {
+        var oldOrder = widget.activity.customOrder;
+        widget.activity.customOrder = otherActivity.customOrder;
+        activitiesBloc.moved(widget.activity);
+        otherActivity.customOrder = oldOrder;
+        activitiesBloc.moved(otherActivity);
       }
     };
   }
