@@ -209,11 +209,21 @@ class _MoveActionState extends State<_MoveAction> {
           ),
           _moveButton(
             icon: Icons.keyboard_arrow_left_rounded,
-            handler: _swapActivities((a, b) => a < b),
+            handler: _swapActivities((activitiesBloc) {
+              return activitiesBloc.activities.lastWhere(
+                (a) => a.customOrder < widget.activity.customOrder,
+                orElse: () => null,
+              );
+            }),
           ),
           _moveButton(
             icon: Icons.keyboard_arrow_right_rounded,
-            handler: _swapActivities((a, b) => a > b),
+            handler: _swapActivities((activitiesBloc) {
+              return activitiesBloc.activities.firstWhere(
+                (a) => a.customOrder > widget.activity.customOrder,
+                orElse: () => null,
+              );
+            }),
           ),
           _moveButton(
             icon: Icons.last_page_rounded,
@@ -259,12 +269,9 @@ class _MoveActionState extends State<_MoveAction> {
     );
   }
 
-  _swapActivities(bool Function(int, int) comparer) {
+  _swapActivities(Activity Function(ActivitiesBloc) otherSelector) {
     return (ActivitiesBloc activitiesBloc) {
-      var otherActivity = activitiesBloc.activities.firstWhere(
-        (a) => comparer(a.customOrder, widget.activity.customOrder),
-        orElse: () => null,
-      );
+      var otherActivity = otherSelector(activitiesBloc);
       if (otherActivity != null) {
         var oldOrder = widget.activity.customOrder;
         widget.activity.customOrder = otherActivity.customOrder;
