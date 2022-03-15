@@ -178,6 +178,10 @@ class ActivitiesBloc extends Bloc {
     _activityController.sink.add(_activities);
   }
 
+  void moved(Activity activity) async {
+    await _db.saveActivity(activity);
+  }
+
   void _selectNext() {
     if (_activities.length > 1) {
       // Find first activity after this one that's unmarked.

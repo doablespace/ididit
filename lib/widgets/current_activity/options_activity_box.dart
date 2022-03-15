@@ -52,7 +52,7 @@ class OptionsActivityBox extends StatelessWidget {
           },
         ),
         // Move buttons.
-        _MoveAction(),
+        _MoveAction(activity),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -178,7 +178,9 @@ class _Options extends PopupRoute {
 }
 
 class _MoveAction extends StatefulWidget {
-  const _MoveAction({Key key}) : super(key: key);
+  final Activity activity;
+
+  const _MoveAction(this.activity, {Key key}) : super(key: key);
 
   @override
   State<_MoveAction> createState() => _MoveActionState();
@@ -193,10 +195,34 @@ class _MoveActionState extends State<_MoveAction> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _moveButton(icon: Icons.first_page_rounded),
-          _moveButton(icon: Icons.keyboard_arrow_left_rounded),
-          _moveButton(icon: Icons.keyboard_arrow_right_rounded),
-          _moveButton(icon: Icons.last_page_rounded),
+          _moveButton(
+            icon: Icons.first_page_rounded,
+            handler: (activitiesBloc) {
+              widget.activity.customOrder = activitiesBloc.minOrder - 1;
+              activitiesBloc.moved(widget.activity);
+              setState(() {
+                moving = false;
+              });
+            },
+          ),
+          _moveButton(
+            icon: Icons.keyboard_arrow_left_rounded,
+            handler: _swapActivities(-1),
+          ),
+          _moveButton(
+            icon: Icons.keyboard_arrow_right_rounded,
+            handler: _swapActivities(1),
+          ),
+          _moveButton(
+            icon: Icons.last_page_rounded,
+            handler: (activitiesBloc) {
+              widget.activity.customOrder = activitiesBloc.maxOrder + 1;
+              activitiesBloc.moved(widget.activity);
+              setState(() {
+                moving = false;
+              });
+            },
+          ),
         ],
       );
     }
@@ -214,17 +240,35 @@ class _MoveActionState extends State<_MoveAction> {
     );
   }
 
-  Widget _moveButton({IconData icon}) {
+  Widget _moveButton({IconData icon, void Function(ActivitiesBloc) handler}) {
+    final activitiesBloc = Provider.of<ActivitiesBloc>(context, listen: false);
+
     return RoundedButton(
       borderColor: ThemeColors.upperBackground,
       textColor: ThemeColors.upperBackground,
       buttonWidth: 36,
       icon: Icon(icon, color: ThemeColors.upperBackground),
       onPressed: () {
-        setState(() {
-          moving = false;
-        });
+        handler(activitiesBloc);
+        activitiesBloc.sort();
       },
     );
+  }
+
+  _swapActivities(int delta) {
+    return (ActivitiesBloc activitiesBloc) {
+      var newOrder = widget.activity.customOrder + delta;
+      var oldActivity = activitiesBloc.activities.firstWhere(
+        (a) => a.customOrder == newOrder,
+        orElse: () => null,
+      );
+      var oldOrder = widget.activity.customOrder;
+      widget.activity.customOrder = newOrder;
+      activitiesBloc.moved(widget.activity);
+      if (oldActivity != null) {
+        oldActivity.customOrder = oldOrder;
+        activitiesBloc.moved(oldActivity);
+      }
+    };
   }
 }
