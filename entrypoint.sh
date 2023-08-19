@@ -7,6 +7,9 @@ set -e
 # HACK: Patch Flutter (allows transparent dismissible widget).
 (cd $FLUTTER_HOME && git apply $OLDPWD/flutter.patch)
 
+# Make Git trust the workspace directory.
+git config --global --add safe.directory $PWD
+
 # Restore Ruby dependencies (Fastlane).
 bundle install
 

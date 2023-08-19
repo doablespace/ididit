@@ -69,6 +69,7 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
     && mkdir -p $FLUTTER_HOME \
     && tar xf flutter.tar.xz -C $HOME \
     && rm flutter.tar.xz \
+    && git config --global --add safe.directory $FLUTTER_HOME \
     && flutter config --no-analytics \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
